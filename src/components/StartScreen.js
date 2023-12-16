@@ -38,6 +38,16 @@ const StartScreen = () => {
     }
   }, [page]);
 
+  // 参加者用URLにアクセスしている人数を取得するための関数
+  const fetchParticipantCount = async () => {
+    try {
+      const response = await fetch("/api/participant-count");
+      const data = await response.json();
+      setParticipantCount(data.count);
+    } catch (error) {
+      console.error("参加者数の取得に失敗しました:", error);
+    }
+  };
   // ニックネームの送信ハンドラ
   const handleNicknameSubmit = (e) => {
     e.preventDefault();
@@ -60,6 +70,17 @@ const StartScreen = () => {
       ) {
         setParticipants([newParticipant, ...participants]);
       }
+    }
+  };
+
+  // 参加者一覧を取得するための関数
+  const fetchParticipants = async () => {
+    try {
+      const response = await fetch("/api/participants");
+      const data = await response.json();
+      setParticipants(data.participants);
+    } catch (error) {
+      console.error("参加者一覧の取得に失敗しました:", error);
     }
   };
 
@@ -89,11 +110,34 @@ const StartScreen = () => {
     }
   };
 
+  // 参加制限を確認するための関数
+  const checkParticipantLimit = async () => {
+    try {
+      const response = await fetch("/api/check-limit");
+      const data = await response.json();
+      return data.isLimitExceeded;
+    } catch (error) {
+      console.error("参加制限の確認に失敗しました:", error);
+      return true; // エラーが発生した場合は参加を制限する
+    }
+  };
+
   // ゲーム開始ボタンの処理
-  const handleGameStart = () => {
+  const handleGameStart = async () => {
+    const isLimitExceeded = await checkParticipantLimit();
+    if (isLimitExceeded) {
+      alert("参加人数が上限に達しています。");
+      return;
+    }
+
     // ゲームページに遷移する
     navigate("/game-ui");
   };
+  // コンポーネントがマウントされた時に参加者数と参加者一覧を取得
+  useEffect(() => {
+    fetchParticipantCount();
+    fetchParticipants();
+  }, []);
 
   return (
     <div className="start-screen">
