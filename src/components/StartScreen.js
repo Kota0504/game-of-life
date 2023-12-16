@@ -8,10 +8,10 @@ const StartScreen = () => {
   const [page, setPage] = useState(1);
   const [participantModal, setParticipantModal] = useState(false); // これもモーダル表示のためのフラグです
   const [participantUrl, setParticipantUrl] = useState(""); // 参加者用 URL
-  const [submitted, setSubmitted] = useState(false); // submitted 状態を追加
   const [participantCount, setParticipantCount] = useState(0); // URLにアクセスしている人数
-  const [participants, setParticipants] = useState(["A", "B", "C", "D"]); // 仮のデータ
+  const [participants, setParticipants] = useState(["A", "B", "C"]); // 仮のデータ
   const [adminNickname, setAdminNickname] = useState("");
+  const [error, setError] = useState("");
   const [adminId, setAdminId] = useState(""); // 管理者のIDを追加
 
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const StartScreen = () => {
     if (page === 3) {
       setParticipantUrl(generateRandomUrl());
       // 参加者数の更新をシミュレート
-      setParticipantCount(5); // 仮の人数です
+      setParticipantCount(4); // 仮の人数です
     }
   }, [page]);
 
@@ -51,7 +51,10 @@ const StartScreen = () => {
   // ニックネームの送信ハンドラ
   const handleNicknameSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true); // ニックネームが送信されたときに submitted を更新
+    if (!nickname) {
+      setError("※ニックネームが入力されていません");
+      return;
+    }
     if (nickname) {
       // URLを生成して状態に保存
       setParticipantUrl(generateRandomUrl());
@@ -160,8 +163,6 @@ const StartScreen = () => {
           <p className="surprise">ニックネームを入力してください</p>
           <div className="nickname-form">
             <form onSubmit={handleNicknameSubmit}>
-              {" "}
-              {/* ここに onSubmit イベントを追加 */}
               <input
                 type="text"
                 placeholder="ニックネーム"
@@ -169,13 +170,8 @@ const StartScreen = () => {
                 onChange={(e) => setNickname(e.target.value)}
                 required
               />
-              {submitted && !nickname && (
-                <p className="error-message">
-                  ※ニックネームが入力されていません
-                </p>
-              )}
-              <button type="submit">参加</button>{" "}
-              {/* ボタンのタイプを 'submit' に変更 */}
+              {error && <p className="error-message">{error}</p>}
+              <button type="submit">参加</button>
             </form>
           </div>
         </>

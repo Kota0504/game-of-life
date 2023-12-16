@@ -31,9 +31,9 @@
   /* ... その他のスタイリング ... */
 }
 
-.start-screen .error-message {
-  color: red; /* エラーメッセージの色 */
-  margin-bottom: 10px; /* ボタンとの間隔 */
+.error-message {
+  color: red;
+  font-weight: bold;
 }
 
 .surprise,
