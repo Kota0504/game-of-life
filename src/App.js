@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<StartScreen />} />
         <Route path="/game-ui" element={<GameUI />} />
         <Route path="/Roulette" element={<Roulette />} />
-        <Route path="/participant" element={<ParticipantScreen />} />{" "}
+        <Route path="/participant/:token" element={<ParticipantScreen />} />
         {/* 他のルートを必要に応じて追加 */}
       </Routes>
     </Router>

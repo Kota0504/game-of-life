@@ -14,7 +14,10 @@ const StartScreen = () => {
 
   // 管理者用URLと参加者用URLの生成
   const generateRandomUrl = () => {
-    return `https://example.com/${Math.random().toString(36).substring(2, 8)}`;
+    // ランダムなトークンを生成します。これは参加者に一意のIDを割り当てるために使用されます。
+    const token = Math.random().toString(36).substring(2, 8);
+    // アプリケーションの URL 構造に従って参加者画面への完全な URL を返します。
+    return `https://example.com/participant/${token}`;
   };
 
   // 「今すぐ開始！」ボタンのハンドラ
