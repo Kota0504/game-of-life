@@ -1,0 +1,267 @@
+/* StartScreen.css */
+.start-screen {
+  text-align: center;
+  padding: 50px; /* 余白を調整 */
+  background-color: #ffeff9;
+  color: #333; /* テキストの基本色をダークグレーに */
+  margin: 20px; /* 余白を追加 */
+}
+
+.start-screen h1 {
+  color: #fff; /* タイトルの色を変更 */
+  margin-bottom: 30px; /* タイトルの下の余白 */
+  background-color: #ff90bc; /* 背景色をピンク系に */
+  border: 5px solid #ffffff; /* 枠の色と太さを調整 */
+  border-radius: 15px; /* 枠の角を丸める */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトな影を追加 */
+}
+
+.start-screen h1 span {
+  font-size: 1em; /* サブタイトルのフォントサイズを小さく */
+}
+
+.start-screen .nickname-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.start-screen input {
+  margin-bottom: 10px; /* エラーメッセージのスペースを確保 */
+  /* ... その他のスタイリング ... */
+}
+
+.start-screen .error-message {
+  color: red; /* エラーメッセージの色 */
+  margin-bottom: 10px; /* ボタンとの間隔 */
+}
+
+.surprise,
+.story {
+  color: #2e2d2e; /* テキストの色を変更 */
+
+  font-weight: bold;
+}
+
+.start-screen button {
+  background-color: #ff90bc; /* ボタンの背景色を変更 */
+  color: white; /* ボタンのテキスト色を白に */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 2em;
+  font-weight: bold;
+  margin-top: 20px; /* ボタンの上の余白 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* ボタンの影を追加 */
+}
+
+.start-screen button:hover {
+  background-color: #e75f9a; /* ホバー時のボタンの背景色を変更 */
+}
+/* 既存のスタイルの下に追加します */
+
+/* 参加者一覧ボタンのスタイル */
+.start-screen .header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.start-screen .header .nickname,
+.start-screen .header .participant-count {
+  background-color: #ff90bc;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+/* 参加者URLセクションのスタイル */
+.start-screen .participant-url {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.start-screen .participant-url span {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+/* コピー用ボタンのスタイル */
+.start-screen .participant-url button {
+  background-color: #ff90bc; /* ボタンの背景色 */
+  color: white; /* ボタンのテキスト色 */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.start-screen .participant-url button:hover {
+  background-color: #e75f9a; /* ホバー時の色を濃いピンクに変更 */
+}
+
+/* モーダルウィンドウのスタイル */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  border: 5px solid #ff90bc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* 確実に他の要素より上に表示 */
+  display: none; /* デフォルトでは非表示 */
+}
+
+/* モーダル表示時の背景 */
+.modal-show {
+  display: block;
+}
+
+/* モーダル閉じるボタンのスタイル */
+.modal button {
+  background-color: #ff90bc;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modal button:hover {
+  background-color: #e75f9a;
+}
+/* 既存のスタイルの下に追加します */
+
+/* 参加者一覧ボタンのスタイル */
+.start-screen .header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.start-screen .header .nickname,
+.start-screen .header .participant-count {
+  background-color: #ff90bc;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+/* 参加者URLセクションのスタイル */
+.start-screen .participant-url {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.start-screen .participant-url span {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+/* コピー用ボタンのスタイル */
+.start-screen .participant-url button {
+  background-color: #ff90bc; /* ボタンの背景色 */
+  color: white; /* ボタンのテキスト色 */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.start-screen .participant-url button:hover {
+  background-color: #e75f9a; /* ホバー時の色を濃いピンクに変更 */
+}
+
+/* モーダルウィンドウのスタイル */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  border: 5px solid #ff90bc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* 確実に他の要素より上に表示 */
+  display: none; /* デフォルトでは非表示 */
+}
+
+/* モーダル表示時の背景 */
+.modal-show {
+  display: block;
+}
+
+/* モーダル閉じるボタンのスタイル */
+.modal button {
+  background-color: #ff90bc;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modal button:hover {
+  background-color: #e75f9a;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  position: relative;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+}

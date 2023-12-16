@@ -1,0 +1,33 @@
+/* GameUI.css */
+
+.game-ui {
+  position: relative;
+  /* 他のスタイル設定 */
+}
+
+.game-board-image {
+  /* 画像のスタイル設定 */
+  position: relative;
+  z-index: 1; /* 必要に応じて数値を調整 */
+}
+
+.start-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2; /* 画像よりも大きい値に設定 */
+}
+
+.start-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 2rem;
+  z-index: 3; /* オーバーレイよりも大きい値に設定 */
+}
