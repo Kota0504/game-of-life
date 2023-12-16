@@ -1,0 +1,26 @@
+/* ParticipantScreen.css */
+
+.participant-screen {
+  text-align: center;
+  padding: 20px;
+}
+
+.participant-screen h1 {
+  margin-bottom: 20px;
+}
+
+.participant-screen input {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.participant-screen button {
+  padding: 10px 20px;
+  background-color: pink; /* ボタンの背景色を設定 */
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
