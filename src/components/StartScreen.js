@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./StartScreen.css";
+import { v4 as uuidv4 } from "uuid";
 
 const StartScreen = () => {
   const [nickname, setNickname] = useState("");
@@ -10,6 +11,9 @@ const StartScreen = () => {
   const [submitted, setSubmitted] = useState(false); // submitted 状態を追加
   const [participantCount, setParticipantCount] = useState(0); // URLにアクセスしている人数
   const [participants, setParticipants] = useState(["A", "B", "C", "D"]); // 仮のデータ
+  const [adminNickname, setAdminNickname] = useState("");
+  const [adminId, setAdminId] = useState(""); // 管理者のIDを追加
+
   const navigate = useNavigate();
 
   // 管理者用URLと参加者用URLの生成
@@ -42,6 +46,20 @@ const StartScreen = () => {
       // URLを生成して状態に保存
       setParticipantUrl(generateRandomUrl());
       setPage(3); // 3ページ目に遷移
+
+      // 一意のIDを生成して設定
+      const adminUniqueId = uuidv4();
+      setAdminId(adminUniqueId);
+      setAdminNickname(nickname); // 管理者のニックネームを設定
+
+      // ここで、既存のparticipants配列を変更せずに管理者のみを追加します。
+      // また、IDが不要であれば、adminIdの設定も省略できます。
+      const newParticipant = { id: adminUniqueId, name: nickname };
+      if (
+        !participants.some((participant) => participant.id === adminUniqueId)
+      ) {
+        setParticipants([newParticipant, ...participants]);
+      }
     }
   };
 
@@ -95,6 +113,7 @@ const StartScreen = () => {
           <h1>
             人生ゲーム <span>〜オンラインでみんなで遊ぼう〜</span>
           </h1>
+          <p className="surprise">ニックネームを入力してください</p>
           <div className="nickname-form">
             <form onSubmit={handleNicknameSubmit}>
               {" "}
@@ -120,16 +139,27 @@ const StartScreen = () => {
 
       {page === 3 && (
         <>
-          <div className="header">
+          <h1>
+            人生ゲーム{" "}
             <span className="nickname">{`こんにちは、${nickname}さん`}</span>
-            <span className="participant-count">{`オンライン: ${participantCount}人`}</span>
+          </h1>
+          <p>
+            このページはゲームを進める管理者専用です。<br></br>
+            参加者に「参加者用URL」を共有してください。<br></br>
+            参加者が全員参加してから開始ボタンを押してください。
+          </p>
+          <div className="header">
+            <span className="participant-count">
+              {`参加者用URLにアクセスしている人数: ${participantCount}人`}
+              <button onClick={handleShowParticipants}>参加者一覧</button>
+              <button onClick={handleGameStart}>開始</button>
+            </span>
           </div>
-          <button onClick={handleShowParticipants}>参加者一覧</button>
           <div className="participant-url">
+            参加者用URL
             <span>{participantUrl}</span>
             <button onClick={copyToClipboard}>コピー</button>
           </div>
-          <button onClick={handleGameStart}>開始</button>
           {/* 参加者一覧モーダル */}
           {participantModal && (
             <div
@@ -143,8 +173,8 @@ const StartScreen = () => {
                 </button>
                 <h2>参加者一覧</h2>
                 <ul>
-                  {participants.map((name, index) => (
-                    <li key={index}>{name}</li>
+                  {participants.map((participant) => (
+                    <li key={participant.id}>{participant.name}</li>
                   ))}
                 </ul>
               </div>
