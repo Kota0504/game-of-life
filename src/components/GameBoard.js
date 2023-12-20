@@ -1,62 +1,74 @@
-// GameBoard.js
-import React from "react";
+import React, { useState } from "react";
 import "./GameBoard.css";
+import Player from "./Player";
 
-const GameBoard = ({ players, setPlayers, updatePlayerState }) => {
-  //一時的なボタンを実装
-  const moveCurrentPlayerOneStep = () => {
-    const currentPlayer = players.find((player, index) => index === 0);
-    const playerId = currentPlayer.id;
-    const newPosition = currentPlayer.position + 1;
-    if (newPosition < 30) {
-      updatePlayerPosition(playerId, newPosition);
-    }
-  };
+const GameBoard = () => {
+  // プレイヤーの初期状態を設定
+  const initialPlayers = [
+    {
+      id: 1,
+      name: "Player 1",
+      position: 0,
+      money: 100000,
+      rank: 1,
+      isMarried: false,
+      children: 0,
+      hasHouse: false,
+    },
+    {
+      id: 2,
+      name: "Player 2",
+      position: 0,
+      money: 100000,
+      rank: 1,
+      isMarried: false,
+      children: 0,
+      hasHouse: false,
+    },
+    // 他のプレイヤーの初期状態も同様に設定
+  ];
 
-  // マスの色を定義
+  const [players, setPlayers] = useState(initialPlayers);
+  const [currentTurn, setCurrentTurn] = useState(0); // 現在のターンを追跡
+
   const squareColors = ["blue", "blue", "red", "yellow"];
 
-  const updatePlayerPosition = (playerId, steps) => {
+  const moveCurrentPlayerOneStep = () => {
     setPlayers(
-      players.map((player) => {
-        if (player.id !== playerId) return player;
+      players.map((player, index) => {
+        if (index === currentTurn) {
+          let newPosition = player.position + 1;
+          newPosition = newPosition >= 30 ? 29 : newPosition; // ボードの範囲を超えないようにする
 
-        let newPosition = player.position + steps;
-        // newPosition がボードの範囲を超えないように調整
-        // 他のプレイヤーの位置やゲームの状態を更新
-        // ...
+          // マスの効果を適用
+          const squareType = squareColors[newPosition % squareColors.length];
+          let moneyChange = 0;
+          switch (squareType) {
+            case "blue":
+              moneyChange = 10000;
+              break;
+            case "red":
+              moneyChange = -3000;
+              break;
+            case "yellow":
+              console.log(`Special event for ${player.name}`);
+              break;
+            default:
+              break;
+          }
 
-        return { ...player, position: newPosition };
+          return {
+            ...player,
+            position: newPosition,
+            money: player.money + moneyChange,
+          };
+        }
+        return player;
       })
     );
+
+    setCurrentTurn((currentTurn + 1) % players.length);
   };
-
-  // マスの効果を決定する関数（ここではダミーの実装）
-  const getSquareEffect = (squareType, player) => {
-    switch (squareType) {
-      case "blue":
-        return { ...player, money: player.money + 10000 };
-      case "red":
-        return { ...player, money: player.money - 3000 };
-      case "yellow":
-        // 黄色マスで発生するイベントを実行
-        console.log(`Special event for ${player.name}`);
-        return player; // 実際のイベントは実装に応じて異なります
-      default:
-        return player;
-    }
-  };
-
-  // プレイヤーがマスに止まった際の効果を処理する関数
-  const handleSquareLanding = (player) => {
-    const squareType = squareColors[player.position % squareColors.length];
-    const updatedPlayer = getSquareEffect(squareType, player);
-    updatePlayerState(updatedPlayer);
-  };
-
-  // プレイヤーがマスを進む処理
-  // 実際のゲームでは、プレイヤーの現在位置を更新したり、マスの効果を適用する必要があります。
-
   // ボードのマスを生成
   const renderSquares = () => {
     return Array(30)
@@ -72,26 +84,30 @@ const GameBoard = ({ players, setPlayers, updatePlayerState }) => {
           <div key={index} className={squareClass}>
             {isStart && "Start"}
             {isGoal && "Goal"}
-            {players &&
-              players
-                .filter((player) => player.position === index)
-                .map((player) => (
-                  <div key={player.name} className="player">
-                    {player.name}
-                  </div>
-                ))}
+            {players
+              .filter((player) => player.position === index)
+              .map((player) => (
+                <div key={player.name} className="player">
+                  {player.name}
+                </div>
+              ))}
           </div>
         );
       });
   };
 
-  // In GameBoard.js
   return (
     <div className="game-board">
       {renderSquares()}
-      {/* Buttons for moving the current player */}
       <div className="move-button-container">
-        <button onClick={moveCurrentPlayerOneStep}>Move 1 Step</button>
+        <button onClick={moveCurrentPlayerOneStep}>1マス進む</button>
+      </div>
+      <div className="player-status-section">
+        {players.map((player, index) => (
+          <div key={index} className="player-status">
+            <Player {...player} />
+          </div>
+        ))}
       </div>
     </div>
   );
