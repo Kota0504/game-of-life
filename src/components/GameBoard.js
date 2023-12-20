@@ -3,6 +3,16 @@ import React from "react";
 import "./GameBoard.css";
 
 const GameBoard = ({ players, setPlayers, updatePlayerState }) => {
+  //一時的なボタンを実装
+  const moveCurrentPlayerOneStep = () => {
+    const currentPlayer = players.find((player, index) => index === 0);
+    const playerId = currentPlayer.id;
+    const newPosition = currentPlayer.position + 1;
+    if (newPosition < 30) {
+      updatePlayerPosition(playerId, newPosition);
+    }
+  };
+
   // マスの色を定義
   const squareColors = ["blue", "blue", "red", "yellow"];
 
@@ -75,10 +85,14 @@ const GameBoard = ({ players, setPlayers, updatePlayerState }) => {
       });
   };
 
+  // In GameBoard.js
   return (
     <div className="game-board">
-      {/* プレイヤーとマスのレンダリング */}
-      {/* ここでは、players props から各プレイヤーの位置に応じてマスをレンダリング */}
+      {renderSquares()}
+      {/* Buttons for moving the current player */}
+      <div className="move-button-container">
+        <button onClick={moveCurrentPlayerOneStep}>Move 1 Step</button>
+      </div>
     </div>
   );
 };

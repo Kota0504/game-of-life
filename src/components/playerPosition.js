@@ -1,39 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 const PlayerPosition = ({
   players,
   setPlayers,
+  currentTurn,
   rouletteNumber,
-  setRouletteNumber,
 }) => {
-  // プレイヤーの位置を更新する関数
-  const updatePlayerPositions = () => {
-    if (rouletteNumber === null) return;
+  // This effect updates the player's position when the rouletteNumber changes
+  React.useEffect(() => {
+    if (rouletteNumber !== null) {
+      setPlayers((prevPlayers) =>
+        prevPlayers.map((player, index) => {
+          if (index !== currentTurn) return player; // It's not this player's turn
 
-    setPlayers((prevPlayers) =>
-      prevPlayers.map((player, index) => {
-        if (index !== currentTurn) return player; // 現在のターンでなければ変更なし
+          let newPosition = player.position + rouletteNumber;
+          if (newPosition >= 30) {
+            newPosition = 29; // Ensure we don't go past the end of the board
+          }
 
-        let newPosition = player.position + rouletteNumber;
-        if (newPosition >= 30) {
-          // ボードの最大値を超えないようにする
-          newPosition = 29;
-        }
+          // Return updated player info
+          return { ...player, position: newPosition };
+        })
+      );
+    }
+  }, [rouletteNumber, currentTurn, setPlayers]);
 
-        // 位置を更新したプレイヤー情報を返す
-        return { ...player, position: newPosition };
-      })
-    );
-
-    // ルーレットの数字をリセットする
-    setRouletteNumber(null);
-  };
-
-  useEffect(() => {
-    updatePlayerPositions();
-  }, [rouletteNumber]); // ルーレットの数字が変わったら位置を更新
-
-  // UIは特に必要ないのでnullを返す
+  // No UI needed for this component, as it only handles logic
   return null;
 };
 
