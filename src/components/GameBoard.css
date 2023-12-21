@@ -1,0 +1,51 @@
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr); /* Adjust based on your layout */
+  gap: 4px;
+}
+
+.square {
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Adjust size as needed */
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.blue {
+  background-color: lightblue;
+}
+
+.red {
+  background-color: lightcoral;
+}
+
+.yellow {
+  background-color: lightyellow;
+}
+
+.start {
+  background-color: lightgreen;
+}
+
+.goal {
+  background-color: gold;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
