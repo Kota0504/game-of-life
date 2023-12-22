@@ -1,7 +1,7 @@
 // GameUI.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import gameBoardImage from "./image/☆推しテーブル♡.png";
+//import gameBoardImage from "./image/☆推しテーブル♡.png";
 import "./GameUI.css";
 
 const GameUI = () => {
@@ -21,7 +21,7 @@ const GameUI = () => {
 
   return (
     <div className="game-ui">
-      <img src={gameBoardImage} alt="Game Board" className="game-board-image" />
+      {/* <img src={gameBoardImage} alt="Game Board" className="game-board-image" /> */}
       {showStartModal && (
         <div className="start-modal-overlay">
           <div className="start-modal-content">スタート！</div>
