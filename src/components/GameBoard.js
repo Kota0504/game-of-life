@@ -70,14 +70,6 @@ const GameBoard = () => {
     };
   };
 
-  const updatePlayerState = (updatedPlayer) => {
-    setPlayers(
-      players.map((player) =>
-        player.id === updatedPlayer.id ? updatedPlayer : player
-      )
-    );
-  };
-
   const moveCurrentPlayerRandomSteps = () => {
     const updatedPlayers = players.map((player, index) => {
       if (index === currentTurn) {
@@ -90,10 +82,28 @@ const GameBoard = () => {
       }
     });
 
-    setPlayers(updatedPlayers);
+    // プレイヤーの順位を計算して設定
+    const rankedPlayers = calculatePlayerRanks(updatedPlayers);
+    setPlayers(rankedPlayers);
 
     // ターンの更新
     setCurrentTurn((currentTurn + 1) % players.length);
+  };
+
+  // プレイヤーの順位を計算する関数
+  const calculatePlayerRanks = (updatedPlayers) => {
+    // プレイヤーを位置に基づいてソート
+    const sortedPlayers = [...updatedPlayers].sort(
+      (a, b) => b.position - a.position
+    );
+
+    // 順位を計算してプレイヤーに設定
+    const rankedPlayers = sortedPlayers.map((player, index) => ({
+      ...player,
+      rank: index + 1,
+    }));
+
+    return rankedPlayers;
   };
 
   const handleSquareLanding = (player) => {
