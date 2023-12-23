@@ -47,10 +47,10 @@ const GameBoard = () => {
     message: "",
   });
   const calculatePlayerRanks = (players) => {
-    // プレイヤーをその位置に基づいてソートする
-    const sortedPlayers = [...players].sort((a, b) => b.position - a.position);
+    // プレイヤーをそのお金に基づいてソートする（降順）
+    const sortedPlayers = [...players].sort((a, b) => b.money - a.money);
 
-    // ソートされた位置に基づいてランクを割り当てる
+    // ソートされたお金に基づいてランクを割り当てる
     const rankedPlayers = sortedPlayers.map((player, index) => ({
       ...player,
       rank: index + 1,
