@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./tailwind.css";
 import GameUI from "./components/GameUI";
 import Roulette from "./components/Roulette";
 import GameBoard from "./components/GameBoard";
 import StartScreen from "./components/StartScreen";
 import ParticipantScreen from "./components/ParticipantScreen";
 import PlayerPosition from "./components/playerPosition"; // Adjust the path as necessary
+import OshiTable from "./components/OshiTable";
 
 // 他の必要なインポート...
 
@@ -51,7 +53,6 @@ function App() {
             />
           }
         />
-        // In App.js, pass setPlayers as a prop
         <Route
           path="/game-board"
           element={<GameBoard players={players} setPlayers={setPlayers} />}
@@ -77,6 +78,7 @@ function App() {
           }
         />
         {/* 他のルートを必要に応じて追加 */}
+        <Route path="/oshitable" element={<OshiTable />} />
       </Routes>
     </Router>
   );
