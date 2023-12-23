@@ -9,6 +9,7 @@ const Player = ({
   isMarried,
   children,
   hasHouse,
+  isfinished,
 }) => {
   return (
     <div className="player-info">
@@ -19,6 +20,7 @@ const Player = ({
       <p>結婚状況: {isMarried ? "既婚" : "未婚"}</p>
       <p>子供の数: {children}</p>
       <p>家: {hasHouse ? "あり" : "なし"}</p>
+      <p>ゴール済み: {isfinished ? "まだ" : "済み"}</p>
     </div>
   );
 };
