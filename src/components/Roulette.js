@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { Wheel } from 'react-custom-roulette';
-import Modal from 'react-modal';
+import React, { useState } from "react";
+import { Wheel } from "react-custom-roulette";
+import Modal from "react-modal";
 
 const RouletteApp = () => {
   const data = [
-    { option: '1' }, { option: '2' }, { option: '3' }, { option: '4' },
-    { option: '5' }, { option: '6' }, { option: '7' }, { option: '8' },
-    { option: '9' }, { option: '10' }
+    { option: "1" },
+    { option: "2" },
+    { option: "3" },
+    { option: "4" },
+    { option: "5" },
+    { option: "6" },
+    { option: "7" },
+    { option: "8" },
+    { option: "9" },
+    { option: "10" },
   ];
 
   const [prizeNumber, setPrizeNumber] = useState(0);
@@ -30,8 +37,8 @@ const RouletteApp = () => {
         mustStartSpinning={spinning}
         prizeNumber={prizeNumber}
         data={data}
-        backgroundColors={['#FF90BC', '#95DCE7']}
-        textColors={['#ffffff']}
+        backgroundColors={["#FF90BC", "#95DCE7"]}
+        textColors={["#ffffff"]}
         onStopSpinning={handleSpinStop}
       />
       <button onClick={handleSpinClick}>ルーレットを回す</button>
@@ -41,12 +48,12 @@ const RouletteApp = () => {
         onRequestClose={() => setModalIsOpen(false)}
         style={{
           content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
           },
         }}
       >

@@ -52,7 +52,6 @@ function App() {
             />
           }
         />
-        // In App.js, pass setPlayers as a prop
         <Route
           path="/game-board"
           element={<GameBoard players={players} setPlayers={setPlayers} />}
