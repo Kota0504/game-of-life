@@ -58,17 +58,6 @@ function App() {
           element={<GameBoard players={players} setPlayers={setPlayers} />}
         />
         <Route
-          path="/roulette"
-          element={
-            <Roulette
-              players={players}
-              setPlayers={setPlayers}
-              rouletteNumber={rouletteNumber}
-              setRouletteNumber={setRouletteNumber}
-            />
-          }
-        />
-        <Route
           path="/player-position"
           element={
             <PlayerPosition

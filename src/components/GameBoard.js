@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./GameBoard.css";
 import Player from "./Player";
 import GameBoardModal from "./GameBoardModal";
@@ -27,6 +27,17 @@ const GameBoard = () => {
       hasHouse: false,
       isFinished: false,
     },
+    {
+      id: 3,
+      name: "Player 3",
+      position: 0,
+      money: 100000,
+      rank: 1,
+      isMarried: false,
+      children: 0,
+      hasHouse: false,
+      isFinished: false,
+    },
   ];
   const [players, setPlayers] = useState(initialPlayers);
   const [currentTurn, setCurrentTurn] = useState(0);
@@ -35,6 +46,18 @@ const GameBoard = () => {
     playerName: "",
     message: "",
   });
+  const calculatePlayerRanks = (players) => {
+    // プレイヤーをその位置に基づいてソートする
+    const sortedPlayers = [...players].sort((a, b) => b.position - a.position);
+
+    // ソートされた位置に基づいてランクを割り当てる
+    const rankedPlayers = sortedPlayers.map((player, index) => ({
+      ...player,
+      rank: index + 1,
+    }));
+
+    return rankedPlayers;
+  };
 
   const squareColors = ["blue", "blue", "red", "yellow"];
 
@@ -49,6 +72,7 @@ const GameBoard = () => {
         break;
       case "yellow":
         console.log(`Event occurred for ${player.name}`);
+        //  handleYellowSquare(player);実際に実装する時に使うコード
         break;
       default:
         break;
@@ -74,36 +98,26 @@ const GameBoard = () => {
     const updatedPlayers = players.map((player, index) => {
       if (index === currentTurn) {
         const randomSteps = Math.floor(Math.random() * 3) + 1;
-        const newPlayer = getSquareEffect("blue", player, randomSteps);
+        const newPosition = player.position + randomSteps;
+        const squareType = squareColors[newPosition % squareColors.length];
+        const newPlayer = getSquareEffect(squareType, player, randomSteps);
+
         handleSquareLanding(newPlayer);
+
         return newPlayer;
       } else {
         return player;
       }
     });
 
-    // プレイヤーの順位を計算して設定
     const rankedPlayers = calculatePlayerRanks(updatedPlayers);
     setPlayers(rankedPlayers);
-
-    // ターンの更新
-    setCurrentTurn((currentTurn + 1) % players.length);
+    setCurrentTurn((prevTurn) => (prevTurn + 1) % players.length);
   };
 
-  // プレイヤーの順位を計算する関数
-  const calculatePlayerRanks = (updatedPlayers) => {
-    // プレイヤーを位置に基づいてソート
-    const sortedPlayers = [...updatedPlayers].sort(
-      (a, b) => b.position - a.position
-    );
-
-    // 順位を計算してプレイヤーに設定
-    const rankedPlayers = sortedPlayers.map((player, index) => ({
-      ...player,
-      rank: index + 1,
-    }));
-
-    return rankedPlayers;
+  const handleModalClose = () => {
+    setIsModalVisible(false); // モーダルを閉じる
+    setCurrentTurn((prevTurn) => (prevTurn + 1) % players.length); // 次のプレイヤーにターンを移す
   };
 
   const handleSquareLanding = (player) => {
@@ -118,22 +132,23 @@ const GameBoard = () => {
         break;
       case "yellow":
         message = "イベント発生！";
+        // handleSquareLanding(player);実装する時に使用するコード
         break;
       default:
         message = "何も起こりませんでした";
         break;
     }
 
+    // const handleYellowSquare = (player) => {
+    // 黄色マスのイベント処理
+    // 例: ランダムな金額獲得、ランダムな位置に移動、特別なアイテム獲得など
+    // };
+
     // モーダルの内容をセット
     setModalContent({ playerName: player.name, message });
 
     // モーダルの表示
     setIsModalVisible(true);
-
-    // モーダルを表示してから自動的に閉じる
-    setTimeout(() => {
-      setIsModalVisible(false);
-    }, 3000);
   };
 
   const renderSquares = () => {
@@ -184,7 +199,7 @@ const GameBoard = () => {
         <GameBoardModal
           playerName={modalContent.playerName}
           message={modalContent.message}
-          onClose={() => setIsModalVisible(false)}
+          onClose={handleModalClose}
         />
       )}
     </div>
