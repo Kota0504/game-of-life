@@ -5,7 +5,7 @@ const GameBoardModal = ({ playerName, message, onClose }) => {
   useEffect(() => {
     const modalTimeout = setTimeout(() => {
       onClose(); // 3秒後にモーダルを閉じる
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(modalTimeout);
   }, [onClose]);

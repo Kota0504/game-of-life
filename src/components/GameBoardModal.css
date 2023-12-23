@@ -34,7 +34,6 @@
 }
 
 .modal-roulette-bg {
-  /* 背景画像のパスは適宜修正してください */
   background: url("/src/components/image/Roulette_demo.png") no-repeat center
     center;
   background-size: contain;
