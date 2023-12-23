@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ゲームボード</title>
+    <link rel="stylesheet" href="masu.css" />
+  </head>
+  <body>
+    <div class="board">
+      <!-- 縦の列 -->
+      <div class="column">
+        <!-- 各セルを追加 -->
+        <div id="game-board" className="h-screen grid grid-cols-5 grid-rows-3">
+          <div class="cell blue game-cell" id="square1">スタート</div>
+          <div class="cell pink game-cell" id="square2">...</div>
+           <!-- 分岐の例 -->
+          <div class="cell blue game-cell" id="square3">分岐点</div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell pink game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell pink game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell yellow game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <!-- その他のマス -->
+          <div class="cell blue game-cell"  id="squareN">ゴール</div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell pink game-cell"></div>
+          <div class="cell yellow game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell pink game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell blue game-cell"></div>
+          <div class="cell pink game-cell"></div>
+          <div class="cell pink game-cell"></div>
+          <div class="cell blue game-cell"></div>
+        </div>
+        <!-- ...他の列 -->
+
+      </div>
+
+      </div>
+
+
+      <!-- 以下、他のマス目 -->
+    </div>
+         <!-- <div class="spinner-container">
+        <div class="spinner ">
+          <div class="arrow"></div> -->
+        </div>
+  </body>
+</html>

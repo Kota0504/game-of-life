@@ -1,0 +1,77 @@
+body,
+html {
+  background-color: #f7ebf6; /* ライトピンクの背景 */
+}
+
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  width: 100%; /* ボードの幅 */
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.cell {
+  width: 100px; /* セルの幅 */
+  height: 100px; /* セルの高さ */
+}
+
+.blue {
+  background-color: #95dce7;
+}
+
+.pink {
+  background-color: #ff90bc;
+}
+.yellow {
+  background-color: #f2e91380;
+}
+
+.spinner-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spinner {
+  width: 100px;
+  height: 100px;
+  border: 5px solid black;
+  border-radius: 50%;
+  position: relative;
+}
+
+.arrow {
+  position: absolute;
+  top: 10px;
+  left: 45%;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 20px solid black;
+}
+
+#game-board {
+  font-family: NotoSansJP;
+  letter-spacing: 7.5%;
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(16, 1fr); /*16列のグリッド / */
+  grid-template-rows: repeat(10, 1fr); /*10行のグリッド / */
+}
+
+.game-cell {
+  border: 3px solid white;
+}
+
+/* 不規則なマス目の例 */
+

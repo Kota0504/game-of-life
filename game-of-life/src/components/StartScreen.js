@@ -147,7 +147,7 @@ const StartScreen = () => {
       {page === 1 && (
         <>
           <h1>
-            人生ゲーム <span className="text-black">〜オンラインでみんなで遊ぼう〜</span>
+            人生ゲーム <span className=" te">〜オンラインでみんなで遊ぼう〜</span>
           </h1>
           <p className="surprise">毎日がサプライズ！</p>
           <p className="story">あなたの人生ストーリーを描こう！</p>
