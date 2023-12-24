@@ -11,6 +11,11 @@ import OshiTable from "./components/OshiTable";
 
 // 他の必要なインポート...
 
+// ----------------------------------socket.io----------------------------------
+import io from "socket.io-client";
+const socket = io("http://localhost:5000"); //StartScreen.jsへpropsで渡す。
+// ----------------------------------socket.io----------------------------------
+
 const initialPlayersData = [
   { id: 1, name: "Player 1", position: 0 },
   { id: 2, name: "Player 2", position: 0 },
@@ -40,7 +45,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<StartScreen />} />
+        <Route path="/" element={<StartScreen socket={socket} />} />
         <Route path="/game-ui" element={<GameUI />} />
         <Route
           path="/roulette"

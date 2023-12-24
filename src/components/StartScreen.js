@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./StartScreen.css";
 import { v4 as uuidv4 } from "uuid";
 
-const StartScreen = () => {
+const StartScreen = ({ socket }) => {
   const [nickname, setNickname] = useState("");
   const [page, setPage] = useState(1);
   const [participantModal, setParticipantModal] = useState(false); // これもモーダル表示のためのフラグです
@@ -15,6 +15,10 @@ const StartScreen = () => {
   const [adminId, setAdminId] = useState(""); // 管理者のIDを追加
 
   const navigate = useNavigate();
+
+  // ----------------------------------socket.io----------------------------------
+  // socket.emit("任意の名前(AccessFromAdministrator)"); // 管理者がアクセス サーバーにemit
+  // ----------------------------------socket.io----------------------------------
 
   // 管理者用URLと参加者用URLの生成
   const generateRandomUrl = () => {
@@ -125,9 +129,14 @@ const StartScreen = () => {
     }
   };
 
+  // ----------------------------------socket.io----------------------------------
+  // ----------------------------------socket.io----------------------------------
+
   // ゲーム開始ボタンの処理
   const handleGameStart = async () => {
     const isLimitExceeded = await checkParticipantLimit();
+    socket.emit("Apply"); // 開始ボタンが押されたことをサーバーにemit
+
     if (isLimitExceeded) {
       alert("参加人数が上限に達しています。");
       return;
@@ -136,6 +145,17 @@ const StartScreen = () => {
     // ゲームページに遷移する
     navigate("/game-ui");
   };
+
+  useEffect(() => {
+    socket.on("Allow", () => {
+      // サーバーからの指示を受けてゲームページに遷移
+      navigate("/game-ui");
+    });
+  }, [socket]);
+
+  // ----------------------------------socket.io----------------------------------
+  // ----------------------------------socket.io----------------------------------
+
   // コンポーネントがマウントされた時に参加者数と参加者一覧を取得
   useEffect(() => {
     fetchParticipantCount();
@@ -147,7 +167,8 @@ const StartScreen = () => {
       {page === 1 && (
         <>
           <h1>
-            人生ゲーム <span className="text-black">〜オンラインでみんなで遊ぼう〜</span>
+            人生ゲーム{" "}
+            <span className="text-black">〜オンラインでみんなで遊ぼう〜</span>
           </h1>
           <p className="surprise">毎日がサプライズ！</p>
           <p className="story">あなたの人生ストーリーを描こう！</p>
@@ -227,7 +248,7 @@ const StartScreen = () => {
 };
 
 const Modal = ({ title, content, handleClose }) => (
-  <div className="modal" >
+  <div className="modal">
     <h2>{title}</h2>
     <p>{content}</p>
     <button onClick={handleClose}>閉じる</button>
