@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 
 const OshiTable = ({ players }) => {
   //コンポーネント作成
-  // 位置によってプレイヤーを見つけるヘルパー関数
-  const findPlayerByPosition = (position) => {
-    return players.find((player) => player.position === position);
+  // 各プレイヤーのアイコンをレンダリングする関数
+  const renderPlayersAtSquare = (squareId) => {
+    return players
+      .filter((player) => player.position === squareId)
+      .map((player, index) => (
+        <div key={player.id} className={`player player-${index + 1}`}>
+          <span>{player.name}</span>
+        </div>
+      ));
   };
+
+  // // プレイヤーを移動する関数を追加（例: Roulette.js から呼び出される）
+  // useEffect(() => {
+  //   // ルーレットの結果に基づいてプレイヤーを移動
+  //   movePlayer();
+  // }, [movePlayer]);
 
   return (
     //返す処理を記述する
@@ -31,7 +43,7 @@ const OshiTable = ({ players }) => {
           <div className="bg-blue-200" id="32"></div>
           <div className="bg-blue-200" id="31"></div>
           <div className="bg-yellow-200" id="30">
-            分岐点
+            結婚式
           </div>
           <div className="bg-blue-200" id="29"></div>
           <div className="bg-blue-200" id="28"></div>
@@ -40,7 +52,9 @@ const OshiTable = ({ players }) => {
           <div className=""></div>
           <div className=""></div>
           <div className="bg-pink-200" id="42"></div>
-          <div className="bg-yellow-200" id="41"></div>
+          <div className="bg-yellow-200" id="41">
+            結婚2
+          </div>
           <div className="bg-blue-200" id="40"></div>
           <div className=""></div>
           <div className="bg-blue-200" id="37"></div>
@@ -73,7 +87,7 @@ const OshiTable = ({ players }) => {
           <div className="bg-blue-200" id="49"></div>
           <div className="bg-pink-200" id="50"></div>
           <div className="bg-yellow-200" id="54">
-            id
+            出産
           </div>
           <div className="bg-blue-200" id="53"></div>
           <div className="bg-pink-200" id="52"></div>
@@ -109,7 +123,7 @@ const OshiTable = ({ players }) => {
           <div className="bg-blue-200" id="58"></div>
           <div className="bg-blue-200" id="57"></div>
           <div className="bg-yellow-200" id="56">
-            id
+            転職
           </div>
           <div className="bg-blue-200" id="66"></div>
           <div className="bg-blue-200" id="67"></div>
@@ -121,7 +135,9 @@ const OshiTable = ({ players }) => {
           <div className=""></div>
           <div className="bg-pink-200" id="15"></div>
           <div className="bg-blue-200" id="14"></div>
-          <div className="bg-yellow-200" id="13"></div>
+          <div className="bg-yellow-200" id="13">
+            結婚1
+          </div>
           <div className="bg-blue-200" id="22"></div>
           <div className="bg-blue-200" id="23"></div>
           {/* <!-- 7行目 --> */}
@@ -163,7 +179,9 @@ const OshiTable = ({ players }) => {
           <div className=""></div>
           <div className="bg-blue-200" id="65"></div>
           <div className="bg-pink-200" id="66"></div>
-          <div className="bg-yellow-200" id="70"></div>
+          <div className="bg-yellow-200" id="70">
+            家買う
+          </div>
           <div className=""></div>
           <div className="bg-pink-200" id="74">
             ゴール
@@ -197,6 +215,12 @@ const OshiTable = ({ players }) => {
           <div className="bg-blue-200" id="6"></div>
           <div className="bg-blue-200" id="7"></div>
         </div>
+        {/* マス目のループを作成 */}
+        {Array.from({ length: 75 }).map((_, index) => (
+          <div key={index} id={index} className={`square square-${index}`}>
+            {renderPlayersAtSquare(index)}
+          </div>
+        ))}
       </div>
     </div>
   );
