@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Wheel } from "react-custom-roulette";
 import Modal from "react-modal";
 
-const RouletteApp = () => {
+const RouletteApp = ({ onStopSpinning }) => {
   const data = [
     { option: "1" },
     { option: "2" },
@@ -28,7 +28,13 @@ const RouletteApp = () => {
 
   const handleSpinStop = () => {
     setSpinning(false);
+    onStopSpinning(data[prizeNumber].option);
     setModalIsOpen(true);
+  };
+  // モーダルを閉じて次のスピンの準備
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setPrizeNumber(0); // 次のスピンのためにprizeNumberをリセット
   };
 
   return (
@@ -42,10 +48,10 @@ const RouletteApp = () => {
         onStopSpinning={handleSpinStop}
       />
       <button onClick={handleSpinClick}>ルーレットを回す</button>
-
+      {/* 
       <Modal
         isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
+        onRequestClose={closeModal}
         style={{
           content: {
             top: "50%",
@@ -59,7 +65,7 @@ const RouletteApp = () => {
       >
         <h2> {data[prizeNumber].option}進みやがれ</h2>
         <button onClick={() => setModalIsOpen(false)}>閉じる</button>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
