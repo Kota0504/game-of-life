@@ -41,3 +41,38 @@
   transform: translate(-50%, -50%);
   z-index: 0; /* モーダルよりも低い値に設定 */
 }
+
+.player {
+  display: inline-block;
+  margin: 2px;
+  padding: 5px;
+  background-color: white;
+  border-radius: 50%; /* 円形にする */
+  width: 20px; /* アイコンのサイズ */
+  height: 20px; /* アイコンのサイズ */
+  text-align: center;
+  line-height: 20px; /* テキストを垂直中央に */
+  color: black; /* テキストの色 */
+  font-size: 10px; /* テキストのサイズ */
+  box-shadow: 0 0 2px #000; /* アイコンに影をつける */
+}
+
+.start-square {
+  position: relative;
+}
+
+.player-1 {
+  background-color: #ffd700; /* プレイヤー1の色 */
+}
+
+.player-2 {
+  background-color: #c0c0c0; /* プレイヤー2の色 */
+}
+
+.player-3 {
+  background-color: #cd7f32; /* プレイヤー3の色 */
+}
+
+.player-4 {
+  background-color: #8c7853; /* プレイヤー4の色 */
+}

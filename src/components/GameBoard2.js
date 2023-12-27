@@ -78,7 +78,7 @@ const GameBoard2 = () => {
   const [showStartModal, setShowStartModal] = useState(true);
   const [rouletteNumber, setRouletteNumber] = useState(null);
 
-  // 画面ロード時にスタートモーダルを表示し、ゲームを進行させる
+  // 画面ロード時にスタートモーダルを表示し、ゲームを進行させる　必要
   useEffect(() => {
     const startGameTimer = setTimeout(() => {
       setShowStartModal(false);
@@ -88,7 +88,7 @@ const GameBoard2 = () => {
     return () => clearTimeout(startGameTimer);
   }, []);
 
-  // プレイヤーのターンを処理する関数
+  // プレイヤーのターンを処理する関数　必要
   const nextTurn = () => {
     setModalContent({
       message: `${players[currentTurn].name}のターン！`,
@@ -101,7 +101,7 @@ const GameBoard2 = () => {
       setShowRouletteModal(true);
     }, 2000);
   };
-
+  // モーダルを閉じる関数　必要
   useEffect(() => {
     let timer;
     if (isModalVisible) {
@@ -115,7 +115,7 @@ const GameBoard2 = () => {
     return () => clearTimeout(timer);
   }, [isModalVisible]);
 
-  // ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数
+  // ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数　必要
   const handleRouletteResult = (result) => {
     const rouletteValue = parseInt(result, 10); // ルーレットの結果を数値として処理
     const currentPlayer = players[currentTurn];
@@ -137,12 +137,12 @@ const GameBoard2 = () => {
       )
     );
 
-    // 新しい位置の効果をトリガーする
-    const effectResult = applySquareEffect(
-      determineSquareType(newPosition),
-      currentPlayer,
-      rouletteValue
-    );
+    // // 新しい位置の効果をトリガーする　効果実装後
+    // const effectResult = applySquareEffect(
+    //   determineSquareType(newPosition),
+    //   currentPlayer,
+    //   rouletteValue
+    // );
 
     // 結果モーダルの表示内容を更新
     setModalContent({
@@ -163,7 +163,7 @@ const GameBoard2 = () => {
     }, 2000);
   };
 
-  // ターンを進める関数
+  // ターンを進める関数　必要
   const advanceTurn = () => {
     // 現在のターンのプレイヤーが最後のプレイヤーであれば、最初のプレイヤーに戻る
     const nextPlayerIndex = (currentTurn + 1) % players.length;
@@ -172,7 +172,6 @@ const GameBoard2 = () => {
     // 次のプレイヤーのターンモーダルを表示
     setShowTurnModal(true);
     setModalContent({
-      playerName: players[nextPlayerIndex].name,
       message: `${players[nextPlayerIndex].name}のターン！`,
     });
 
@@ -183,9 +182,7 @@ const GameBoard2 = () => {
     }, 2000);
   };
 
-  // プレイヤーの位置更新と関連モーダル表示処理は PlayerPosition コンポーネントで行われます
-
-  // モーダルのスタイル設定
+  // モーダルのスタイル設定　必要
   const customStyles = {
     content: {
       top: "50%",
@@ -197,57 +194,56 @@ const GameBoard2 = () => {
     },
   };
 
-  useEffect(() => {}, [currentTurn]); // currentTurnが変わるたびに実行
+  // マスに止まった時の処理　未実装
+  // useEffect(() => {
+  //   if (rouletteNumber !== null) {
+  //     const currentPlayer = players[currentTurn]; // この行を追加する
+  //     const someConditionForModalToShow = (player, number) => {
+  //       // ここに条件ロジックを書く。例えば:
+  //       return number > 0 && player.position < 30; // 仮の条件
+  //     };
+  //     if (someConditionForModalToShow(currentPlayer, rouletteNumber)) {
+  //       setIsModalVisible(true);
+  //     }
+  //   }
+  // }, [rouletteNumber, currentTurn, players]);
 
-  useEffect(() => {
-    if (rouletteNumber !== null) {
-      const currentPlayer = players[currentTurn]; // この行を追加する
-      const someConditionForModalToShow = (player, number) => {
-        // ここに条件ロジックを書く。例えば:
-        return number > 0 && player.position < 30; // 仮の条件
-      };
-      if (someConditionForModalToShow(currentPlayer, rouletteNumber)) {
-        setIsModalVisible(true);
-      }
-    }
-  }, [rouletteNumber, currentTurn, players]);
+  // // マス目のタイプを判断する関数
+  // const determineSquareType = (position) => {
+  //   // OshiTableのマス目の色に基づいてタイプを決定
+  //   // ここではシンプルな例を示しますが、実際には OshiTable のマス目の配列またはオブジェクトを参照する必要があります
+  //   const types = ["bg-blue-200", "bg-pink-200", "bg-yellow-200"];
+  //   const color = types[position % types.length]; // 仮の色決定ロジック
+  //   return color;
+  // };
 
-  // マス目のタイプを判断する関数
-  const determineSquareType = (position) => {
-    // OshiTableのマス目の色に基づいてタイプを決定
-    // ここではシンプルな例を示しますが、実際には OshiTable のマス目の配列またはオブジェクトを参照する必要があります
-    const types = ["bg-blue-200", "bg-pink-200", "bg-yellow-200"];
-    const color = types[position % types.length]; // 仮の色決定ロジック
-    return color;
-  };
-
-  // マス目の効果を適用する関数
-  const applySquareEffect = (squareType, player, steps) => {
-    let message = "";
-    let moneyChange = 0;
-    switch (squareType) {
-      case "bg-blue-200":
-        moneyChange = 10000;
-        message = "プラス10000円！！";
-        break;
-      case "bg-pink-200":
-        moneyChange = -3000;
-        message = "マイナス3000円！！";
-        break;
-      case "bg-yellow-200":
-        // イベント発生の詳細な処理はここに実装する
-        message = "イベントが発生！！";
-        break;
-      default:
-        message = "何も起こりませんでした。";
-        break;
-    }
-    return {
-      position: player.position + steps,
-      money: player.money + moneyChange,
-      message,
-    };
-  };
+  // // マス目の効果を適用する関数
+  // const applySquareEffect = (squareType, player, steps) => {
+  //   let message = "";
+  //   let moneyChange = 0;
+  //   switch (squareType) {
+  //     case "bg-blue-200":
+  //       moneyChange = 10000;
+  //       message = "プラス10000円！！";
+  //       break;
+  //     case "bg-pink-200":
+  //       moneyChange = -3000;
+  //       message = "マイナス3000円！！";
+  //       break;
+  //     case "bg-yellow-200":
+  //       // イベント発生の詳細な処理はここに実装する
+  //       message = "イベントが発生！！";
+  //       break;
+  //     default:
+  //       message = "何も起こりませんでした。";
+  //       break;
+  //   }
+  //   return {
+  //     position: player.position + steps,
+  //     money: player.money + moneyChange,
+  //     message,
+  //   };
+  // };
 
   return (
     <>
