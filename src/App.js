@@ -8,6 +8,7 @@ import StartScreen from "./components/StartScreen";
 import ParticipantScreen from "./components/ParticipantScreen";
 import PlayerPosition from "./components/playerPosition"; // Adjust the path as necessary
 import OshiTable from "./components/OshiTable";
+import GameBoard2 from "./components/GameBoard2";
 
 // 他の必要なインポート...
 
@@ -19,6 +20,7 @@ const socket = io("http://localhost:5000"); //StartScreen.jsへpropsで渡す。
 const initialPlayersData = [
   { id: 1, name: "Player 1", position: 0 },
   { id: 2, name: "Player 2", position: 0 },
+  { id: 3, name: "Player 2", position: 0 },
 ];
 
 // 他のプレイヤーデータを追加
@@ -60,7 +62,7 @@ function App() {
         />
         <Route
           path="/game-board"
-          element={<GameBoard players={players} setPlayers={setPlayers} />}
+          element={<GameBoard2 players={players} setPlayers={setPlayers} />}
         />
         <Route
           path="/player-position"

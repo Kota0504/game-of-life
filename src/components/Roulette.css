@@ -42,16 +42,47 @@
 }
 
 /* 各セグメントの色と位置 */
-#roulette li:nth-child(1) { background-color: #FFF100; transform: rotate(0deg) skewY(-60deg); }
-#roulette li:nth-child(2) { background-color: #F39800; transform: rotate(36deg) skewY(-60deg); }
-#roulette li:nth-child(3) { background-color: #EB6100; transform: rotate(72deg) skewY(-60deg); }
-#roulette li:nth-child(4) { background-color: #E60012; transform: rotate(108deg) skewY(-60deg); }
-#roulette li:nth-child(5) { background-color: #E4007F; transform: rotate(144deg) skewY(-60deg); }
-#roulette li:nth-child(6) { background-color: #601986; transform: rotate(180deg) skewY(-60deg); }
-#roulette li:nth-child(7) { background-color: #0B318F; transform: rotate(216deg) skewY(-60deg); }
-#roulette li:nth-child(8) { background-color: #036EB8; transform: rotate(252deg) skewY(-60deg); }
-#roulette li:nth-child(9) { background-color: #00913A; transform: rotate(288deg) skewY(-60deg); }
-#roulette li:nth-child(10) { background-color: #8FC31F; transform: rotate(324deg) skewY(-60deg); } */
+#roulette li:nth-child(1) {
+  background-color: #fff100;
+  transform: rotate(0deg) skewY(-60deg);
+}
+#roulette li:nth-child(2) {
+  background-color: #f39800;
+  transform: rotate(36deg) skewY(-60deg);
+}
+#roulette li:nth-child(3) {
+  background-color: #eb6100;
+  transform: rotate(72deg) skewY(-60deg);
+}
+#roulette li:nth-child(4) {
+  background-color: #e60012;
+  transform: rotate(108deg) skewY(-60deg);
+}
+#roulette li:nth-child(5) {
+  background-color: #e4007f;
+  transform: rotate(144deg) skewY(-60deg);
+}
+#roulette li:nth-child(6) {
+  background-color: #601986;
+  transform: rotate(180deg) skewY(-60deg);
+}
+#roulette li:nth-child(7) {
+  background-color: #0b318f;
+  transform: rotate(216deg) skewY(-60deg);
+}
+#roulette li:nth-child(8) {
+  background-color: #036eb8;
+  transform: rotate(252deg) skewY(-60deg);
+}
+#roulette li:nth-child(9) {
+  background-color: #00913a;
+  transform: rotate(288deg) skewY(-60deg);
+}
+#roulette li:nth-child(10) {
+  background-color: #8fc31f;
+  transform: rotate(324deg) skewY(-60deg);
+}
+*/
 
 /* ルーレットとモーダルの基本スタイル */
 .roulette-container {
@@ -59,6 +90,8 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .modal {
@@ -66,12 +99,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 300px;
+  width: 320px;
   padding: 20px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  z-index: 1000;
 }
 
 .modal h2 {
