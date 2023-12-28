@@ -116,37 +116,12 @@ const GameBoard2 = () => {
   }, [isModalVisible]);
 
   // ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数　必要
+  const boardSize = 76; // 仮にボードのマスが30だとする
   const handleRouletteResult = (result) => {
-    const rouletteValue = parseInt(result, 10); // ルーレットの結果を数値として処理
-    const currentPlayer = players[currentTurn];
-    // 新しい位置に基づいてプレイヤーアイコンを移動する
-    const newPosition = calculateNewPosition(
-      currentPlayer.position,
-      rouletteValue,
-      players.length
-    );
-
+    const rouletteValue = parseInt(result, 10) + 1; // ルーレットの結果を数値として処理
     setRouletteNumber(rouletteValue); // 状態にルーレットの結果を保存
-
-    // プレイヤーの位置を更新
-    setPlayers((prevPlayers) =>
-      prevPlayers.map((player) =>
-        player.id === currentPlayer.id
-          ? { ...player, position: newPosition }
-          : player
-      )
-    );
-
-    // // 新しい位置の効果をトリガーする　効果実装後
-    // const effectResult = applySquareEffect(
-    //   determineSquareType(newPosition),
-    //   currentPlayer,
-    //   rouletteValue
-    // );
-
     // 結果モーダルの表示内容を更新
     setModalContent({
-      playerName: players[currentTurn].name,
       message: ` ${rouletteValue} マス進みやがれ`,
     });
 
@@ -156,18 +131,42 @@ const GameBoard2 = () => {
     // 一定時間後に結果モーダルを閉じて次のプレイヤーのターンに進む
     setTimeout(() => {
       setIsModalVisible(false); // 結果モーダルを閉じる
-
-      // // プレイヤーの位置更新などの処理をここに追加
-      // // ...
-      advanceTurn(); // 次のプレイヤーのターンへ
     }, 2000);
   };
 
-  // ターンを進める関数　必要
+  // 次のプレイヤーのターンへ
+  useEffect(() => {
+    if (rouletteNumber !== null && !isModalVisible) {
+      // プレイヤーの位置を更新する処理
+      setPlayers((prevPlayers) =>
+        prevPlayers.map((player, index) => {
+          if (index === currentTurn) {
+            let newPosition = player.position + rouletteNumber;
+            if (newPosition >= boardSize) {
+              newPosition -= boardSize;
+            }
+            return { ...player, position: newPosition };
+          } else {
+            return player;
+          }
+        })
+      );
+
+      // ルーレットの番号をリセット
+      setRouletteNumber(null);
+
+      // 一定時間後に次のターンへ
+      setTimeout(() => {
+        advanceTurn();
+      }, 2000);
+    }
+  }, [rouletteNumber, isModalVisible, currentTurn, setPlayers, boardSize]);
+
   const advanceTurn = () => {
-    // 現在のターンのプレイヤーが最後のプレイヤーであれば、最初のプレイヤーに戻る
+    // ターンを進める前にルーレットの番号をリセット
+    setRouletteNumber(null); // この行を追加
     const nextPlayerIndex = (currentTurn + 1) % players.length;
-    setCurrentTurn(nextPlayerIndex); // 次のプレイヤーにターンを設定
+    setCurrentTurn(nextPlayerIndex);
 
     // 次のプレイヤーのターンモーダルを表示
     setShowTurnModal(true);
@@ -193,57 +192,6 @@ const GameBoard2 = () => {
       transform: "translate(-50%, -50%)",
     },
   };
-
-  // マスに止まった時の処理　未実装
-  // useEffect(() => {
-  //   if (rouletteNumber !== null) {
-  //     const currentPlayer = players[currentTurn]; // この行を追加する
-  //     const someConditionForModalToShow = (player, number) => {
-  //       // ここに条件ロジックを書く。例えば:
-  //       return number > 0 && player.position < 30; // 仮の条件
-  //     };
-  //     if (someConditionForModalToShow(currentPlayer, rouletteNumber)) {
-  //       setIsModalVisible(true);
-  //     }
-  //   }
-  // }, [rouletteNumber, currentTurn, players]);
-
-  // // マス目のタイプを判断する関数
-  // const determineSquareType = (position) => {
-  //   // OshiTableのマス目の色に基づいてタイプを決定
-  //   // ここではシンプルな例を示しますが、実際には OshiTable のマス目の配列またはオブジェクトを参照する必要があります
-  //   const types = ["bg-blue-200", "bg-pink-200", "bg-yellow-200"];
-  //   const color = types[position % types.length]; // 仮の色決定ロジック
-  //   return color;
-  // };
-
-  // // マス目の効果を適用する関数
-  // const applySquareEffect = (squareType, player, steps) => {
-  //   let message = "";
-  //   let moneyChange = 0;
-  //   switch (squareType) {
-  //     case "bg-blue-200":
-  //       moneyChange = 10000;
-  //       message = "プラス10000円！！";
-  //       break;
-  //     case "bg-pink-200":
-  //       moneyChange = -3000;
-  //       message = "マイナス3000円！！";
-  //       break;
-  //     case "bg-yellow-200":
-  //       // イベント発生の詳細な処理はここに実装する
-  //       message = "イベントが発生！！";
-  //       break;
-  //     default:
-  //       message = "何も起こりませんでした。";
-  //       break;
-  //   }
-  //   return {
-  //     position: player.position + steps,
-  //     money: player.money + moneyChange,
-  //     message,
-  //   };
-  // };
 
   return (
     <>
@@ -274,8 +222,7 @@ const GameBoard2 = () => {
         </Modal>
       )}
       {/* // OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
-      <OshiTable players={players.filter((player) => player.position === 0)} />
-      {/* 他の UI コンポーネント */}
+      <OshiTable players={players} />
     </>
   );
 };

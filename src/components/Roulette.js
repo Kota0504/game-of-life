@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Wheel } from "react-custom-roulette";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 
 const RouletteApp = ({ onStopSpinning }) => {
   const data = [
@@ -18,7 +18,7 @@ const RouletteApp = ({ onStopSpinning }) => {
 
   const [prizeNumber, setPrizeNumber] = useState(0);
   const [spinning, setSpinning] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleSpinClick = () => {
     const newPrizeNumber = Math.floor(Math.random() * data.length);
@@ -28,14 +28,16 @@ const RouletteApp = ({ onStopSpinning }) => {
 
   const handleSpinStop = () => {
     setSpinning(false);
-    onStopSpinning(data[prizeNumber].option);
-    setModalIsOpen(true);
+    // onStopSpinning(data[prizeNumber].option);
+    // prizeNumber の値を親コンポーネントに伝えるために、data[prizeNumber].option ではなく prizeNumber を渡す
+    onStopSpinning(prizeNumber);
+    // setModalIsOpen(true);
   };
-  // モーダルを閉じて次のスピンの準備
-  const closeModal = () => {
-    setModalIsOpen(false);
-    setPrizeNumber(0); // 次のスピンのためにprizeNumberをリセット
-  };
+  // // モーダルを閉じて次のスピンの準備
+  // const closeModal = () => {
+  //   setModalIsOpen(false);
+  //   setPrizeNumber(0); // 次のスピンのためにprizeNumberをリセット
+  // };
 
   return (
     <div>
