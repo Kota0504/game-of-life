@@ -57,22 +57,13 @@
   box-shadow: 0 0 2px #000; /* アイコンに影をつける */
 }
 
+/* GameBoard.css に追加するスタイル */
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .start-square {
-  position: relative;
-}
-
-.player-1 {
-  background-color: #ffd700; /* プレイヤー1の色 */
-}
-
-.player-2 {
-  background-color: #c0c0c0; /* プレイヤー2の色 */
-}
-
-.player-3 {
-  background-color: #cd7f32; /* プレイヤー3の色 */
-}
-
-.player-4 {
-  background-color: #8c7853; /* プレイヤー4の色 */
+  position: relative; /* 子要素のプレイヤーを相対位置で配置するために必要 */
 }

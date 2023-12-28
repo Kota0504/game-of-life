@@ -6,7 +6,6 @@ import Roulette from "./components/Roulette";
 import GameBoard from "./components/GameBoard";
 import StartScreen from "./components/StartScreen";
 import ParticipantScreen from "./components/ParticipantScreen";
-import PlayerPosition from "./components/playerPosition"; // Adjust the path as necessary
 import OshiTable from "./components/OshiTable";
 import GameBoard2 from "./components/GameBoard2";
 
@@ -58,15 +57,6 @@ function App() {
         <Route
           path="/game-board"
           element={<GameBoard2 players={players} setPlayers={setPlayers} />}
-        />
-        <Route
-          path="/player-position"
-          element={
-            <PlayerPosition
-              players={players}
-              updatePlayerPosition={updatePlayerPosition}
-            />
-          }
         />
         {/* 他のルートを必要に応じて追加 */}
         <Route path="/oshitable" element={<OshiTable />} />
