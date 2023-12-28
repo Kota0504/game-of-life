@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./GameBoard.css";
 import Player from "./Player";
-// import GameBoardModal from "./GameBoardModal";
-import OshiTable from "./OshiTable";
+import GameBoardModal from "./GameBoardModal";
+import { useNavigate } from "react-router-dom";
 
 const GameBoard = () => {
   const initialPlayers = [
@@ -47,12 +47,11 @@ const GameBoard = () => {
     playerName: "",
     message: "",
   });
-
   const calculatePlayerRanks = (players) => {
-    // プレイヤーをそのお金に基づいてソートする（降順）
-    const sortedPlayers = [...players].sort((a, b) => b.money - a.money);
+    // プレイヤーをその位置に基づいてソートする
+    const sortedPlayers = [...players].sort((a, b) => b.position - a.position);
 
-    // ソートされたお金に基づいてランクを割り当てる
+    // ソートされた位置に基づいてランクを割り当てる
     const rankedPlayers = sortedPlayers.map((player, index) => ({
       ...player,
       rank: index + 1,
@@ -99,19 +98,12 @@ const GameBoard = () => {
   const moveCurrentPlayerRandomSteps = () => {
     const updatedPlayers = players.map((player, index) => {
       if (index === currentTurn) {
-        const randomSteps = Math.floor(Math.random() * 3) + 1; // 1から3のランダムな数
+        const randomSteps = Math.floor(Math.random() * 3) + 1;
         const newPosition = player.position + randomSteps;
         const squareType = squareColors[newPosition % squareColors.length];
         const newPlayer = getSquareEffect(squareType, player, randomSteps);
 
-        if (newPlayer.position !== player.position) {
-          // プレイヤーが動いた場合のみモーダルを表示
-          setModalContent({
-            playerName: newPlayer.name,
-            message: `Player ${newPlayer.name} moved to position ${newPlayer.position}`,
-          });
-          setIsModalVisible(true);
-        }
+        handleSquareLanding(newPlayer);
 
         return newPlayer;
       } else {
@@ -127,34 +119,6 @@ const GameBoard = () => {
   const handleModalClose = () => {
     setIsModalVisible(false); // モーダルを閉じる
     setCurrentTurn((prevTurn) => (prevTurn + 1) % players.length); // 次のプレイヤーにターンを移す
-  };
-
-  // GameBoardModalコンポーネントを直接GameBoard内に組み込む
-  const GameBoardModal = ({ playerName, message, onClose }) => {
-    useEffect(() => {
-      const modalTimeout = setTimeout(() => {
-        onClose(); // 0.5秒後にモーダルを閉じる
-      }, 500);
-
-      return () => clearTimeout(modalTimeout);
-    }, [onClose]);
-
-    return (
-      <div className="modal-overlay">
-        <div className="modal">
-          <div className="modal-content">
-            <h3>ルーレット結果</h3>
-            <div className="gameboard-modal-body">
-              <p>
-                <strong>{playerName}</strong>さんの結果
-              </p>
-              <p>{message}</p>
-            </div>
-            <button onClick={onClose}>閉じる</button>
-          </div>
-        </div>
-      </div>
-    );
   };
 
   const handleSquareLanding = (player) => {
@@ -200,7 +164,11 @@ const GameBoard = () => {
         }`;
 
         return (
-          <div key={index} className={squareClass}>
+          <div
+            key={index}
+            className={squareClass}
+            onClick={() => handleSquareLanding(players[currentTurn])}
+          >
             {isStart && "Start"}
             {isGoal && "Goal"}
             {players
@@ -215,6 +183,26 @@ const GameBoard = () => {
       });
   };
 
+  const navigate = useNavigate();
+
+  const [showStartModal, setShowStartModal] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowStartModal(true);
+      setTimeout(() => {
+        navigate("/roulette"); // スタート表示後、ルーレット画面に遷移
+      }, 3000);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
+  const handleCloseModal = () => {
+    setShowStartModal(false); // モーダルを非表示にする
+    navigate("/"); // StartScreen コンポーネントに遷移させる
+  };
+
   return (
     <>
       <div
@@ -223,26 +211,31 @@ const GameBoard = () => {
         }`}
       >
         <div className="header-class-8">{/* ヘッダーコンテンツ */}</div>
-        <OshiTable />
-        {renderSquares()}
-        <div className="move-button-container">
-          <button onClick={moveCurrentPlayerRandomSteps}>ランダム進む</button>
+        <div className="game-board">
+          {renderSquares()}
+          <div className="move-button-container">
+            <button onClick={moveCurrentPlayerRandomSteps}>ランダム進む</button>
+          </div>
+          <div className="player-status-section">
+            {players.map((player, index) => (
+              <div key={player.id} className="player-status">
+                <Player {...player} />
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="player-status-section">
-          {players.map((player, index) => (
-            <div key={player.id} className="player-status">
-              <Player {...player} />
-            </div>
-          ))}
-        </div>
-        {isModalVisible && (
-          <GameBoardModal
-            playerName={modalContent.playerName}
-            message={modalContent.message}
-            onClose={handleModalClose}
-          />
-        )}
       </div>
+      {isModalVisible && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <GameBoardModal
+              playerName={modalContent.playerName}
+              message={modalContent.message}
+              onClose={handleModalClose}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };

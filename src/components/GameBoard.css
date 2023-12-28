@@ -1,69 +1,77 @@
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr); /* Adjust based on your layout */
+  gap: 4px;
+}
+
+.square {
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Adjust size as needed */
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.blue {
+  background-color: lightblue;
+}
+
+.red {
+  background-color: lightcoral;
+}
+
+.yellow {
+  background-color: lightyellow;
+}
+
+.start {
+  background-color: lightgreen;
+}
+
+.goal {
+  background-color: gold;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .modal-content {
-  background-color: #fff;
+  background-color: white;
   padding: 20px;
-  margin-top: 10%;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
 }
-*/ .modal {
-  position: relative;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 300px;
-  z-index: 1002; /* Updated z-index */
-}
+
+/* GameBoardModal.css (または GameBoardModal コンポーネントに関連するCSSファイル) */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
   display: flex;
-  justify-content: center;
-  z-index: 1001;
+  justify-content: center; /* 水平方向の中央揃え */
 }
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  margin-top: 10%; /* 上部からのマージン */
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* 必要に応じて調整 */
+}
+
+/* GameBoard.css (または GameBoard コンポーネントのCSSファイル) */
 .game-board-modal-visible {
-  overflow: hidden;
-}
-
-.roulette-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0; /* モーダルよりも低い値に設定 */
-}
-
-.player {
-  display: inline-block;
-  margin: 2px;
-  padding: 5px;
-  background-color: white;
-  border-radius: 50%; /* 円形にする */
-  width: 20px; /* アイコンのサイズ */
-  height: 20px; /* アイコンのサイズ */
-  text-align: center;
-  line-height: 20px; /* テキストを垂直中央に */
-  color: black; /* テキストの色 */
-  font-size: 10px; /* テキストのサイズ */
-  box-shadow: 0 0 2px #000; /* アイコンに影をつける */
-}
-
-/* GameBoard.css に追加するスタイル */
-.square {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.start-square {
-  position: relative; /* 子要素のプレイヤーを相対位置で配置するために必要 */
+  overflow: hidden; /* モーダル表示時に背景のスクロールを防止 */
 }
