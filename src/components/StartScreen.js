@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./StartScreen.css";
 import { v4 as uuidv4 } from "uuid";
+import groupImage from "./image/g13.png";
 
-const StartScreen = ({ socket }) => {
+const StartScreen = () => {
   const [nickname, setNickname] = useState("");
   const [page, setPage] = useState(1);
   const [participantModal, setParticipantModal] = useState(false); // これもモーダル表示のためのフラグです
@@ -15,10 +16,6 @@ const StartScreen = ({ socket }) => {
   const [adminId, setAdminId] = useState(""); // 管理者のIDを追加
 
   const navigate = useNavigate();
-
-  // ----------------------------------socket.io----------------------------------
-  // socket.emit("任意の名前(AccessFromAdministrator)"); // 管理者がアクセス サーバーにemit
-  // ----------------------------------socket.io----------------------------------
 
   // 管理者用URLと参加者用URLの生成
   const generateRandomUrl = () => {
@@ -53,12 +50,14 @@ const StartScreen = ({ socket }) => {
     }
   };
   // ニックネームの送信ハンドラ
+
   const handleNicknameSubmit = (e) => {
     e.preventDefault();
     if (!nickname) {
       setError("※ニックネームが入力されていません");
       return;
     }
+    setError("");
     if (nickname) {
       // URLを生成して状態に保存
       setParticipantUrl(generateRandomUrl());
@@ -129,14 +128,9 @@ const StartScreen = ({ socket }) => {
     }
   };
 
-  // ----------------------------------socket.io----------------------------------
-  // ----------------------------------socket.io----------------------------------
-
   // ゲーム開始ボタンの処理
   const handleGameStart = async () => {
     const isLimitExceeded = await checkParticipantLimit();
-    socket.emit("Apply"); // 開始ボタンが押されたことをサーバーにemit
-
     if (isLimitExceeded) {
       alert("参加人数が上限に達しています。");
       return;
@@ -145,17 +139,6 @@ const StartScreen = ({ socket }) => {
     // ゲームページに遷移する
     navigate("/game-ui");
   };
-
-  useEffect(() => {
-    socket.on("Allow", () => {
-      // サーバーからの指示を受けてゲームページに遷移
-      navigate("/game-ui");
-    });
-  }, [socket]);
-
-  // ----------------------------------socket.io----------------------------------
-  // ----------------------------------socket.io----------------------------------
-
   // コンポーネントがマウントされた時に参加者数と参加者一覧を取得
   useEffect(() => {
     fetchParticipantCount();
@@ -166,81 +149,136 @@ const StartScreen = ({ socket }) => {
     <div className="start-screen">
       {page === 1 && (
         <>
-          <h1>
-            人生ゲーム{" "}
-            <span className="text-black">〜オンラインでみんなで遊ぼう〜</span>
-          </h1>
-          <p className="surprise">毎日がサプライズ！</p>
-          <p className="story">あなたの人生ストーリーを描こう！</p>
-          <button onClick={handleStartClick}>今すぐ開始！</button>{" "}
-          {/* handleStartClickを使用 */}
+          <div className="parent">
+            <div className="header-class">
+              <div className="App-logo">
+                <img src={groupImage} alt="ロゴ" className="App-logo-2" />
+
+                <span className="title">人生ゲーム</span>
+                <span className="text-black">
+                  〜オンラインでみんなで遊ぼう〜
+                </span>
+              </div>
+            </div>
+            <div className="container">
+              <p className="surprise">毎日がサプライズ！</p>
+              <p className="story">あなたの人生ストーリーを描こう！</p>
+              <button onClick={handleStartClick} className="click-button-7">
+                今すぐ無料で遊ぶ
+              </button>
+            </div>
+          </div>
         </>
       )}
       {page === 2 && (
         <>
-          <h1>
-            人生ゲーム <span>〜オンラインでみんなで遊ぼう〜</span>
-          </h1>
-          <p className="surprise">ニックネームを入力してください</p>
-          <div className="nickname-form">
-            <form onSubmit={handleNicknameSubmit}>
-              <input
-                type="text"
-                placeholder="ニックネーム"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-                required
-              />
-              {error && <p className="error-message">{error}</p>}
-              <button type="submit">参加</button>
-            </form>
+          <div className="parent">
+            <div className="header-class">
+              <div className="App-logo">
+                <img src={groupImage} alt="ロゴ" className="App-logo-2" />
+                <span className="title">人生ゲーム</span>
+                <span className="text-black">
+                  〜オンラインでみんなで遊ぼう〜
+                </span>
+              </div>
+            </div>
+            <div className="container">
+              <p className="surprise">ニックネームを入力してください</p>
+              <div className="nickname-form">
+                <form onSubmit={handleNicknameSubmit}>
+                  <input
+                    type="text"
+                    placeholder="ニックネーム"
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
+                    className="nickname"
+                  />
+                  <div className={`error-container ${error ? "active" : ""}`}>
+                    {error}
+                  </div>
+                  <button type="submit" className="click-button-6">
+                    参加
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </>
       )}
 
       {page === 3 && (
         <>
-          <h1>
-            人生ゲーム{" "}
-            <span className="nickname">{`こんにちは、${nickname}さん`}</span>
-          </h1>
-          <p>
-            このページはゲームを進める管理者専用です。<br></br>
-            参加者に「参加者用URL」を共有してください。<br></br>
-            参加者が全員参加してから開始ボタンを押してください。
-          </p>
-          <div className="header">
-            <span className="participant-count">
-              {`参加者用URLにアクセスしている人数: ${participantCount}人`}
-              <button onClick={handleShowParticipants}>参加者一覧</button>
-              <button onClick={handleGameStart}>開始</button>
-            </span>
-          </div>
-          <div className="participant-url">
-            参加者用URL
-            <span>{participantUrl}</span>
-            <button onClick={copyToClipboard}>コピー</button>
-          </div>
-          {/* 参加者一覧モーダル */}
-          {participantModal && (
-            <div
-              id="modal-backdrop"
-              className="modal-backdrop"
-              onClick={handleModalOutsideClick}
-            >
-              <div className="modal-content">
-                <button className="close-button" onClick={handleCloseModal}>
-                  ✖︎
-                </button>
-                <h2>参加者一覧</h2>
-                <ul>
-                  {participants.map((participant) => (
-                    <li key={participant.id}>{participant.name}</li>
-                  ))}
-                </ul>
+          <div className="parent">
+            <div className="header-class">
+              <div className="App-logo">
+                <img src={groupImage} alt="ロゴ" className="App-logo-2" />
+                <span className="title">人生ゲーム</span>
+                <span className="text-black">
+                  〜オンラインでみんなで遊ぼう〜
+                </span>
               </div>
             </div>
-          )}
+            <div className="container">
+              <p className="setsumei">
+                このページはゲームを進める管理者専用です。<br></br>
+                参加者に「参加者用URL」を共有してください。<br></br>
+                参加者が全員参加してから開始ボタンを押してください。
+              </p>
+              <div className="header-2">
+                <div className="participant-count">
+                  <div className="setumei-parent">
+                    <span className="count-people">{` ${participantCount}人`}</span>
+                    <span className="setsumei-2">
+                      「参加者用URL」に参加している人数
+                    </span>
+                  </div>
+
+                  <div className="button-twins">
+                    <button
+                      onClick={handleShowParticipants}
+                      className="click-button-3"
+                    >
+                      参加者一覧
+                    </button>
+                    <button
+                      onClick={handleGameStart}
+                      className="click-button-4"
+                    >
+                      開始
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="participant-url">
+                <span className="participant-url-2"> 参加者用URL</span>
+
+                <span className="participant-url-3">{participantUrl}</span>
+                <button onClick={copyToClipboard} className="click-button-5">
+                  コピー
+                </button>
+              </div>
+              {/* 参加者一覧モーダル */}
+              {participantModal && (
+                <div
+                  id="modal-backdrop"
+                  className="modal-backdrop"
+                  onClick={handleModalOutsideClick}
+                >
+                  <div>
+                    <button className="close-button" onClick={handleCloseModal}>
+                      ✖︎
+                    </button>
+                    <span className="title-4">参加者一覧</span>
+                    <ul className="list">
+                      {participants.map((participant) => (
+                        <li key={participant.id}>{participant.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </>
       )}
     </div>

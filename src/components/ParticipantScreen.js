@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // UUIDを生成するためにimportします
 import "./ParticipantScreen.css";
+import groupImage from "./image/g13.png";
 
 const ParticipantScreen = () => {
   const { token } = useParams();
@@ -36,25 +37,52 @@ const ParticipantScreen = () => {
   };
 
   return (
-    <div className="participant-screen">
-      <h1>人生ゲーム 〜オンラインでみんなで遊ぼう〜</h1>
-      <p>ニックネームを入力してください</p>
-      <input
-        type="text"
-        placeholder="ニックネーム"
-        value={nickname}
-        onChange={handleNicknameChange}
-      />
-      {error && <p className="error-message">{error}</p>}
-      <button onClick={handleJoin}>参加</button>
-      {showModal && (
-        <div className="modal-backdrop">
-          <div className="modal-content">
-            <p>参加ありがとうございます。</p>
-            <p>開始までこの画面でお待ちください</p>
+    <div className="start-screen">
+      <>
+        <div className="parent">
+          <div className="header-class">
+            <div className="App-logo">
+              <img src={groupImage} alt="ロゴ" className="App-logo-2" />
+              <span className="title">人生ゲーム</span>
+              <span className="text-black">〜オンラインでみんなで遊ぼう〜</span>
+            </div>
+          </div>
+          <div className="container">
+            <p className="surprise">ニックネームを入力してください</p>
+            <div className="nickname-form">
+              <input
+                type="text"
+                placeholder="ニックネーム"
+                value={nickname}
+                onChange={handleNicknameChange}
+                required
+                className="nickname"
+              />
+            </div>
+
+            <div className={`error-container ${error ? "active" : ""}`}>
+              {error}
+            </div>
+
+            <div className="button-container">
+              <button onClick={handleJoin} className="click-button">
+                参加
+              </button>
+            </div>
+            {showModal && (
+              <div className="modal-backdrop" onClick={handleCloseModal}>
+                <div className="modal-content">
+                  <button className="close-button" onClick={handleCloseModal}>
+                    ✖︎
+                  </button>
+                  <h2 className="setsumei-5">参加ありがとうございます。</h2>
+                  <p className="setsumei-5">開始までこの画面でお待ちください</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      )}
+      </>
     </div>
   );
 };

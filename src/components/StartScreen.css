@@ -1,23 +1,178 @@
 /* StartScreen.css */
+
 .start-screen {
   text-align: center;
-  padding: 50px; /* 余白を調整 */
   background-color: #ffeff9;
-  color: #333; /* テキストの基本色をダークグレーに */
-  margin: 20px; /* 余白を追加 */
+  color: #595357;
+  display: flex;
+  justify-content: center;
+  height: 100vh; /* ビューポートの高さ */
 }
 
-.start-screen h1 {
-  color: #fff; /* タイトルの色を変更 */
-  margin-bottom: 30px; /* タイトルの下の余白 */
-  background-color: #ff90bc; /* 背景色をピンク系に */
-  border: 5px solid #ffffff; /* 枠の色と太さを調整 */
-  border-radius: 15px; /* 枠の角を丸める */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ソフトな影を追加 */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.start-screen h1 span {
-  font-size: 1em; /* サブタイトルのフォントサイズを小さく */
+.parent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  min-height: 100vh; /* 最小のビューポートの高さ */
+}
+
+.header-class {
+  width: 100%;
+  height: 56px;
+  background-color: #ff90bc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.App-logo {
+  margin-right: auto;
+  display: flex; /* 画像を左に寄せ、右側に余白を作る */
+  align-items: center;
+}
+
+.title {
+  color: #fff;
+  font-weight: bold;
+  font-size: 28px;
+}
+
+.title-9 {
+  color: #fff;
+  font-weight: bold;
+  font-size: 28px;
+  display: flex;
+}
+
+.surprise {
+  color: #595357; /* テキストの色を変更 */
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 36px;
+}
+
+.story {
+  color: #595357; /* テキストの色を変更 */
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.click-button {
+  background-color: #ff90bc;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 16px 24px;
+  margin-top: 12px;
+  border-radius: 20px;
+}
+.click-button-3 {
+  background-color: #ff90bc;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 16px 24px;
+  margin-top: 24px;
+  border-radius: 20px;
+  margin-left: 60px;
+  margin-bottom: 12px;
+}
+.click-button-4 {
+  background-color: #ff90bc;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 16px 24px;
+  margin-top: 24px;
+  border-radius: 20px;
+  margin-right: 60px;
+  margin-bottom: 12px;
+}
+
+.click-button-6 {
+  background-color: #ff90bc;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 16px 24px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  width: 80%;
+  margin: auto;
+  margin-top: 0px;
+}
+.click-button-5 {
+  background-color: #ff90bc;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 16px 24px;
+  border-radius: 20px;
+}
+.click-button-7 {
+  background-color: #ff90bc;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 16px 24px;
+  border-radius: 20px;
+  margin-top: 24px;
+}
+
+.button-twins {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text-black {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
+  margin-left: 12px;
+  max-width: 100%;
+}
+
+.nickname-form form {
+  display: flex;
+  flex-direction: column; /* 要素を縦方向に並べる */
+}
+
+.nickname-form {
+  margin: 0 auto;
+}
+
+.nickname {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  color: #595357;
+  background-color: #bfb3bb;
+  height: 28px;
+  border-radius: 20px;
+  padding: 12px;
+}
+
+.nickname-form .nickname {
+  width: 100%;
+}
+
+.nickname-form .click-button {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 24px;
+}
+
+.setsumei {
+  font-size: 14px;
+  color: #595357;
+  margin-top: 36px;
+  font-weight: bold;
 }
 
 .start-screen .nickname-form {
@@ -26,242 +181,199 @@
   align-items: center;
 }
 
-.start-screen input {
-  margin-bottom: 10px; /* エラーメッセージのスペースを確保 */
-  /* ... その他のスタイリング ... */
-}
-
 .error-message {
   color: red;
   font-weight: bold;
 }
 
-.surprise,
-.story {
-  color: #2e2d2e; /* テキストの色を変更 */
-
-  font-weight: bold;
-}
-
-.start-screen button {
-  background-color: #ff90bc; /* ボタンの背景色を変更 */
-  color: white; /* ボタンのテキスト色を白に */
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 2em;
-  font-weight: bold;
-  margin-top: 20px; /* ボタンの上の余白 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* ボタンの影を追加 */
-}
-
-.start-screen button:hover {
-  background-color: #e75f9a; /* ホバー時のボタンの背景色を変更 */
-}
+/* .start-screen button:hover {
+  background-color: #e75f9a;
+} */
 /* 既存のスタイルの下に追加します */
 
 /* 参加者一覧ボタンのスタイル */
-.start-screen .header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  color: #333;
+
+.count-people {
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #595357;
 }
 
-.start-screen .header .nickname,
-.start-screen .header .participant-count {
-  background-color: #ff90bc;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.header-2 {
+  background-color: #bfb3bb;
+  max-width: 500px;
+  margin-top: 24px;
+  border-radius: 20px;
+  margin: 24px auto;
+}
+
+.setsumei-2 {
   font-weight: bold;
+  color: #595357;
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+.setumei-parent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 /* 参加者URLセクションのスタイル */
-.start-screen .participant-url {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
+
+.participant-url {
+  font-weight: bold;
+  color: #595357;
 }
 
-.start-screen .participant-url span {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
+.participant-url-2 {
+  font-size: 14px;
+}
+
+.participant-url-3 {
+  background-color: #bfb3bb;
   padding: 10px;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-/* コピー用ボタンのスタイル */
-.start-screen .participant-url button {
-  background-color: #ff90bc; /* ボタンの背景色 */
-  color: white; /* ボタンのテキスト色 */
-  padding: 10px 20px;
-  border: none;
   border-radius: 20px;
-  cursor: pointer;
-  font-size: 1em;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-bottom: 20px;
 }
 
-.start-screen .participant-url button:hover {
+/* .start-screen .participant-url button:hover {
   background-color: #e75f9a; /* ホバー時の色を濃いピンクに変更 */
-}
+/* } */
+*/
 
 /* モーダルウィンドウのスタイル */
 .modal {
   position: fixed;
+  background-color: #ffffff;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
   padding: 20px;
   border-radius: 15px;
-  border: 5px solid #ff90bc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* 確実に他の要素より上に表示 */
-  display: none; /* デフォルトでは非表示 */
+  z-index: 1000;
+  display: none;
 }
 
-/* モーダル表示時の背景 */
-.modal-show {
-  display: block;
-}
-
-/* モーダル閉じるボタンのスタイル */
-.modal button {
-  background-color: #ff90bc;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 1em;
-  margin-top: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.modal button:hover {
-  background-color: #e75f9a;
-}
-/* 既存のスタイルの下に追加します */
-
-/* 参加者一覧ボタンのスタイル */
-.start-screen .header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.start-screen .header .nickname,
-.start-screen .header .participant-count {
-  background-color: #ff90bc;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.title-4 {
   font-weight: bold;
+  color: #000;
+  font-size: 20px;
 }
 
-/* 参加者URLセクションのスタイル */
-.start-screen .participant-url {
+.close-button {
+  color: #595357;
+}
+
+#modal-backdrop {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
-}
-
-.start-screen .participant-url span {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-/* コピー用ボタンのスタイル */
-.start-screen .participant-url button {
-  background-color: #ff90bc; /* ボタンの背景色 */
-  color: white; /* ボタンのテキスト色 */
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 1em;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.start-screen .participant-url button:hover {
-  background-color: #e75f9a; /* ホバー時の色を濃いピンクに変更 */
-}
-
-/* モーダルウィンドウのスタイル */
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 15px;
-  border: 5px solid #ff90bc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* 確実に他の要素より上に表示 */
-  display: none; /* デフォルトでは非表示 */
-}
-
-/* モーダル表示時の背景 */
-.modal-show {
-  display: block;
-}
-
-/* モーダル閉じるボタンのスタイル */
-.modal button {
-  background-color: #ff90bc;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 1em;
-  margin-top: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.modal button:hover {
-  background-color: #e75f9a;
-}
-.modal-backdrop {
-  position: fixed;
+  position: fixed; /* 画面全体に固定 */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
 }
 
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 15px;
+#modal-backdrop > div {
+  background-color: #bfb3bb; /* 背景色 */
+  padding: 20px; /* 内側の余白 */
+  border-radius: 20px; /* 角の丸み */
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);  */
+  width: 60%; /* 幅 */
+  max-width: 500px; /* 最大幅 */
+  height: auto; /* 高さは内容によって決まる */
+  color: #000;
+  font-weight: bold;
   position: relative;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list {
+  margin-top: 12px;
+}
+
+.close-button {
+  position: absolute; /* 絶対位置指定 */
+  top: 10px; /* 上端からの距離 */
+  right: 10px; /* 右端からの距離 */
+  border: none; /* ボーダーなし */
+  background: none; /* 背景なし */
+  font-size: 24px; /* アイコンのサイズ */
+  cursor: pointer; /* カーソルをポインターに */
+}
+
+.close-button:focus,
+.close-button:hover {
+  background-color: #595357; /* ボタンの背景色を白に設定 */
+  color: black; /* 必要に応じてボタンのテキスト色を設定 */
+  /* その他の必要なスタイル */
+}
+
+.close-button:focus {
+  outline: none;
+  border-radius: 50%; /* ボタンの形状を円形に */
+}
+
+.error-container {
+  height: 20px; /* エラーメッセージのための高さを確保 */
+  margin: 5px 0; /* 上下のマージン */
+  color: transparent; /* デフォルトでは透明 */
+}
+
+.error-container.active {
+  color: red; /* エラーがある場合は赤色に */
 }
 
 .close-button {
   position: absolute;
   top: 10px;
   right: 10px;
+  width: 30px;
+  height: 30px;
   border: none;
   background: none;
   font-size: 24px;
   cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.close-button:focus {
+  outline: none; /* デフォルトのアウトラインを削除 */
+  box-shadow: 0 0 0 3px rgba(89, 83, 87, 0.5); /* 円形のシャドウを追加 */
+}
+
+.close-button:hover {
+  background-color: #595357; /* ホバー時の背景色 */
+  color: white; /* ホバー時のテキスト色 */
+}
+
+.click-button-10 {
+  background-color: #ff90bc;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-align: right;
+  display: block;
+  border: 2px solid #ffffff;
+  margin-left: auto;
+  margin-right: 2px;
+}
+
+.click-button-10:hover {
+  /* フォーカス時のスタイル */
+  background-color: #000; /* 背景色を変更 */
+  border-color: #ff77a9; /* ボーダー色を変更 */
+  outline: none; /* デフォルトのアウトラインを除去 */
 }
