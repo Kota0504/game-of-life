@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./GameBoard.css";
 import Player from "./Player";
-import GameBoardModal from "./GameBoardModal";
 import { useNavigate } from "react-router-dom";
 
 const GameBoard = () => {
@@ -225,17 +224,6 @@ const GameBoard = () => {
           </div>
         </div>
       </div>
-      {isModalVisible && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <GameBoardModal
-              playerName={modalContent.playerName}
-              message={modalContent.message}
-              onClose={handleModalClose}
-            />
-          </div>
-        </div>
-      )}
     </>
   );
 };
