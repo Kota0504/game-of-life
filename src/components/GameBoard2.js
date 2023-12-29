@@ -137,23 +137,22 @@ const GameBoard2 = () => {
   // 次のプレイヤーのターンへ
   useEffect(() => {
     if (rouletteNumber !== null && !isModalVisible) {
-      // プレイヤーの位置を更新する処理
-      setPlayers((prevPlayers) =>
-        prevPlayers.map((player, index) => {
-          if (index === currentTurn) {
-            let newPosition = player.position + rouletteNumber;
-            if (newPosition >= boardSize) {
-              newPosition -= boardSize;
-            }
-            return { ...player, position: newPosition };
-          } else {
-            return player;
+      let updatedPlayers = players.map((player, index) => {
+        if (index === currentTurn) {
+          let newPosition = player.position + rouletteNumber;
+          if (newPosition >= boardSize) {
+            newPosition -= boardSize;
           }
-        })
-      );
+          const updatedPlayer = { ...player, position: newPosition };
+          handleSquareEvent(updatedPlayer);
+          return updatedPlayer;
+        } else {
+          return player;
+        }
+      });
 
-      // ルーレットの番号をリセット
-      setRouletteNumber(null);
+      setPlayers(updatedPlayers);
+      setRouletteNumber(null); // ルーレット番号リセット
 
       // 一定時間後に次のターンへ
       setTimeout(() => {
@@ -193,6 +192,45 @@ const GameBoard2 = () => {
     },
   };
 
+  // マスごとのイベント処理
+  const handleSquareEvent = (player, color) => {
+    let message = "";
+    let updatedPlayers = players.map((p) => {
+      if (p.id === player.id) {
+        let updatedMoney = p.money; // プレイヤーの所持金を一時変数に格納
+
+        switch (color) {
+          case "blue":
+            updatedMoney += 10000; // 更新された所持金
+            message = "10000円獲得しました";
+            break;
+          case "pink":
+            updatedMoney -= 5000; // 更新された所持金
+            message = "5000円失いました";
+            break;
+          case "yellow":
+            // イベント発生時の処理
+            message = "イベント発生！";
+            break;
+          default:
+            message = "何も起こりませんでした";
+        }
+
+        return { ...p, money: updatedMoney }; // 新しいプレイヤーオブジェクトを返す
+      } else {
+        return p; // 他のプレイヤーはそのまま返す
+      }
+    });
+
+    // プレイヤー情報とモーダルのメッセージを更新
+    setPlayers(updatedPlayers);
+    setModalContent({
+      playerName: player.name,
+      message: message,
+    });
+    setIsModalVisible(true);
+  };
+
   return (
     <>
       {/* スタートモーダル */}
@@ -222,7 +260,15 @@ const GameBoard2 = () => {
         </Modal>
       )}
       {/* // OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
-      <OshiTable players={players} />
+      <OshiTable players={players} handleSquareEvent={handleSquareEvent} />
+      {/* ステータスを一時的に表示させるためのコンポーネント */}
+      <div className="player-status-section">
+        {players.map((player, index) => (
+          <div key={player.id} className="player-status">
+            <Player {...player} />
+          </div>
+        ))}
+      </div>
     </>
   );
 };
