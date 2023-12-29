@@ -26,20 +26,6 @@ const OshiTable = ({ players, handleSquareEvent }) => {
     // 例: 親コンポーネントから受け取った最新のプレイヤー情報に基づいて表示を更新
   }, [players]);
 
-  // マス目の色を基にイベントを実行する関数
-  const handleSquareLanding = (player) => {
-    // player.position からマス目の要素を取得
-    const squareElement = document.getElementById(player.position.toString());
-    if (!squareElement) return; // マス目が存在しなければ何もしない
-
-    // classNameから色を抽出する
-    const colorClass = squareElement.className.match(/bg-[a-z]+-200/);
-    if (!colorClass) return; // 色のクラスが見つからなければ何もしない
-    const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
-
-    handleSquareEvent(player, color); // 親コンポーネントのイベントハンドラを呼び出し
-  };
-
   return (
     //返す処理を記述する
     <>
@@ -413,7 +399,6 @@ const OshiTable = ({ players, handleSquareEvent }) => {
               {renderPlayersAtSquare(7)}
             </div>
           </div>
-          {/* // マス目のループを作成 */}
         </div>
       </div>
     </>
