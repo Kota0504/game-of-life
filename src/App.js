@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./tailwind.css";
 import GameUI from "./components/GameUI";
 import Roulette from "./components/Roulette";
-import GameBoard from "./components/GameBoard";
 import StartScreen from "./components/StartScreen";
-import ParticipantScreen from "./components/ParticipantScreen";
+// import ParticipantScreen from "./components/ParticipantScreen";
 import OshiTable from "./components/OshiTable";
 import GameBoard2 from "./components/GameBoard2";
+import Modal from "react-modal";
 
 // 他の必要なインポート...
 
@@ -31,17 +31,10 @@ function App() {
   // ルーレットの結果を管理
   const [rouletteNumber, setRouletteNumber] = useState(null);
 
-  // プレイヤーの位置を更新する関数;
-  const updatePlayerPosition = (playerId, newPosition) => {
-    setPlayers((currentPlayers) => {
-      return currentPlayers.map((player) => {
-        if (player.id === playerId) {
-          return { ...player, position: newPosition };
-        }
-        return player;
-      });
-    });
-  };
+  // アプリケーションのルート要素をModalに設定する
+  useEffect(() => {
+    Modal.setAppElement("#root"); // ここでルート要素のIDを設定します
+  }, []);
 
   return (
     <Router>

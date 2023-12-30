@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 
-const OshiTable = ({ players, handleSquareEvent }) => {
+const OshiTable = ({ players, onPlayerLanding }) => {
   const navigate = useNavigate();
 
   const handleCloseModal = () => {
@@ -11,23 +11,26 @@ const OshiTable = ({ players, handleSquareEvent }) => {
 
   // 各プレイヤーのアイコンをレンダリングする関数
   const renderPlayersAtSquare = (squareId) => {
-    return players
-      .filter((player) => player.position === squareId)
-      .map((player, index) => (
-        <div key={player.id} className={`player player-${index + 1}`}>
-          <span>{player.name}</span>
-        </div>
-      ));
+    const playersAtSquare = players.filter(
+      (player) => player.position === squareId
+    );
+    playersAtSquare.forEach((player) => onPlayerLanding(player.id));
+    return playersAtSquare.map((player, index) => (
+      <div key={player.id} className={`player player-${index + 1}`}>
+        <span>{player.name}</span>
+      </div>
+    ));
   };
 
-  // プレイヤーの位置情報を更新するための useEffect
-  useEffect(() => {
-    // プレイヤーの位置情報を更新するロジックがここに必要
-    // 例: 親コンポーネントから受け取った最新のプレイヤー情報に基づいて表示を更新
-  }, [players]);
+  // // プレイヤーの位置情報を更新するための useEffect
+  // useEffect(() => {
+  //   // プレイヤーの位置情報を更新するロジックがここに必要
+  //   // 例: 親コンポーネントから受け取った最新のプレイヤー情報に基づいて表示を更新
+  // }, [players]);
 
   return (
     //返す処理を記述する
+
     <>
       <div className="header-class-8">
         <div className="App-logo-8">
@@ -48,7 +51,7 @@ const OshiTable = ({ players, handleSquareEvent }) => {
           終了
         </button>
       </div>
-      <div class="board">
+      <div className="board">
         <div className="column">
           <div
             className="h-screen grid grid-cols-16 grid-rows-10 gap-1"
@@ -336,13 +339,13 @@ const OshiTable = ({ players, handleSquareEvent }) => {
               <span>家買う</span>
             </div>
             <div className=""></div>
-            <div className="bg-pink-200" id="75">
+            <div className="bg-green-200" id="75">
               {renderPlayersAtSquare(75)}
               <span>ゴール</span>
             </div>
             <div className=""></div>
             <div className=""></div>
-            <div className="bg-blue-200" id="0">
+            <div className="bg-green-200" id="0">
               {renderPlayersAtSquare(0)}
               <span>スタート</span>
             </div>
