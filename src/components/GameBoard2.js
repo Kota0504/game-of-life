@@ -112,8 +112,6 @@ const GameBoard2 = () => {
     setModalContent({
       message: ` ${rouletteValue} マス進みやがれ`,
     });
-
-    setShowRouletteModal(false); // ルーレットモーダルを閉じる
     setIsModalVisible(true); // 結果モーダルを表示
 
     // 一定時間後に結果モーダルを閉じて次のプレイヤーのターンに進む
@@ -180,22 +178,6 @@ const GameBoard2 = () => {
     },
   };
 
-  //----------マス目の色を基にイベントを実行する関数 必要だが未実装----------
-  const handleSquareLanding = (playerId) => {
-    const player = players.find((p) => p.id === playerId);
-    if (!player) return; // プレイヤーが見つからなければ何もしない
-
-    const squareElement = document.getElementById(player.position.toString());
-    if (!squareElement) return; // マス目が存在しなければ何もしない
-
-    // classNameから色を抽出する
-    const colorClass = squareElement.className.match(/bg-[a-z]+-200/);
-    if (!colorClass) return; // 色のクラスが見つからなければ何もしない
-    const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
-
-    handleSquareEvent(player, color); // 親コンポーネントのイベントハンドラを呼び出し
-  };
-
   //----------マスごとのイベント処理 必要だが未実装----------
   const handleSquareEvent = (player, color) => {
     let message = "";
@@ -226,13 +208,61 @@ const GameBoard2 = () => {
       }
     });
 
-    // プレイヤー情報とモーダルのメッセージを更新
-    setPlayers(updatedPlayers);
-    setModalContent({
-      playerName: player.name,
-      message: message,
-    });
-    setIsModalVisible(true);
+    const handleSquareEvent = (player, color) => {
+      let message = "";
+      let updatedPlayers = players.map((p) => {
+        if (p.id === player.id) {
+          let updatedMoney = p.money;
+          switch (color) {
+            case "blue":
+              updatedMoney += 10000;
+              message = "10000円獲得しました";
+              break;
+            case "pink":
+              updatedMoney -= 5000;
+              message = "5000円失いました";
+              break;
+            case "yellow":
+              // イベント発生時の処理
+              message = "イベント発生！";
+              break;
+            default:
+              message = "何も起こりませんでした";
+          }
+
+          return { ...p, money: updatedMoney };
+        } else {
+          return p;
+        }
+      });
+      setPlayers(updatedPlayers); // ここで状態を更新
+      setModalContent({ playerName: player.name, message: message });
+      setIsModalVisible(true);
+    };
+
+    //---------- プレイヤー情報とモーダルのメッセージを更新----------
+    if (player.position !== 0) {
+      setModalContent({
+        playerName: player.name,
+        message: message,
+      });
+      setIsModalVisible(true);
+    }
+  };
+  //----------マス目の色を基にイベントを実行する関数 必要----------
+  const handleSquareLanding = (playerId) => {
+    const player = players.find((p) => p.id === playerId);
+    if (!player) return; // プレイヤーが見つからなければ何もしない
+
+    const squareElement = document.getElementById(player.position.toString());
+    if (!squareElement) return; // マス目が存在しなければ何もしない
+
+    // classNameから色を抽出する
+    const colorClass = squareElement.className.match(/bg-[a-z]+-200/);
+    if (!colorClass) return; // 色のクラスが見つからなければ何もしない
+    const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
+
+    handleSquareEvent(player, color); // 親コンポーネントのイベントハンドラを呼び出し
   };
 
   return (
@@ -255,13 +285,6 @@ const GameBoard2 = () => {
         <div className="roulette-container">
           <Roulette onStopSpinning={handleRouletteResult} />
         </div>
-      )}
-      {/* // マスごとのイベントに対してのモーダル */}
-      {isModalVisible && (
-        <Modal isOpen={isModalVisible} style={customStyles}>
-          <h2>{modalContent.playerName}</h2>
-          <p>{modalContent.message}</p>
-        </Modal>
       )}
       {/* // OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
       <OshiTable players={players} onPlayerLanding={handleSquareLanding} />
