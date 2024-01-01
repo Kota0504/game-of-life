@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Player from './Player';
 import './Dialog.css';
 
-const Daialog_Result = () => {
+const Dialog_Result = () => {
   const [isDialogOpen, setDialogOpen] = useState(true);
 
   // const openDialog = () => {
@@ -34,4 +34,4 @@ const Daialog_Result = () => {
   );
 };
 
-export default Daialog_Result;
+export default Dialog_Result;

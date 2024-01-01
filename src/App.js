@@ -8,6 +8,9 @@ import StartScreen from "./components/StartScreen";
 import ParticipantScreen from "./components/ParticipantScreen";
 import OshiTable from "./components/OshiTable";
 import GameBoard2 from "./components/GameBoard2";
+import Dialog_AllGoal from "./components/Dialog_AllGoal"; // Dialogコンポーネントのインポート
+import Dialog_EachGoal from "./components/Dialog_EachGoal"; // Dialogコンポーネントのインポート
+import "./App.css";
 
 // 他の必要なインポート...
 
@@ -43,6 +46,8 @@ function App() {
     });
   };
 
+  const lastPlayerisfinished = players.every((player) => player.isfinished);
+
   return (
     <Router>
       <Routes>
@@ -65,6 +70,15 @@ function App() {
         />
         {/* 他のルートを必要に応じて追加 */}
         <Route path="/oshitable" element={<OshiTable />} />
+
+        <Route
+        //  {/* Goal時のダイアログ表示 */}
+        // <div className="App">
+        path="/dialog-goal"
+        element={lastPlayerisfinished ? <Dialog_AllGoal /> : <Dialog_EachGoal />}
+        // </div> 
+        />
+
       </Routes>
     </Router>
   );
