@@ -3,7 +3,8 @@ export const handleSquareEvent = (
   player,
   color,
   setPlayers,
-  modalManagerRef
+  modalManagerRef,
+  advanceTurn
 ) => {
   let message = "";
   let updatedPlayers = players.map((p) => {
@@ -40,7 +41,7 @@ export const handleSquareEvent = (
 
   setPlayers(updatedPlayers);
   modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
-  // setTimeout(() => advanceTurn(), 3000); // 次のターンに進むためのタイマー
+  setTimeout(() => advanceTurn(), 3000); // 次のターンに進むためのタイマー
 };
 
 export const handleSquareLanding = (
@@ -49,6 +50,11 @@ export const handleSquareLanding = (
   setPlayers,
   modalManagerRef
 ) => {
+  // playersが配列であることを確認する。
+  if (!Array.isArray(players)) {
+    console.error("Error: players should be an array", players);
+    return; // playersが配列でなければ、エラーメッセージを出力して早期に関数から抜ける。
+  }
   const player = players.find((p) => p.id === playerId);
   if (!player) return; // プレイヤーが見つからなければ何もしない
 
