@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./GameBoard.css";
 import Player from "./Player";
 import OshiTable from "./OshiTable";
 import Roulette from "./Roulette";
 import Modal from "react-modal";
+import ModalManager from "./ModalManager";
+import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
@@ -46,125 +48,100 @@ const GameBoard2 = () => {
   const [players, setPlayers] = useState(initialPlayers);
   const [showStartModal, setShowStartModal] = useState(true);
   const [currentTurn, setCurrentTurn] = useState(0);
-  const [showTurnModal, setShowTurnModal] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [showRouletteModal, setShowRouletteModal] = useState(false);
   const [rouletteNumber, setRouletteNumber] = useState(null);
-  const [modalContent, setModalContent] = useState({
-    playerName: "",
-    message: "",
-  });
+  const [modalContent, setModalContent] = useState("");
 
-  //----------プレイヤーを そのお金に基づいてソートする、ソートされたお金に基づいてランクを割り当てる（降順) 未実装----------
-  const calculatePlayerRanks = (players) => {
-    const sortedPlayers = [...players].sort((a, b) => b.money - a.money);
-    const rankedPlayers = sortedPlayers.map((player, index) => ({
-      ...player,
-      rank: index + 1,
-    }));
+  const modalManagerRef = useRef();
 
-    return rankedPlayers;
+  useEffect(() => {
+    if (!modalManagerRef.current) {
+      modalManagerRef.current = new ModalManager((visible, message) => {
+        setIsModalVisible(visible);
+        setModalContent(message);
+      });
+    }
+  }, []); // ModalManagerのインスタンス初期化用のEffect
+
+  useEffect(() => {
+    // ゲーム開始時に一度だけモーダルを表示
+    if (showStartModal) {
+      modalManagerRef.current.queueModal("ゲームスタート!", 3000);
+      const timer = setTimeout(() => {
+        setShowStartModal(false); // 一度だけモーダルが表示されるようにします。
+        nextTurn(); // 次のターンへ
+      }, 3000);
+
+      // タイマーをクリーンアップする
+      return () => clearTimeout(timer);
+    }
+  }, [showStartModal]); // useEffectをshowStartModalが変わるたびに実行する
+
+  const boardSize = 76; // 仮にボードのマスが30だとする
+  // マスの位置から色を取得する関数
+  const getSquareColor = (position) => {
+    // プレイヤーの位置に対応するIDを持つマスの要素を探す
+    const squareElement = document.getElementById(position.toString());
+    if (!squareElement) return null; // 要素が見つからなければnullを返す
+
+    // マスのクラス名から色を抽出する
+    const color = extractColorFromClassname(squareElement.className);
+    return color;
   };
 
-  //----------画面ロード時にスタートモーダルを表示し、ゲームを進行させる 必要----------
-  useEffect(() => {
-    const startGameTimer = setTimeout(() => {
-      setShowStartModal(false);
-      nextTurn(); // 初回のプレイヤーターンを開始
-    }, 3000);
+  // クラス名文字列から色を抽出するヘルパー関数
+  const extractColorFromClassname = (classname) => {
+    const colorPattern = /bg-([a-z]+)-200/; // この正規表現はクラス名で使われている色のフォーマットにマッチする
+    const match = classname.match(colorPattern);
+    return match ? match[1] : null; // 色に該当する部分を返す、またはマッチしない場合はnullを返す
+  };
 
-    return () => clearTimeout(startGameTimer);
-  }, []);
+  //----------プレイヤーを そのお金に基づいてソートする、ソートされたお金に基づいてランクを割り当てる（降順) 未実装----------
+  // const calculatePlayerRanks = (players) => {
+  //   const sortedPlayers = [...players].sort((a, b) => b.money - a.money);
+  //   const rankedPlayers = sortedPlayers.map((player, index) => ({
+  //     ...player,
+  //     rank: index + 1,
+  //   }));
+
+  //   return rankedPlayers;
+  // };
 
   //----------プレイヤーのターンを処理する関数 必要----------
   const nextTurn = () => {
-    setModalContent({
-      message: `${players[currentTurn].name}のターン！`,
-    });
-    setShowTurnModal(true);
-
-    // 2秒後にルーレットモーダルを表示し、ターンモーダルを非表示にする 必要
-    setTimeout(() => {
-      setShowTurnModal(false);
-      setShowRouletteModal(true);
-    }, 2000);
+    modalManagerRef.current.queueModal(
+      `${players[currentTurn].name}のターン！`,
+      2000
+    );
   };
-  //----------モーダルを閉じる関数 必要----------
-  useEffect(() => {
-    let timer;
-    if (isModalVisible) {
-      // モーダルが表示された後2秒で自動的に閉じるタイマーを設定
-      timer = setTimeout(() => {
-        setIsModalVisible(false);
-      }, 2000);
-    }
-
-    // コンポーネントがアンマウントされたとき、またはモーダルが手動で2秒前に閉じられたときにタイマーをクリアする
-    return () => clearTimeout(timer);
-  }, [isModalVisible]);
-
-  //---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 必要---------------------
-  const boardSize = 76; // 仮にボードのマスが30だとする
-  const handleRouletteResult = (result) => {
-    const rouletteValue = parseInt(result, 10) + 1; // ルーレットの結果を数値として処理
-    setRouletteNumber(rouletteValue); // 状態にルーレットの結果を保存
-    // 結果モーダルの表示内容を更新
-    setModalContent({
-      message: ` ${rouletteValue} マス進みやがれ`,
-    });
-
-    setShowRouletteModal(false); // ルーレットモーダルを閉じる
-    setIsModalVisible(true); // 結果モーダルを表示
-
-    // 一定時間後に結果モーダルを閉じて次のプレイヤーのターンに進む
-    setTimeout(() => {
-      setIsModalVisible(false); // 結果モーダルを閉じる
-    }, 2000);
-  };
-
-  //----------次のプレイヤーのターンへ 必要-------------------------
-  useEffect(() => {
-    if (rouletteNumber !== null && !isModalVisible) {
-      let updatedPlayers = players.map((player, index) => {
-        if (index === currentTurn) {
-          let newPosition = player.position + rouletteNumber;
-          if (newPosition >= boardSize) {
-            newPosition -= boardSize;
-          }
-          const updatedPlayer = { ...player, position: newPosition };
-          handleSquareEvent(updatedPlayer);
-          return updatedPlayer;
-        } else {
-          return player;
-        }
-      });
-
-      setPlayers(updatedPlayers);
-      setRouletteNumber(null); // ルーレット番号リセット
-
-      // 一定時間後に次のターンへ
-      setTimeout(() => {
-        advanceTurn();
-      }, 2000);
-    }
-  }, [rouletteNumber, isModalVisible, currentTurn, setPlayers, boardSize]);
 
   const advanceTurn = () => {
-    // ターンを進める前にルーレットの番号をリセット
-    setRouletteNumber(null); // この行を追加
+    setRouletteNumber(null);
     const nextPlayerIndex = (currentTurn + 1) % players.length;
     setCurrentTurn(nextPlayerIndex);
+    nextTurn();
+  };
 
-    // 次のプレイヤーのターンモーダルを表示
-    setShowTurnModal(true);
-    setModalContent({
-      message: `${players[nextPlayerIndex].name}のターン！`,
-    });
+  //---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 必要---------------------
 
-    // 2秒後にルーレットモーダルを表示
+  const handleRouletteResult = (result) => {
+    // ...ルーレットの結果を処理...
+    const rouletteValue = parseInt(result, 10);
+    const currentPlayer = players[currentTurn];
+    currentPlayer.position =
+      (currentPlayer.position + rouletteValue) % boardSize;
+
+    modalManagerRef.current.queueModal(`${rouletteValue} マス進みます!`, 2000);
+
     setTimeout(() => {
-      setShowTurnModal(false);
-      setShowRouletteModal(true);
+      const landedSquareColor = getSquareColor(currentPlayer.position);
+      handleSquareEvent(
+        players,
+        currentPlayer,
+        landedSquareColor,
+        setPlayers,
+        modalManagerRef
+      );
     }, 2000);
   };
 
@@ -180,91 +157,21 @@ const GameBoard2 = () => {
     },
   };
 
-  //----------マス目の色を基にイベントを実行する関数 必要だが未実装----------
-  const handleSquareLanding = (playerId) => {
-    const player = players.find((p) => p.id === playerId);
-    if (!player) return; // プレイヤーが見つからなければ何もしない
-
-    const squareElement = document.getElementById(player.position.toString());
-    if (!squareElement) return; // マス目が存在しなければ何もしない
-
-    // classNameから色を抽出する
-    const colorClass = squareElement.className.match(/bg-[a-z]+-200/);
-    if (!colorClass) return; // 色のクラスが見つからなければ何もしない
-    const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
-
-    handleSquareEvent(player, color); // 親コンポーネントのイベントハンドラを呼び出し
-  };
-
-  //----------マスごとのイベント処理 必要だが未実装----------
-  const handleSquareEvent = (player, color) => {
-    let message = "";
-    let updatedPlayers = players.map((p) => {
-      if (p.id === player.id) {
-        let updatedMoney = p.money; // プレイヤーの所持金を一時変数に格納
-
-        switch (color) {
-          case "blue":
-            updatedMoney += 10000; // 更新された所持金
-            message = "10000円獲得しました";
-            break;
-          case "pink":
-            updatedMoney -= 5000; // 更新された所持金
-            message = "5000円失いました";
-            break;
-          case "yellow":
-            // イベント発生時の処理
-            message = "イベント発生！";
-            break;
-          default:
-            message = "何も起こりませんでした";
-        }
-
-        return { ...p, money: updatedMoney }; // 新しいプレイヤーオブジェクトを返す
-      } else {
-        return p; // 他のプレイヤーはそのまま返す
-      }
-    });
-
-    // プレイヤー情報とモーダルのメッセージを更新
-    setPlayers(updatedPlayers);
-    setModalContent({
-      playerName: player.name,
-      message: message,
-    });
-    setIsModalVisible(true);
-  };
-
   return (
     <>
-      {/* スタートモーダル */}
-      {showStartModal && (
-        <Modal isOpen={true} style={customStyles}>
-          <h2>ゲームスタート!</h2>
-        </Modal>
-      )}
-      {/* ターンモーダル */}
-      {showTurnModal && (
-        <Modal isOpen={true} style={customStyles}>
-          <h2>{modalContent.playerName}</h2>
-          <p>{modalContent.message}</p>
-        </Modal>
-      )}
-      {/* // 直接ルーレットコンポーネントを埋め込む */}
-      {!showStartModal && showRouletteModal && (
-        <div className="roulette-container">
-          <Roulette onStopSpinning={handleRouletteResult} />
-        </div>
-      )}
-      {/* // マスごとのイベントに対してのモーダル */}
-      {isModalVisible && (
-        <Modal isOpen={isModalVisible} style={customStyles}>
-          <h2>{modalContent.playerName}</h2>
-          <p>{modalContent.message}</p>
-        </Modal>
-      )}
-      {/* // OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
+      {/* モーダル表示 */}
+      <Modal isOpen={isModalVisible} style={customStyles}>
+        <h2>{modalContent}</h2>
+      </Modal>
+
+      {/* 直接ルーレットコンポーネントを埋め込む */}
+      <div className="roulette-container">
+        <Roulette onStopSpinning={handleRouletteResult} />
+      </div>
+
+      {/* OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
       <OshiTable players={players} onPlayerLanding={handleSquareLanding} />
+
       {/* ステータスを一時的に表示させるためのコンポーネント */}
       <div className="player-status-section">
         {players.map((player, index) => (
