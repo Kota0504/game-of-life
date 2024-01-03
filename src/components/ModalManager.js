@@ -1,3 +1,4 @@
+
 class ModalManager {
   constructor(updateModalState) {
     this.updateModalState = updateModalState;

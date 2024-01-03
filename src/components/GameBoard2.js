@@ -64,18 +64,23 @@ const GameBoard2 = () => {
   }, []); // ModalManagerのインスタンス初期化用のEffect
 
   useEffect(() => {
-    // ゲーム開始時に一度だけモーダルを表示
     if (showStartModal) {
       modalManagerRef.current.queueModal("ゲームスタート!", 3000);
       const timer = setTimeout(() => {
-        setShowStartModal(false); // 一度だけモーダルが表示されるようにします。
-        nextTurn(); // 次のターンへ
+        setShowStartModal(false); // これをfalseに設定して、モーダルが再表示されないようにする
       }, 3000);
 
-      // タイマーをクリーンアップする
       return () => clearTimeout(timer);
     }
-  }, [showStartModal]); // useEffectをshowStartModalが変わるたびに実行する
+  }, [showStartModal]);
+
+  // currentTurnが更新されたときにのみnextTurnを実行
+  useEffect(() => {
+    if (!showStartModal) {
+      // ゲーム開始モーダルが表示されていない場合のみ
+      nextTurn();
+    }
+  }, [currentTurn]);
 
   const boardSize = 76; // 仮にボードのマスが30だとする
   // マスの位置から色を取得する関数
@@ -97,15 +102,15 @@ const GameBoard2 = () => {
   };
 
   //----------プレイヤーを そのお金に基づいてソートする、ソートされたお金に基づいてランクを割り当てる（降順) 未実装----------
-  // const calculatePlayerRanks = (players) => {
-  //   const sortedPlayers = [...players].sort((a, b) => b.money - a.money);
-  //   const rankedPlayers = sortedPlayers.map((player, index) => ({
-  //     ...player,
-  //     rank: index + 1,
-  //   }));
+  const calculatePlayerRanks = (players) => {
+    const sortedPlayers = [...players].sort((a, b) => b.money - a.money);
+    const rankedPlayers = sortedPlayers.map((player, index) => ({
+      ...player,
+      rank: index + 1,
+    }));
 
-  //   return rankedPlayers;
-  // };
+    return rankedPlayers;
+  };
 
   //----------プレイヤーのターンを処理する関数 必要----------
   const nextTurn = () => {
@@ -115,23 +120,34 @@ const GameBoard2 = () => {
     );
   };
 
+  // advanceTurnはただcurrentTurnを更新する
   const advanceTurn = () => {
     setRouletteNumber(null);
     const nextPlayerIndex = (currentTurn + 1) % players.length;
     setCurrentTurn(nextPlayerIndex);
-    nextTurn();
   };
+
+  // currentTurnの変更を監視して、変更があったらnextTurnを呼び出す
+  useEffect(() => {
+    if (currentTurn !== null) {
+      // 初期状態など、無効なターンでないことを確認
+      nextTurn();
+    }
+  }, [currentTurn]); // currentTurnが変更されたときにのみこのeffectを実行
 
   //---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 必要---------------------
 
   const handleRouletteResult = (result) => {
     // ...ルーレットの結果を処理...
-    const rouletteValue = parseInt(result, 10);
+    const rouletteValue = parseInt(result);
     const currentPlayer = players[currentTurn];
     currentPlayer.position =
       (currentPlayer.position + rouletteValue) % boardSize;
 
-    modalManagerRef.current.queueModal(`${rouletteValue} マス進みます!`, 2000);
+    modalManagerRef.current.queueModal(
+      `${rouletteValue} マス進みやがれ!`,
+      2000
+    );
 
     setTimeout(() => {
       const landedSquareColor = getSquareColor(currentPlayer.position);
@@ -140,7 +156,8 @@ const GameBoard2 = () => {
         currentPlayer,
         landedSquareColor,
         setPlayers,
-        modalManagerRef
+        modalManagerRef,
+        advanceTurn
       );
     }, 2000);
   };
