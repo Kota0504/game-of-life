@@ -59,7 +59,7 @@ export const handleSquareLanding = (
   const colorClass = squareElement.className.match(/bg-[a-z]+-200/);
   if (!colorClass) return; // 色のクラスが見つからなければ何もしない
   const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
-  
+
   handleSquareEvent(players, player, color, setPlayers, modalManagerRef); // 親コンポーネントのイベントハンドラを呼び出し
 };
 export const handleSquareEvent = (
