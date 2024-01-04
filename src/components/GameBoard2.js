@@ -51,7 +51,7 @@ const GameBoard2 = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rouletteNumber, setRouletteNumber] = useState(null);
   const [modalContent, setModalContent] = useState("");
-
+ 
   const modalManagerRef = useRef();
 
   useEffect(() => {
@@ -105,15 +105,7 @@ const GameBoard2 = () => {
   };
 
   //----------プレイヤーを そのお金に基づいてソートする、ソートされたお金に基づいてランクを割り当てる（降順) 未実装----------
-  const calculatePlayerRanks = (players) => {
-    const sortedPlayers = [...players].sort((a, b) => b.money - a.money);
-    const rankedPlayers = sortedPlayers.map((player, index) => ({
-      ...player,
-      rank: index + 1,
-    }));
 
-    return rankedPlayers;
-  };
 
   //----------プレイヤーのターンを処理する関数 必要----------
   const nextTurn = () => {
@@ -194,11 +186,16 @@ const GameBoard2 = () => {
 
       {/* ステータスを一時的に表示させるためのコンポーネント */}
       <div className="player-status-section">
-        {players.map((player, index) => (
-          <div key={player.id} className="player-status">
-            <Player {...player} />
-          </div>
-        ))}
+        {
+          // players配列をお金の量に基づいて降順にソートし、それを表示する
+          [...players] // players配列を複製する
+            .sort((a, b) => b.money - a.money) // お金の量で降順にソート
+            .map((player, index) => (
+              <div key={player.id} className="player-status">
+                <Player {...player} />
+              </div>
+            ))
+        }
       </div>
     </>
   );

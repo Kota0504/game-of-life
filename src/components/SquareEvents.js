@@ -16,11 +16,11 @@ export const handleSquareEvent = (
       switch (color) {
         case "blue":
           updatedMoney += 10000; // 青マス: 10000円獲得
-          message = "10000円獲得しました";
+          message = "は10000円獲得しました";
           break;
         case "pink":
           updatedMoney -= 5000; // ピンクマス: 5000円失う
-          message = "5000円失いました";
+          message = "は5000円失いました";
           break;
         case "yellow":
           // イエローマス: その他イベント発生
@@ -39,9 +39,20 @@ export const handleSquareEvent = (
     }
   });
 
-  setPlayers(updatedPlayers);
-  modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
-  setTimeout(() => advanceTurn(), 3000); // 次のターンに進むためのタイマー
+  // プレイヤーのステータスを更新する関数
+  const rankedPlayers = updatePlayerRanks(updatedPlayers); // ランク付けされたプレイヤーを取得
+  setPlayers(rankedPlayers); // ステートを一回で更新
+
+  modalManagerRef.current.queueModal(`${player.name} ${message}`, 3000);
+  setTimeout(() => advanceTurn(), 3000);
+};
+
+const updatePlayerRanks = (players) => {
+  const sortedPlayers = [...players].sort((a, b) => b.money - a.money);
+  return sortedPlayers.map((player, index) => ({
+    ...player,
+    rank: index + 1,
+  }));
 };
 
 export const handleSquareLanding = (
