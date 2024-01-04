@@ -67,10 +67,13 @@ const GameBoard2 = () => {
     if (showStartModal) {
       modalManagerRef.current.queueModal("ゲームスタート!", 3000);
       const timer = setTimeout(() => {
-        setShowStartModal(false); // これをfalseに設定して、モーダルが再表示されないようにする
+        setShowStartModal(false);
       }, 3000);
 
       return () => clearTimeout(timer);
+    } else if (currentTurn === 0) {
+      // showStartModalがfalseになった後、最初のターンを開始する
+      nextTurn();
     }
   }, [showStartModal]);
 
@@ -127,13 +130,13 @@ const GameBoard2 = () => {
     setCurrentTurn(nextPlayerIndex);
   };
 
-  // currentTurnの変更を監視して、変更があったらnextTurnを呼び出す
+  // currentTurnが更新されたらnextTurnを呼び出すが、最初のターン（currentTurn === 0）は除外する
   useEffect(() => {
-    if (currentTurn !== null) {
-      // 初期状態など、無効なターンでないことを確認
+    if (currentTurn > 0) {
+      // currentTurnが0より大きい場合にのみnextTurnを呼び出す
       nextTurn();
     }
-  }, [currentTurn]); // currentTurnが変更されたときにのみこのeffectを実行
+  }, [currentTurn]);
 
   //---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 必要---------------------
 
