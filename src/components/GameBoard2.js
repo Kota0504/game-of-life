@@ -51,7 +51,7 @@ const GameBoard2 = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rouletteNumber, setRouletteNumber] = useState(null);
   const [modalContent, setModalContent] = useState("");
- 
+
   const modalManagerRef = useRef();
 
   useEffect(() => {
@@ -103,9 +103,6 @@ const GameBoard2 = () => {
     const match = classname.match(colorPattern);
     return match ? match[1] : null; // 色に該当する部分を返す、またはマッチしない場合はnullを返す
   };
-
-  //----------プレイヤーを そのお金に基づいてソートする、ソートされたお金に基づいてランクを割り当てる（降順) 未実装----------
-
 
   //----------プレイヤーのターンを処理する関数 必要----------
   const nextTurn = () => {

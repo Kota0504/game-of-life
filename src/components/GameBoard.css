@@ -95,3 +95,21 @@
   transform: translate(-50%, -50%);
   z-index: 0; /* モーダルよりも低い値に設定 */
 }
+/* モーダルスタイル */
+.ranking-modal {
+  display: none; /* デフォルトでは非表示 */
+  position: fixed; /* 画面に固定 */
+  z-index: 1; /* 他の要素の上に表示 */
+  left: 0;
+  top: 0;
+  width: 100%; /* 全幅 */
+  height: 100%; /* 全高さ */
+  overflow: auto; /* スクロール可能に */
+  background-color: rgb(0, 0, 0); /* 背景色 */
+  background-color: rgba(0, 0, 0, 0.4); /* 透過背景色 */
+}
+
+/* モーダルを表示 */
+.show-ranking-modal {
+  display: block;
+}
