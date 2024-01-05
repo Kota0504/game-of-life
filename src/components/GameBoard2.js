@@ -7,7 +7,6 @@ import Modal from "react-modal";
 import ModalManager from "./ModalManager";
 import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
 import RankingModal from "./RankingModal"; // RankingModalをインポート
-import { triggerEvent } from "./GameEventHandler";
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
@@ -15,7 +14,7 @@ const GameBoard2 = () => {
     {
       id: 1,
       name: "Player 1",
-      position: 74,
+      position: 70,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -26,7 +25,7 @@ const GameBoard2 = () => {
     {
       id: 2,
       name: "Player 2",
-      position: 74,
+      position: 70,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -37,7 +36,7 @@ const GameBoard2 = () => {
     {
       id: 3,
       name: "Player 3",
-      position: 74,
+      position: 70,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -72,13 +71,12 @@ const GameBoard2 = () => {
     }
   }, []); // ModalManagerのインスタンス初期化用のEffect
 
-  //----------初期ゲームスタートのモーダル表示----------
   useEffect(() => {
     if (showStartModal) {
-      modalManagerRef.current.queueModal("ゲームスタート!", 1000);
+      modalManagerRef.current.queueModal("ゲームスタート!", 3000);
       const timer = setTimeout(() => {
         setShowStartModal(false);
-      }, 1000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     } else if (currentTurn === 0) {
@@ -87,17 +85,15 @@ const GameBoard2 = () => {
     }
   }, [showStartModal]);
 
-  //----------ゲームスタートと全員ゴールした時に使用するuseEffect----------
   // currentTurnが更新されたときにのみnextTurnを実行
   useEffect(() => {
-    if (!showStartModal && !allFinished) {
+    if (!showStartModal) {
       // ゲーム開始モーダルが表示されていない場合のみ
       nextTurn();
     }
-  }, [currentTurn, allFinished]);
+  }, [currentTurn]);
 
-  //----------ボードの処理に関するコード、Oshitableと連動している----------
-  const boardSize = 75; // ボードのマスが75だとする
+  const boardSize = 75; // 仮にボードのマスが30だとする
   // マスの位置から色を取得する関数
   const getSquareColor = (position) => {
     // プレイヤーの位置に対応するIDを持つマスの要素を探す
@@ -117,15 +113,13 @@ const GameBoard2 = () => {
   };
 
   //----------プレイヤーのターンを処理する関数 必要----------
-  //----------これは最初のターン用----------
   const nextTurn = () => {
     modalManagerRef.current.queueModal(
       `${players[currentTurn].name}のターン！`,
-      1000
+      2000
     );
   };
 
-  //----------これは２ターン目以降用----------
   // advanceTurnはただcurrentTurnを更新する
   const advanceTurn = () => {
     setRouletteNumber(null);
@@ -163,7 +157,7 @@ const GameBoard2 = () => {
     }
     modalManagerRef.current.queueModal(
       `${rouletteValue} マス進みやがれ!`,
-      1000
+      2000
     );
 
     setTimeout(() => {
@@ -174,13 +168,8 @@ const GameBoard2 = () => {
         landedSquareColor,
         setPlayers,
         modalManagerRef,
-        advanceTurn,
-        allFinished,
-        setShowRankingModal,
-        triggerEvent
+        advanceTurn
       );
-      // triggerEvent 関数を呼び出す際に players 配列を渡す
-      triggerEvent(currentPlayer.position, currentPlayer, players, setPlayers);
     }, 2000);
   };
 
@@ -198,24 +187,26 @@ const GameBoard2 = () => {
 
   return (
     <>
-      {/* ----------モーダル表示---------- */}
-      <Modal isOpen={isModalVisible} style={customStyles}>
-        <h2>{modalContent}</h2>
-      </Modal>
+      {/* モーダル表示 */}
+      <div className="modal-container">
+        <Modal isOpen={isModalVisible} style={customStyles}>
+          <h2>{modalContent}</h2>
+        </Modal>
+      </div>
 
-      {/* ----------直接ルーレットコンポーネントを埋め込む---------- */}
+      {/* 直接ルーレットコンポーネントを埋め込む */}
       <div className="roulette-container">
         <Roulette onStopSpinning={handleRouletteResult} />
       </div>
 
-      {/* ----------OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する---------- */}
+      {/* OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
       <OshiTable players={players} onPlayerLanding={handleSquareLanding} />
-      {/* ----------ランキング表示のコンポーネント---------- */}
-      <RankingModal players={players} isOpen={showRankingModal} />
-      {/* ----------ステータスを一時的に表示させるためのコンポーネント 実装時は不要、デバッグ用---------- */}
-      <div className="player-status-section">
-        {
-          // players配列をお金の量に基づいて降順にソートし、それを表示する
+      {/* ランキング表示のコンポーネント */}
+      {/* <RankingModal players={players} isOpen={showRankingModal} /> */}
+      {/* ステータスを一時的に表示させるためのコンポーネント */}
+      {/* <div className="player-status-section">
+        { */}
+      {/* // players配列をお金の量に基づいて降順にソートし、それを表示する
           [...players] // players配列を複製する
             .sort((a, b) => b.money - a.money) // お金の量で降順にソート
             .map((player, index) => (
@@ -224,7 +215,7 @@ const GameBoard2 = () => {
               </div>
             ))
         }
-      </div>
+      </div> */}
     </>
   );
 };
