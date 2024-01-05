@@ -235,9 +235,9 @@ const GameBoard2 = () => {
       {/* ランキング表示のコンポーネント */}
       {/* <RankingModal players={players} isOpen={showRankingModal} /> */}
       {/* ステータスを一時的に表示させるためのコンポーネント */}
-      {/* <div className="player-status-section">
-        { */}
-      {/* // players配列をお金の量に基づいて降順にソートし、それを表示する
+      <div className="player-status-section">
+        {
+          // players配列をお金の量に基づいて降順にソートし、それを表示する
           [...players] // players配列を複製する
             .sort((a, b) => b.money - a.money) // お金の量で降順にソート
             .map((player, index) => (
@@ -246,7 +246,7 @@ const GameBoard2 = () => {
               </div>
             ))
         }
-      </div> */}
+      </div>
     </>
   );
 };
