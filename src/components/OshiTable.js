@@ -1,8 +1,19 @@
-import React, { useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 
-const OshiTable = ({ players, handleSquareEvent }) => {
+const OshiTable = ({ players, onPlayerLanding }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // モーダルを表示する関数
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  // モーダルを非表示にする関数
+  const hideModal = () => {
+    setIsModalVisible(false);
+  };
   const navigate = useNavigate();
 
   const handleCloseModal = () => {
@@ -11,23 +22,18 @@ const OshiTable = ({ players, handleSquareEvent }) => {
 
   // 各プレイヤーのアイコンをレンダリングする関数
   const renderPlayersAtSquare = (squareId) => {
-    return players
-      .filter((player) => player.position === squareId)
-      .map((player, index) => (
-        <div key={player.id} className={`player player-${index + 1}`}>
-          <span>{player.name}</span>
-        </div>
-      ));
+    const playersAtSquare = players.filter(
+      (player) => player.position === squareId
+    );
+    playersAtSquare.forEach((player) => onPlayerLanding(player.id));
+    return playersAtSquare.map((player, index) => (
+      <div key={player.id} className={`player player-${index + 1}`}>
+        <span>{player.name}</span>
+      </div>
+    ));
   };
 
-  // プレイヤーの位置情報を更新するための useEffect
-  useEffect(() => {
-    // プレイヤーの位置情報を更新するロジックがここに必要
-    // 例: 親コンポーネントから受け取った最新のプレイヤー情報に基づいて表示を更新
-  }, [players]);
-
   return (
-    //返す処理を記述する
     <>
       <div className="header-class-8">
         <div className="App-logo-8">
@@ -36,19 +42,39 @@ const OshiTable = ({ players, handleSquareEvent }) => {
             alt="ロゴ"
             className="App-logo-2"
           />
-          <span className="title-8">テーブル</span>
         </div>
-        <div className="ranking-list">
-          <span className="title-9">ランキング</span>
+        {/* <div className="ranking-list">
+          <div
+            className="ranking title-9"
+            onMouseEnter={showModal}
+            onMouseLeave={hideModal}
+          >
+            ランキング
+          </div>
+          <div
+            className={`ranking-modal ${
+              isModalVisible ? "show-ranking-modal" : ""
+            }`}
+          >
+            ステータスモーダルの内容
+            {players.map((player) => (
+              <div key={player.id}>
+                プレイヤー情報の表示
+                <p>
+                  {player.name}: ¥{player.money} :{player.isMarried}
+                </p>
+              </div>
+            ))}
+          </div>
           <span className="title-9">●</span>
           <span className="title-9">●</span>
           <span className="title-9">●</span>
-        </div>
+        </div> */}
         <button onClick={handleCloseModal} className="close-button-9">
           終了
         </button>
       </div>
-      <div class="board">
+      <div className="board">
         <div className="column">
           <div
             className="h-screen grid grid-cols-16 grid-rows-10 gap-1"
@@ -94,10 +120,10 @@ const OshiTable = ({ players, handleSquareEvent }) => {
             </div>
             <div className="bg-yellow-200" id="30">
               {renderPlayersAtSquare(30)}
-              <span>結婚式</span>
+              <span>結婚式30</span>
             </div>
             <div className="bg-blue-200" id="29">
-              {renderPlayersAtSquare(29)}
+              {renderPlayersAtSquare(29)}直前マス29
             </div>
             <div className="bg-blue-200" id="28">
               {renderPlayersAtSquare(28)}
@@ -111,15 +137,15 @@ const OshiTable = ({ players, handleSquareEvent }) => {
             <div className=""></div>
             <div className="bg-pink-200" id="43">
               {" "}
-              {renderPlayersAtSquare(43)}
+              {renderPlayersAtSquare(43)}直後マス43
             </div>
             <div className="bg-yellow-200" id="42">
               {renderPlayersAtSquare(42)}
-              <span>結婚2</span>
+              <span>結婚42</span>
             </div>
             <div className="bg-blue-200" id="41">
               {" "}
-              {renderPlayersAtSquare(41)}
+              {renderPlayersAtSquare(41)}直前マス41
             </div>
             <div className=""></div>
             <div className="bg-blue-200" id="37">
@@ -135,7 +161,7 @@ const OshiTable = ({ players, handleSquareEvent }) => {
             <div className=""></div>
             <div className=""></div>
             <div className="bg-blue-200" id="21">
-              {renderPlayersAtSquare(21)}
+              {renderPlayersAtSquare(21)}直前マス21
             </div>
             <div className=""></div>
             <div className="bg-pink-200" id="27">
@@ -149,7 +175,7 @@ const OshiTable = ({ players, handleSquareEvent }) => {
             <div className=""></div>
             <div className=""></div>
             <div className="bg-blue-200" id="52">
-              {renderPlayersAtSquare(52)}
+              {renderPlayersAtSquare(52)}直後マス52
             </div>
             <div className=""></div>
             <div className=""></div>
@@ -176,14 +202,14 @@ const OshiTable = ({ players, handleSquareEvent }) => {
               {renderPlayersAtSquare(50)}
             </div>
             <div className="bg-pink-200" id="51">
-              {renderPlayersAtSquare(51)}
+              {renderPlayersAtSquare(51)}直前マス51
             </div>
             <div className="bg-yellow-200" id="55">
               {renderPlayersAtSquare(55)}
-              <span>出産</span>
+              <span>出産55</span>
             </div>
             <div className="bg-blue-200" id="54">
-              {renderPlayersAtSquare(54)}
+              {renderPlayersAtSquare(54)}直前マス54
             </div>
             <div className="bg-pink-200" id="53">
               {renderPlayersAtSquare(53)}
@@ -233,14 +259,14 @@ const OshiTable = ({ players, handleSquareEvent }) => {
               {renderPlayersAtSquare(59)}
             </div>
             <div className="bg-blue-200" id="58">
-              {renderPlayersAtSquare(58)}
+              {renderPlayersAtSquare(58)}直後マス58
             </div>
             <div className="bg-yellow-200" id="57">
               {renderPlayersAtSquare(57)}
-              <span>転職</span>
+              <span>転職57</span>
             </div>
             <div className="bg-blue-200" id="67">
-              {renderPlayersAtSquare(67)}
+              {renderPlayersAtSquare(67)}直後マス67
             </div>
             <div className="bg-blue-200" id="68">
               {renderPlayersAtSquare(68)}
@@ -255,14 +281,14 @@ const OshiTable = ({ players, handleSquareEvent }) => {
               {renderPlayersAtSquare(15)}
             </div>
             <div className="bg-blue-200" id="14">
-              {renderPlayersAtSquare(14)}
+              {renderPlayersAtSquare(14)}直後マス14
             </div>
             <div className="bg-yellow-200" id="13">
               {renderPlayersAtSquare(13)}
-              <span>結婚1</span>
+              <span>結婚13</span>
             </div>
             <div className="bg-blue-200" id="22">
-              {renderPlayersAtSquare(22)}
+              {renderPlayersAtSquare(22)}直後マス22
             </div>
             <div className="bg-blue-200" id="23">
               {renderPlayersAtSquare(23)}
@@ -299,8 +325,7 @@ const OshiTable = ({ players, handleSquareEvent }) => {
             <div className=""></div>
             <div className=""></div>
             <div className="bg-blue-200" id="70">
-              id
-              {renderPlayersAtSquare(70)}
+              {renderPlayersAtSquare(70)}直前マス70
             </div>
             <div className=""></div>
             <div className=""></div>
@@ -329,20 +354,20 @@ const OshiTable = ({ players, handleSquareEvent }) => {
               {renderPlayersAtSquare(65)}
             </div>
             <div className="bg-pink-200" id="66">
-              {renderPlayersAtSquare(66)}
+              {renderPlayersAtSquare(66)}直前マス66
             </div>
             <div className="bg-yellow-200" id="71">
               {renderPlayersAtSquare(71)}
-              <span>家買う</span>
+              <span>家買う71</span>
             </div>
             <div className=""></div>
-            <div className="bg-pink-200" id="75">
+            <div className="bg-green-200" id="75">
               {renderPlayersAtSquare(75)}
               <span>ゴール</span>
             </div>
             <div className=""></div>
             <div className=""></div>
-            <div className="bg-blue-200" id="0">
+            <div className="bg-green-200" id="0">
               {renderPlayersAtSquare(0)}
               <span>スタート</span>
             </div>
