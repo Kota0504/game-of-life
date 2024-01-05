@@ -43,7 +43,6 @@ export const handleSquareEvent = (
   setPlayers(updatedPlayers);
   const rankedPlayers = updatePlayerRanks(updatedPlayers); // ランク付けされたプレイヤーを取得
   setPlayers(rankedPlayers); // ステートを一回で更新
-
   modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
   setTimeout(() => advanceTurn(), 3000); // 次のターンに進むためのタイマー
 };
