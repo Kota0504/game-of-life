@@ -14,7 +14,7 @@ const GameBoard2 = () => {
     {
       id: 1,
       name: "Player 1",
-      position: 70,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -25,7 +25,7 @@ const GameBoard2 = () => {
     {
       id: 2,
       name: "Player 2",
-      position: 70,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -36,7 +36,7 @@ const GameBoard2 = () => {
     {
       id: 3,
       name: "Player 3",
-      position: 70,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -87,13 +87,13 @@ const GameBoard2 = () => {
 
   // currentTurnが更新されたときにのみnextTurnを実行
   useEffect(() => {
-    if (!showStartModal) {
+    if (!showStartModal && !allFinished) {
       // ゲーム開始モーダルが表示されていない場合のみ
       nextTurn();
     }
-  }, [currentTurn]);
+  }, [currentTurn, allFinished]);
 
-  const boardSize = 75; // 仮にボードのマスが30だとする
+  const boardSize = 75; // ボードのマスが75だとする
   // マスの位置から色を取得する関数
   const getSquareColor = (position) => {
     // プレイヤーの位置に対応するIDを持つマスの要素を探す
@@ -168,7 +168,9 @@ const GameBoard2 = () => {
         landedSquareColor,
         setPlayers,
         modalManagerRef,
-        advanceTurn
+        advanceTurn,
+        allFinished,
+        setShowRankingModal
       );
     }, 2000);
   };

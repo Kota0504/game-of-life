@@ -137,7 +137,7 @@ const StartScreen = () => {
     }
 
     // ゲームページに遷移する
-    navigate("/game-ui");
+    navigate("/game-board");
   };
   // コンポーネントがマウントされた時に参加者数と参加者一覧を取得
   useEffect(() => {

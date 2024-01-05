@@ -42,7 +42,6 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             alt="ロゴ"
             className="App-logo-2"
           />
-          <span className="title-8">テーブル</span>
         </div>
         <div className="ranking-list">
           <div
@@ -121,10 +120,10 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             </div>
             <div className="bg-yellow-200" id="30">
               {renderPlayersAtSquare(30)}
-              <span>結婚式</span>
+              <span>結婚式30</span>
             </div>
             <div className="bg-blue-200" id="29">
-              {renderPlayersAtSquare(29)}
+              {renderPlayersAtSquare(29)}直前マス29
             </div>
             <div className="bg-blue-200" id="28">
               {renderPlayersAtSquare(28)}
@@ -162,7 +161,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             <div className=""></div>
             <div className=""></div>
             <div className="bg-blue-200" id="21">
-              {renderPlayersAtSquare(21)}
+              {renderPlayersAtSquare(21)}直前マス21
             </div>
             <div className=""></div>
             <div className="bg-pink-200" id="27">
@@ -282,14 +281,14 @@ const OshiTable = ({ players, onPlayerLanding }) => {
               {renderPlayersAtSquare(15)}
             </div>
             <div className="bg-blue-200" id="14">
-              {renderPlayersAtSquare(14)}
+              {renderPlayersAtSquare(14)}直後マス14
             </div>
             <div className="bg-yellow-200" id="13">
               {renderPlayersAtSquare(13)}
               <span>結婚1</span>
             </div>
             <div className="bg-blue-200" id="22">
-              {renderPlayersAtSquare(22)}
+              {renderPlayersAtSquare(22)}直後マス22
             </div>
             <div className="bg-blue-200" id="23">
               {renderPlayersAtSquare(23)}
@@ -326,7 +325,6 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             <div className=""></div>
             <div className=""></div>
             <div className="bg-blue-200" id="70">
-              id
               {renderPlayersAtSquare(70)}
             </div>
             <div className=""></div>
