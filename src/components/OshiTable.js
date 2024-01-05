@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import groupImage from "./image/g13.png";
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 
 const OshiTable = ({ players, onPlayerLanding }) => {
@@ -37,11 +38,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
     <>
       <div className="header-class-8">
         <div className="App-logo-8">
-          <img
-            src="src/components/image/group.png"
-            alt="ロゴ"
-            className="App-logo-2"
-          />
+          <img src={groupImage} alt="ロゴ" className="App-logo-2" />
         </div>
         {/* <div className="ranking-list">
           <div
