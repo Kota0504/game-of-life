@@ -1,9 +1,11 @@
-// GameEventHandler.js（想定されるファイル）
-import { setPlayers } from "./pathToStateManagement"; // 適切なパスに修正してください
-
 // 結婚イベントを処理する関数
-const handleMarriageEvent = (players, playerId, willMarry, setPlayers) => {
-  const marriagePosition = willMarry ? 30 : 14; // 結婚した場合の移動先
+export const handleMarriageEvent = (
+  players,
+  playerId,
+  willMarry,
+  setPlayers
+) => {
+  const marriagePosition = 14; // 結婚した場合の移動先
   const noMarriagePosition = 22; // 結婚しない場合の移動先
 
   setPlayers(
@@ -13,42 +15,26 @@ const handleMarriageEvent = (players, playerId, willMarry, setPlayers) => {
           ...player,
           position: willMarry ? marriagePosition : noMarriagePosition,
           isMarried: willMarry,
-          // 結婚したらお金を追加
-          money: player.money + (willMarry ? 10000 : 3000),
         };
       }
       return player;
     })
   );
 };
-
-setPlayers(
-  players.map((player) => {
-    if (player.id === playerId) {
-      if (willMarry) {
-        return {
-          ...player,
-          money: player.money + 10000,
-          isMarried: true,
-          position: marriagePosition,
-        };
-      } else {
-        return {
-          ...player,
-          money: player.money + 3000,
-          position: noMarriagePosition,
-        };
-      }
-    }
-    return player;
-  })
-);
-
-// マス目に着地した際のイベント処理（例: 結婚イベント）
-const handleSquareEvent = (player, color) => {
-  if (color === "yellow") {
-    // 結婚イベント発生
-    handleMarriageEvent(player.id /* willMarry の値 */);
-  }
-  // ... 他の色の処理 ...
+const events = {
+  // マスのIDをキーとしたイベントのオブジェクト
+  13: handleMarriageEvent,
+  // 30: handleWeddingEvent,
+  // 42: handleSecondMarriageEvent,
+  // 55: handleBabyEvent,
+  // 57: handleJobEvent,
+  // 71: handlehouseEvent,
 };
+
+// イベントを発火させる関数
+export function triggerEvent(squareId, player, players, setPlayers) {
+  if (events[squareId]) {
+    // イベントが定義されている場合は、それを実行します。
+    events[squareId](players, player.id, player.willMarry, setPlayers);
+  }
+}

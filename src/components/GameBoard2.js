@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import ModalManager from "./ModalManager";
 import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
 import RankingModal from "./RankingModal"; // RankingModalをインポート
+import { triggerEvent } from "./GameEventHandler";
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
@@ -74,10 +75,10 @@ const GameBoard2 = () => {
   //----------初期ゲームスタートのモーダル表示----------
   useEffect(() => {
     if (showStartModal) {
-      modalManagerRef.current.queueModal("ゲームスタート!", 3000);
+      modalManagerRef.current.queueModal("ゲームスタート!", 1000);
       const timer = setTimeout(() => {
         setShowStartModal(false);
-      }, 3000);
+      }, 1000);
 
       return () => clearTimeout(timer);
     } else if (currentTurn === 0) {
@@ -86,7 +87,7 @@ const GameBoard2 = () => {
     }
   }, [showStartModal]);
 
-//----------ゲームスタートと全員ゴールした時に使用するuseEffect----------
+  //----------ゲームスタートと全員ゴールした時に使用するuseEffect----------
   // currentTurnが更新されたときにのみnextTurnを実行
   useEffect(() => {
     if (!showStartModal && !allFinished) {
@@ -94,7 +95,6 @@ const GameBoard2 = () => {
       nextTurn();
     }
   }, [currentTurn, allFinished]);
-
 
   //----------ボードの処理に関するコード、Oshitableと連動している----------
   const boardSize = 75; // ボードのマスが75だとする
@@ -121,7 +121,7 @@ const GameBoard2 = () => {
   const nextTurn = () => {
     modalManagerRef.current.queueModal(
       `${players[currentTurn].name}のターン！`,
-      2000
+      1000
     );
   };
 
@@ -163,7 +163,7 @@ const GameBoard2 = () => {
     }
     modalManagerRef.current.queueModal(
       `${rouletteValue} マス進みやがれ!`,
-      2000
+      1000
     );
 
     setTimeout(() => {
@@ -176,8 +176,11 @@ const GameBoard2 = () => {
         modalManagerRef,
         advanceTurn,
         allFinished,
-        setShowRankingModal
+        setShowRankingModal,
+        triggerEvent
       );
+      // triggerEvent 関数を呼び出す際に players 配列を渡す
+      triggerEvent(currentPlayer.position, currentPlayer, players, setPlayers);
     }, 2000);
   };
 
