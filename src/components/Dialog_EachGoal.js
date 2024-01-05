@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './Dialog.css';
-import Player from "./Player.js";
 import OshiTable from "./OshiTable.js";
+import player from "./GameBoard2";
 
 const Dialog_EachGoal = () => {
   const [isEachGoalDialogOpen, setEachGoalDialogOpen] = useState(true);
@@ -24,9 +24,9 @@ const Dialog_EachGoal = () => {
 
       {isEachGoalDialogOpen && (
         <div className="dialog-overlay">
-          <div className="dialog">
-            <p className='playerName'>name</p>
-            <p className='message'>ゴール！第○○位</p>
+          <div key={player.id} className="dialog">
+            <p className='playerName'>{player.name}</p>
+            <p className='message'>{player.money}円</p>
           </div>
         </div>
       )}

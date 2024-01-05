@@ -1,3 +1,6 @@
+import Dialog_AllGoal from "./Dialog_AllGoal"; 
+import Dialog_EachGoal from "./Dialog_EachGoal"; 
+
 export const handleSquareEvent = (
   players,
   player,
@@ -28,9 +31,13 @@ export const handleSquareEvent = (
           // イエローマス: その他イベント発生
           message = "イベント発生！";
           break;
+        case "green":
+          // グリーンマス: ゴール
+          message = "testです";
+          break;
         default:
           // その他の色（または色なし）のマス
-          message = "ゴーーーーーーーール！！！！";
+          message = "なにもありません";
       }
 
       // 新しいプレイヤーオブジェクトを返す
@@ -46,23 +53,27 @@ export const handleSquareEvent = (
   const rankedPlayers = updatePlayerRanks(updatedPlayers); // ランク付けされたプレイヤーを取得
   setPlayers(rankedPlayers); // ステートを一回で更新
   if (allFinished) {
-    modalManagerRef.current.queueModal(
-      `${player.name}: ゴーーーーーーーール！！！！`,
-      3000
-    );
-
-    // ゴールモーダルが消えた後、結果発表モーダルを表示
-    setTimeout(() => {
-      // ゴールモーダルが消えるのを待ってからランキングモーダルを表示
-      modalManagerRef.current.queueModal("ランキング発表", 3000);
-      setShowRankingModal(true); // ランキングモーダルを表示
-    }, 3000); // 3秒後
+    console.log("全員ゴール!")
+    // return (
+    //   <div className="App">
+    //     <Dialog_AllGoal />
+    //   </div>
+    // );
+    // modalManagerRef.current.queueModal(
+    //   `${player.name}: ゴーーーーーーーール！！！！`,
+    //   3000
+    // );
+    // // ゴールモーダルが消えた後、結果発表モーダルを表示
+    // setTimeout(() => {
+    //   // ゴールモーダルが消えるのを待ってからランキングモーダルを表示
+    //   modalManagerRef.current.queueModal("ランキング発表", 3000);
+    //   setShowRankingModal(true); // ランキングモーダルを表示
+    // }, 3000); // 3秒後
   } else {
+    console.log("一人ゴール!")
     modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
-    // 全員がゴールしていない場合のみ次のターンに進む
-    if (!allFinished) {
+    // 全員がゴールしていない場合のみ次のターンに進む\
       setTimeout(() => advanceTurn(), 3000); // 次のターンに進む
-    }
   }
 };
 
@@ -102,3 +113,21 @@ export const handleSquareLanding = (
   const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
   handleSquareEvent(players, player, color, setPlayers, modalManagerRef); // 親コンポーネントのイベントハンドラを呼び出し
 };
+
+// export const GoalDialog = (
+//   allFinished
+// ) => {
+//   if (allFinished) {
+//     return (
+//       <div className="App">
+//         <Dialog_AllGoal />
+//       </div>
+//     );
+//   } else {
+//     return (
+//       <div className="App">
+//         <Dialog_EachGoal />
+//       </div>
+//     );
+//   }
+// };
