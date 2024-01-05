@@ -3,7 +3,7 @@ import './Dialog.css';
 import Player from "./Player.js";
 import OshiTable from "./OshiTable.js";
 
-const Daialog_EachGoal = () => {
+const Dialog_EachGoal = () => {
   const [isEachGoalDialogOpen, setEachGoalDialogOpen] = useState(true);
   const [isOshiTableOpen, setOshiTableOpen] = useState(false);
 
@@ -35,6 +35,6 @@ const Daialog_EachGoal = () => {
   );
 };
 
-export default Daialog_EachGoal;
+export default Dialog_EachGoal;
 
 

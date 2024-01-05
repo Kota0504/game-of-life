@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Dialog.css";
-import Daialog_Result from "./Daialog_Result.js";
+import Dialog_Result from "./Dialog_Result.js";
 
-const Daialog_AllGoal = () => {
+const Dialog_AllGoal = () => {
   const [isAllGoalDialogOpen, setAllGoalDialogOpen] = useState(true);
   const [isResultDialogOpen, setResultDialogOpen] = useState(false);
 
@@ -24,10 +24,10 @@ const Daialog_AllGoal = () => {
           </div>
         </div>
       )}
-      {isResultDialogOpen && <Daialog_Result />} {/* Daialog_Result を表示 */}
+      {isResultDialogOpen && <Dialog_Result />} {/* Dialog_Result を表示 */}
     </div>
   );
 };
 
-export default Daialog_AllGoal;
+export default Dialog_AllGoal;
 
