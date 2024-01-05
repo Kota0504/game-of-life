@@ -1,4 +1,3 @@
-
 class ModalManager {
   constructor(updateModalState) {
     this.updateModalState = updateModalState;
@@ -12,21 +11,35 @@ class ModalManager {
     this.checkQueue();
   }
 
+  // ユーザーに選択肢を提示するモーダルをキューに追加する新しいメソッド
+  queueChoiceModal(title, choices, onChoice) {
+    this.queue.push({ title, choices, onChoice });
+    this.checkQueue();
+  }
   // キューをチェックし、必要に応じてモーダルを表示する
   checkQueue() {
     if (this.isShowing || this.queue.length === 0) {
-      return; // すでに表示中、またはキューが空なら何もしない
+      return;
     }
     this.isShowing = true;
-    const { message, duration } = this.queue.shift(); // キューから一つ取り出す
+    const { message, duration, title, choices, onChoice } = this.queue.shift();
 
-    this.updateModalState(true, message); // モーダルを表示
-
-    setTimeout(() => {
-      this.updateModalState(false, "");
-      this.isShowing = false;
-      this.checkQueue(); // 次のモーダルがあれば表示する
-    }, duration);
+    // 選択肢がある場合、モーダルを表示してユーザーの選択を処理
+    if (choices) {
+      this.updateModalState(true, title, choices);
+      // ユーザーの選択を待つため、ここではsetTimeoutを設定しない
+      // 選択後にはonChoiceが呼ばれる想定
+    } else {
+      // 通常のメッセージモーダルを表示
+      this.updateModalState(true, message);
+      setTimeout(() => {
+        this.updateModalState(false, "");
+        this.isShowing = false;
+        if (this.queue.length > 0) {
+          this.checkQueue();
+        }
+      }, duration);
+    }
   }
 }
 export default ModalManager;

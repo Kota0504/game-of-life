@@ -40,7 +40,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<StartScreen socket={socket} />} />
-        <Route path="/game-ui" element={<GameUI />} />
+        {/* <Route path="/game-ui" element={<GameUI />} />
         <Route
           path="/roulette"
           element={
@@ -51,7 +51,7 @@ function App() {
               setRouletteNumber={setRouletteNumber}
             />
           }
-        />
+        /> */}
         <Route
           path="/game-board"
           element={<GameBoard2 players={players} setPlayers={setPlayers} />}

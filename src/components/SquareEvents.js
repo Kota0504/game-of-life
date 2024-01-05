@@ -4,7 +4,9 @@ export const handleSquareEvent = (
   color,
   setPlayers,
   modalManagerRef,
-  advanceTurn
+  advanceTurn,
+  allFinished,
+  setShowRankingModal // 引数に追加
 ) => {
   let message = "";
   let updatedPlayers = players.map((p) => {
@@ -43,8 +45,25 @@ export const handleSquareEvent = (
   setPlayers(updatedPlayers);
   const rankedPlayers = updatePlayerRanks(updatedPlayers); // ランク付けされたプレイヤーを取得
   setPlayers(rankedPlayers); // ステートを一回で更新
-  modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
-  setTimeout(() => advanceTurn(), 3000); // 次のターンに進むためのタイマー
+  if (allFinished) {
+    modalManagerRef.current.queueModal(
+      `${player.name}: ゴーーーーーーーール！！！！`,
+      3000
+    );
+
+    // ゴールモーダルが消えた後、結果発表モーダルを表示
+    setTimeout(() => {
+      // ゴールモーダルが消えるのを待ってからランキングモーダルを表示
+      modalManagerRef.current.queueModal("ランキング発表", 3000);
+      setShowRankingModal(true); // ランキングモーダルを表示
+    }, 3000); // 3秒後
+  } else {
+    modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
+    // 全員がゴールしていない場合のみ次のターンに進む
+    if (!allFinished) {
+      setTimeout(() => advanceTurn(), 3000); // 次のターンに進む
+    }
+  }
 };
 
 const updatePlayerRanks = (updatedPlayers) => {
