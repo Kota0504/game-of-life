@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import ModalManager from "./ModalManager";
 import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
 import RankingModal from "./RankingModal"; // RankingModalをインポート
+import TriggerYellowSquareEvent from "./TriggerYellowSquareEvent";
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
@@ -14,7 +15,7 @@ const GameBoard2 = () => {
     {
       id: 1,
       name: "Player 1",
-      position: 70,
+      position: 12,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -25,7 +26,7 @@ const GameBoard2 = () => {
     {
       id: 2,
       name: "Player 2",
-      position: 70,
+      position: 12,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -36,7 +37,7 @@ const GameBoard2 = () => {
     {
       id: 3,
       name: "Player 3",
-      position: 70,
+      position: 12,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -59,8 +60,8 @@ const GameBoard2 = () => {
   }, [allFinished]);
   const [showRankingModal, setShowRankingModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
-
   const modalManagerRef = useRef();
+  const [isMarriageModalOpen, setIsMarriageModalOpen] = useState(false);
 
   useEffect(() => {
     if (!modalManagerRef.current) {
@@ -140,15 +141,26 @@ const GameBoard2 = () => {
   }, [currentTurn]);
 
   //---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 必要---------------------
-
   const handleRouletteResult = (result) => {
     // ...ルーレットの結果を処理...
     const rouletteValue = parseInt(result);
     const currentPlayer = players[currentTurn];
-
-    // ゴール判定を追加
     const newPosition = currentPlayer.position + rouletteValue;
-    if (newPosition >= boardSize) {
+    // プレイヤーの新しい位置を更新
+    const updatedPlayers = players.map((player, index) => {
+      if (index === currentTurn) {
+        return { ...player, position: newPosition };
+      }
+      return player;
+    });
+    setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
+
+    // newPositionが13になった時にイベントを発火
+    if (newPosition >= 13) {
+      TriggerYellowSquareEvent(currentTurn, setPlayers);
+    }
+    // ゴール判定を追加
+    else if (newPosition >= boardSize) {
       // ゴールに到達したかチェック
       currentPlayer.isFinished = true; // ゴールフラグを立てる
       currentPlayer.position = boardSize; // ゴール位置に設定
@@ -161,14 +173,16 @@ const GameBoard2 = () => {
     );
 
     setTimeout(() => {
-      const landedSquareColor = getSquareColor(currentPlayer.position);
+      const landedSquareColor = getSquareColor(newPosition);
       handleSquareEvent(
         players,
         currentPlayer,
         landedSquareColor,
         setPlayers,
         modalManagerRef,
-        advanceTurn
+        advanceTurn,
+        allFinished,
+        setShowRankingModal
       );
     }, 2000);
   };
@@ -193,7 +207,20 @@ const GameBoard2 = () => {
           <h2>{modalContent}</h2>
         </Modal>
       </div>
-
+      {/* 結婚するモーダル */}
+      <TriggerYellowSquareEvent
+        currentPlayerIndex={currentTurn}
+        players={players}
+        setPlayers={setPlayers}
+        modalManagerRef={modalManagerRef}
+        getSquareColor={getSquareColor}
+        handleSquareEvent={handleSquareEvent}
+        advanceTurn={advanceTurn}
+        allFinished={allFinished}
+        setShowRankingModal={setShowRankingModal}
+        setIsMarriageModalOpen={setIsMarriageModalOpen}
+        isMarriageModalOpen={isMarriageModalOpen}
+      />
       {/* 直接ルーレットコンポーネントを埋め込む */}
       <div className="roulette-container">
         <Roulette onStopSpinning={handleRouletteResult} />
