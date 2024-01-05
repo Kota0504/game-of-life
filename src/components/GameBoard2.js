@@ -7,6 +7,8 @@ import Modal from "react-modal";
 import ModalManager from "./ModalManager";
 import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
 import RankingModal from "./RankingModal"; // RankingModalをインポート
+import Dialog_AllGoal from "./Dialog_AllGoal"; // Dialogコンポーネントのインポート
+import Dialog_EachGoal from "./Dialog_EachGoal"; // Dialogコンポーネントのインポート
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
@@ -14,7 +16,7 @@ const GameBoard2 = () => {
     {
       id: 1,
       name: "Player 1",
-      position: 70,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -25,7 +27,7 @@ const GameBoard2 = () => {
     {
       id: 2,
       name: "Player 2",
-      position: 70,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -36,7 +38,7 @@ const GameBoard2 = () => {
     {
       id: 3,
       name: "Player 3",
-      position: 70,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -52,6 +54,8 @@ const GameBoard2 = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rouletteNumber, setRouletteNumber] = useState(null);
   const allFinished = players.every((player) => player.isFinished); // すべてのプレイヤーがゴールしたか
+  const eachGoal = players.some((player) => player.isFinished);
+
   useEffect(() => {
     if (allFinished) {
       setShowRankingModal(true); // すべてのプレイヤーがゴールしたら順位発表モーダルを表示
@@ -155,6 +159,7 @@ const GameBoard2 = () => {
     } else {
       currentPlayer.position = newPosition; // 新しい位置を更新
     }
+
     modalManagerRef.current.queueModal(
       `${rouletteValue} マス進みやがれ!`,
       2000
@@ -171,6 +176,28 @@ const GameBoard2 = () => {
         advanceTurn
       );
     }, 2000);
+  };
+
+  const goalDialog = () => {
+    // const lastPlayerisFinished = initialPlayers.every(
+    //   (player) => player.isFinished
+    // );
+
+    if (allFinished) {
+      return (
+        <div className="App">
+          <Dialog_AllGoal />
+        </div>
+      );
+    } else {
+      if (eachGoal) {
+        return (
+          <div className="App">
+            <Dialog_EachGoal />
+          </div>
+        );
+      }
+    }
   };
 
   //----------各モーダルのスタイル設定 必要だがCSSでも可----------
@@ -201,6 +228,10 @@ const GameBoard2 = () => {
 
       {/* OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
       <OshiTable players={players} onPlayerLanding={handleSquareLanding} />
+
+      {/* goalDialogの表示 */}
+      {goalDialog()}
+
       {/* ランキング表示のコンポーネント */}
       {/* <RankingModal players={players} isOpen={showRankingModal} /> */}
       {/* ステータスを一時的に表示させるためのコンポーネント */}

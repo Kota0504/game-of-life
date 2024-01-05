@@ -21,10 +21,20 @@ const OshiTable = ({ players, onPlayerLanding }) => {
   };
 
   // 各プレイヤーのアイコンをレンダリングする関数
+  // const renderPlayersAtSquare = (squareId) => {
+  //   const playersAtSquare = players.filter(
+  //     (player) => player.position === squareId
+  //   );
+  //   playersAtSquare.forEach((player) => onPlayerLanding(player.id));
+  //   return playersAtSquare.map((player, index) => (
+  //     <div key={player.id} className={`player player-${index + 1}`}>
+  //       <span>{player.name}</span>
+  //     </div>
+  //   ));
+  // };
   const renderPlayersAtSquare = (squareId) => {
-    const playersAtSquare = players.filter(
-      (player) => player.position === squareId
-    );
+    const playersAtSquare = players ? players.filter(
+      (player) => player.position === squareId) : [];
     playersAtSquare.forEach((player) => onPlayerLanding(player.id));
     return playersAtSquare.map((player, index) => (
       <div key={player.id} className={`player player-${index + 1}`}>
@@ -33,6 +43,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
     ));
   };
 
+  
   return (
     <>
       <div className="header-class-8">
