@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 const OshiTable = ({ players, onPlayerLanding }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // モーダルを表示する関数
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  // // モーダルを表示する関数
+  // const showModal = () => {
+  //   setIsModalVisible(true);
+  // };
 
-  // モーダルを非表示にする関数
-  const hideModal = () => {
-    setIsModalVisible(false);
-  };
+  // // モーダルを非表示にする関数
+  // const hideModal = () => {
+  //   setIsModalVisible(false);
+  // };
   const navigate = useNavigate();
 
   const handleCloseModal = () => {
