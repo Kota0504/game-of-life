@@ -43,7 +43,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             className="App-logo-2"
           />
         </div>
-        <div className="ranking-list">
+        {/* <div className="ranking-list">
           <div
             className="ranking title-9"
             onMouseEnter={showModal}
@@ -56,10 +56,10 @@ const OshiTable = ({ players, onPlayerLanding }) => {
               isModalVisible ? "show-ranking-modal" : ""
             }`}
           >
-            {/* ステータスモーダルの内容 */}
+            ステータスモーダルの内容
             {players.map((player) => (
               <div key={player.id}>
-                {/* プレイヤー情報の表示 */}
+                プレイヤー情報の表示
                 <p>
                   {player.name}: ¥{player.money} :{player.isMarried}
                 </p>
@@ -69,7 +69,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
           <span className="title-9">●</span>
           <span className="title-9">●</span>
           <span className="title-9">●</span>
-        </div>
+        </div> */}
         <button onClick={handleCloseModal} className="close-button-9">
           終了
         </button>

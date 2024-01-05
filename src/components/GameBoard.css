@@ -3,7 +3,9 @@
   grid-template-columns: repeat(10, 1fr); /* Adjust based on your layout */
   gap: 4px;
 }
-
+.board {
+  background-color: #f7ebf6;
+}
 .square {
   width: 50px; /* Adjust size as needed */
   height: 50px; /* Adjust size as needed */
@@ -42,6 +44,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 /* GameBoardModal.css (または GameBoardModal コンポーネントに関連するCSSファイル) */
@@ -54,6 +57,7 @@
   background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
   display: flex;
   justify-content: center; /* 水平方向の中央揃え */
+  z-index: 1000;
 }
 
 .modal-content {
@@ -85,31 +89,118 @@
   box-shadow: 0 0 2px #000; /* アイコンに影をつける */
 }
 
-.roulette-container {
+/* .roulette-container {
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.5);
-  z-index: 0; /* モーダルよりも低い値に設定 */
+  transform: translate(-50%, -50%);
+  z-index: 0;
+} */
+
+/* ゲームボードのコンテナ */
+#game-board {
+  position: relative;
+  z-index: 0;
+  /* 他のスタイル */
 }
-/* モーダルスタイル */
-.ranking-modal {
-  display: none; /* デフォルトでは非表示 */
-  position: fixed; /* 画面に固定 */
-  z-index: 1; /* 他の要素の上に表示 */
-  left: 0;
-  top: 0;
-  width: 100%; /* 全幅 */
-  height: 100%; /* 全高さ */
-  overflow: auto; /* スクロール可能に */
-  background-color: rgb(0, 0, 0); /* 背景色 */
-  background-color: rgba(0, 0, 0, 0.4); /* 透過背景色 */
+
+/* ルーレットのコンテナ */
+.roulette-container {
+  position: absolute;
+  top: 60%; /* 親要素の上端から50%の位置に配置 */
+  left: 50%; /* 親要素の左端から50%の位置に配置 */
+  transform: translate(-50%, -50%); /* 中心に配置するための調整 */
+  z-index: 1; /* 必要に応じて調整 */
+  transform: translate(-50%, -50%) scale(0.6);
 }
 
 /* モーダルを表示 */
 .show-ranking-modal {
   display: block;
+}
+
+.parent-element-class {
+  /* 親要素のクラス名を指定 */
+  display: flex;
+  justify-content: flex-end;
+}
+
+.finish-button {
+  color: #fff;
+  background-color: #ff90bc;
+  border: 2px solid #fff; /* 2pxの黒いボーダーを追加 */
+  height: 40px; /* 縦幅を30pxに設定 */
+  padding: 5px 10px; /* 上下のパディングを5px、左右のパディングを10pxに設定 */
+  border-radius: 60px;
+}
+
+.parent-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .App-logo-2 {
+  margin-right: auto;
+} */
+
+.title-ranking {
+  font-size: 20px;
+}
+
+.header-class-8 {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fbaecd;
+  z-index: 0;
+}
+
+.ranking-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* ランキングのテキストと"●"の間の間隔 */
+  margin-left: 700px; /* 左側のマージンを増やして右に移動 */
+  flex-direction: row; /* 要素を横並びにする */
+}
+
+/* .ranking-modal {
+  position: fixed; 
+  width: 360px;
+  height: 400px;
+  margin-left: 850px;
+  margin-top: 50px;
+  border-radius: 40px;
+  background-color: #fbaecd;
+  border: #fff;
+  z-index: 10;
+} */
+
+.modal-close-button {
+  position: absolute;
+  top: 10px; /* 上端からの距離 */
+  right: 10px; /* 右端からの距離 */
+  font-size: 20px; /* フォントサイズ */
+  cursor: pointer;
+  border: 2px solid black; /* 2ピクセルの黒いボーダー */
+  background-color: transparent; /* 背景色を透明に */
+  color: black; /* 文字色 */
+  padding: 10px; /* パディング */
+  border-radius: 50%; /* 角を完全に丸くする */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.kaiten {
+  font-weight: bold;
+  color: #95dce7;
+  font-size: 28px;
 }
