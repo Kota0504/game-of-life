@@ -6,6 +6,7 @@ import Roulette from "./Roulette";
 import Modal from "react-modal";
 import ModalManager from "./ModalManager";
 import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
+import RankingModal from "./RankingModal"; // RankingModalをインポート
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
@@ -13,7 +14,7 @@ const GameBoard2 = () => {
     {
       id: 1,
       name: "Player 1",
-      position: 0,
+      position: 70,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -24,7 +25,7 @@ const GameBoard2 = () => {
     {
       id: 2,
       name: "Player 2",
-      position: 0,
+      position: 70,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -35,7 +36,7 @@ const GameBoard2 = () => {
     {
       id: 3,
       name: "Player 3",
-      position: 0,
+      position: 70,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -50,6 +51,13 @@ const GameBoard2 = () => {
   const [currentTurn, setCurrentTurn] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rouletteNumber, setRouletteNumber] = useState(null);
+  const allFinished = players.every((player) => player.isFinished); // すべてのプレイヤーがゴールしたか
+  useEffect(() => {
+    if (allFinished) {
+      setShowRankingModal(true); // すべてのプレイヤーがゴールしたら順位発表モーダルを表示
+    }
+  }, [allFinished]);
+  const [showRankingModal, setShowRankingModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
   const modalManagerRef = useRef();
@@ -85,7 +93,7 @@ const GameBoard2 = () => {
     }
   }, [currentTurn]);
 
-  const boardSize = 76; // 仮にボードのマスが30だとする
+  const boardSize = 75; // 仮にボードのマスが30だとする
   // マスの位置から色を取得する関数
   const getSquareColor = (position) => {
     // プレイヤーの位置に対応するIDを持つマスの要素を探す
@@ -191,7 +199,8 @@ const GameBoard2 = () => {
 
       {/* OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
       <OshiTable players={players} onPlayerLanding={handleSquareLanding} />
-
+      {/* ランキング表示のコンポーネント */}
+      <RankingModal players={players} isOpen={showRankingModal} />
       {/* ステータスを一時的に表示させるためのコンポーネント */}
       <div className="player-status-section">
         {
