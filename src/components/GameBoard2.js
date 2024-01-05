@@ -115,7 +115,11 @@ const GameBoard2 = () => {
   // advanceTurnはただcurrentTurnを更新する
   const advanceTurn = () => {
     setRouletteNumber(null);
-    const nextPlayerIndex = (currentTurn + 1) % players.length;
+    let nextPlayerIndex = (currentTurn + 1) % players.length;
+    // ゴールに到達しているプレイヤーをスキップする
+    while (players[nextPlayerIndex].isFinished) {
+      nextPlayerIndex = (nextPlayerIndex + 1) % players.length;
+    }
     setCurrentTurn(nextPlayerIndex);
   };
 
@@ -133,9 +137,16 @@ const GameBoard2 = () => {
     // ...ルーレットの結果を処理...
     const rouletteValue = parseInt(result);
     const currentPlayer = players[currentTurn];
-    currentPlayer.position =
-      (currentPlayer.position + rouletteValue) % boardSize;
 
+    // ゴール判定を追加
+    const newPosition = currentPlayer.position + rouletteValue;
+    if (newPosition >= boardSize) {
+      // ゴールに到達したかチェック
+      currentPlayer.isFinished = true; // ゴールフラグを立てる
+      currentPlayer.position = boardSize; // ゴール位置に設定
+    } else {
+      currentPlayer.position = newPosition; // 新しい位置を更新
+    }
     modalManagerRef.current.queueModal(
       `${rouletteValue} マス進みやがれ!`,
       2000

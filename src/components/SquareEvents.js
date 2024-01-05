@@ -28,7 +28,7 @@ export const handleSquareEvent = (
           break;
         default:
           // その他の色（または色なし）のマス
-          message = "何も起こりませんでした";
+          message = "ゴーーーーーーーール！！！！";
       }
 
       // 新しいプレイヤーオブジェクトを返す
