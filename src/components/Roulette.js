@@ -40,7 +40,7 @@ const RouletteApp = ({ onStopSpinning }) => {
   // };
 
   return (
-    <div>
+    <div className="roulette-size">
       <Wheel
         mustStartSpinning={spinning}
         prizeNumber={prizeNumber}
@@ -49,25 +49,7 @@ const RouletteApp = ({ onStopSpinning }) => {
         textColors={["#ffffff"]}
         onStopSpinning={handleSpinStop}
       />
-      <button onClick={handleSpinClick}>ルーレットを回す</button>
-
-      {/* <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={{
-          content: {
-            top: "50%",
-            left: "50%",
-            right: "auto",
-            bottom: "auto",
-            marginRight: "-50%",
-            transform: "translate(-50%, -50%)",
-          },
-        }}
-      >
-        <h2> {data[prizeNumber].option}進みやがれ</h2>
-        <button onClick={() => setModalIsOpen(false)}>閉じる</button>
-      </Modal> */}
+      {/* 他の要素 */}
     </div>
   );
 };

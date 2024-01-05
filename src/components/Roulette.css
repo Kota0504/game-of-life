@@ -52,7 +52,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  width: 50%;
+  height: 50%;
 }
 
 .modal {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import groupImage from "./image/g13.png";
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 
 const OshiTable = ({ players, onPlayerLanding }) => {
@@ -7,7 +8,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
 
   // モーダルを表示する関数
   const showModal = () => {
-    setIsModalVisible(true);
+    setIsModalVisible(!isModalVisible);
   };
 
   // モーダルを非表示にする関数
@@ -37,44 +38,46 @@ const OshiTable = ({ players, onPlayerLanding }) => {
     <>
       <div className="header-class-8">
         <div className="App-logo-8">
-          <img
-            src="src/components/image/group.png"
-            alt="ロゴ"
-            className="App-logo-2"
-          />
-          <span className="title-8">テーブル</span>
+          <img src={groupImage} alt="ロゴ" className="App-logo-2" />
         </div>
-        <div className="ranking-list">
-          <div
-            className="ranking title-9"
-            onMouseEnter={showModal}
-            onMouseLeave={hideModal}
+        <div className="ranking-container">
+          <button
+            className="ranking title-9 title-ranking"
+            onClick={showModal}
+            // onMouseLeave={hideModal}
           >
-            ランキング
-          </div>
+            ステータス
+          </button>
           <div
             className={`ranking-modal ${
               isModalVisible ? "show-ranking-modal" : ""
             }`}
           >
-            {/* ステータスモーダルの内容 */}
+            {/* ステータスモーダルの内容  */}
             {players.map((player) => (
               <div key={player.id}>
                 {/* プレイヤー情報の表示 */}
-                <p>
+                <div className="ranking-ranking">
                   {player.name}: ¥{player.money} :{player.isMarried}
-                </p>
+                </div>
               </div>
             ))}
+            <button onClick={hideModal} className="modal-close-button">
+              ×
+            </button>
           </div>
-          <span className="title-9">●</span>
-          <span className="title-9">●</span>
-          <span className="title-9">●</span>
         </div>
-        <button onClick={handleCloseModal} className="close-button-9">
-          終了
-        </button>
+
+        <div className="parent-container">
+          <button
+            onClick={handleCloseModal}
+            className="close-button-9 finish-button"
+          >
+            終了
+          </button>
+        </div>
       </div>
+
       <div className="board">
         <div className="column">
           <div
