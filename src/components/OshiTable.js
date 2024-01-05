@@ -137,15 +137,15 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             <div className=""></div>
             <div className="bg-pink-200" id="43">
               {" "}
-              {renderPlayersAtSquare(43)}
+              {renderPlayersAtSquare(43)}直後マス43
             </div>
             <div className="bg-yellow-200" id="42">
               {renderPlayersAtSquare(42)}
-              <span>結婚2</span>
+              <span>結婚42</span>
             </div>
             <div className="bg-blue-200" id="41">
               {" "}
-              {renderPlayersAtSquare(41)}
+              {renderPlayersAtSquare(41)}直前マス41
             </div>
             <div className=""></div>
             <div className="bg-blue-200" id="37">
@@ -175,7 +175,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             <div className=""></div>
             <div className=""></div>
             <div className="bg-blue-200" id="52">
-              {renderPlayersAtSquare(52)}
+              {renderPlayersAtSquare(52)}直後マス52
             </div>
             <div className=""></div>
             <div className=""></div>
@@ -202,14 +202,14 @@ const OshiTable = ({ players, onPlayerLanding }) => {
               {renderPlayersAtSquare(50)}
             </div>
             <div className="bg-pink-200" id="51">
-              {renderPlayersAtSquare(51)}
+              {renderPlayersAtSquare(51)}直前マス51
             </div>
             <div className="bg-yellow-200" id="55">
               {renderPlayersAtSquare(55)}
-              <span>出産</span>
+              <span>出産55</span>
             </div>
             <div className="bg-blue-200" id="54">
-              {renderPlayersAtSquare(54)}
+              {renderPlayersAtSquare(54)}直前マス54
             </div>
             <div className="bg-pink-200" id="53">
               {renderPlayersAtSquare(53)}
@@ -259,14 +259,14 @@ const OshiTable = ({ players, onPlayerLanding }) => {
               {renderPlayersAtSquare(59)}
             </div>
             <div className="bg-blue-200" id="58">
-              {renderPlayersAtSquare(58)}
+              {renderPlayersAtSquare(58)}直後マス58
             </div>
             <div className="bg-yellow-200" id="57">
               {renderPlayersAtSquare(57)}
-              <span>転職</span>
+              <span>転職57</span>
             </div>
             <div className="bg-blue-200" id="67">
-              {renderPlayersAtSquare(67)}
+              {renderPlayersAtSquare(67)}直後マス67
             </div>
             <div className="bg-blue-200" id="68">
               {renderPlayersAtSquare(68)}
@@ -285,7 +285,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             </div>
             <div className="bg-yellow-200" id="13">
               {renderPlayersAtSquare(13)}
-              <span>結婚1</span>
+              <span>結婚13</span>
             </div>
             <div className="bg-blue-200" id="22">
               {renderPlayersAtSquare(22)}直後マス22
@@ -325,7 +325,7 @@ const OshiTable = ({ players, onPlayerLanding }) => {
             <div className=""></div>
             <div className=""></div>
             <div className="bg-blue-200" id="70">
-              {renderPlayersAtSquare(70)}
+              {renderPlayersAtSquare(70)}直前マス70
             </div>
             <div className=""></div>
             <div className=""></div>
@@ -354,11 +354,11 @@ const OshiTable = ({ players, onPlayerLanding }) => {
               {renderPlayersAtSquare(65)}
             </div>
             <div className="bg-pink-200" id="66">
-              {renderPlayersAtSquare(66)}
+              {renderPlayersAtSquare(66)}直前マス66
             </div>
             <div className="bg-yellow-200" id="71">
               {renderPlayersAtSquare(71)}
-              <span>家買う</span>
+              <span>家買う71</span>
             </div>
             <div className=""></div>
             <div className="bg-green-200" id="75">
