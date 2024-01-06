@@ -6,7 +6,6 @@ import Roulette from "./Roulette";
 import Modal from "react-modal";
 import ModalManager from "./ModalManager";
 import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
-import RankingModal from "./RankingModal"; // RankingModalをインポート
 import Dialog_AllGoal from "./Dialog_AllGoal"; // Dialogコンポーネントのインポート
 import Dialog_EachGoal from "./Dialog_EachGoal"; // Dialogコンポーネントのインポート
 
@@ -16,7 +15,7 @@ const GameBoard2 = () => {
     {
       id: 1,
       name: "Player 1",
-      position: 12,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -27,7 +26,7 @@ const GameBoard2 = () => {
     {
       id: 2,
       name: "Player 2",
-      position: 12,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -38,7 +37,7 @@ const GameBoard2 = () => {
     {
       id: 3,
       name: "Player 3",
-      position: 12,
+      position: 74,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -56,12 +55,6 @@ const GameBoard2 = () => {
   const allFinished = players.every((player) => player.isFinished); // すべてのプレイヤーがゴールしたか
   const eachGoal = players.some((player) => player.isFinished);
 
-  // useEffect(() => {
-  //   if (allFinished) {
-  //     setShowRankingModal(true); // すべてのプレイヤーがゴールしたら順位発表モーダルを表示
-  //   }
-  // }, [allFinished]);
-  // const [showRankingModal, setShowRankingModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [modalChoices, setModalChoices] = useState([]);
   // 選択肢のボタンがクリックされたときに呼び出される関数
@@ -259,10 +252,6 @@ const GameBoard2 = () => {
   //----------結婚の実装----------
 
   const goalDialog = () => {
-    // const lastPlayerisFinished = initialPlayers.every(
-    //   (player) => player.isFinished
-    // );
-
     if (allFinished) {
       return (
         <div className="App">
