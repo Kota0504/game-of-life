@@ -56,74 +56,48 @@ const GameBoard2 = () => {
   const allFinished = players.every((player) => player.isFinished); // すべてのプレイヤーがゴールしたか
   const eachGoal = players.some((player) => player.isFinished);
 
-  // useEffect(() => {
-  //   if (allFinished) {
-  //     setShowRankingModal(true); // すべてのプレイヤーがゴールしたら順位発表モーダルを表示
-  //   }
-  // }, [allFinished]);
-  // const [showRankingModal, setShowRankingModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [modalChoices, setModalChoices] = useState([]);
+  const modalManagerRef = useRef();
   // 選択肢のボタンがクリックされたときに呼び出される関数
   const handleChoice = (choiceValue) => {
     // handleMarriageChoice関数に選択された値を渡す
     handleMarriageChoice(choiceValue);
   };
-  const modalManagerRef = useRef();
+
   //----------結婚の実装----------
   const handleMarriageChoice = (choice) => {
     const updatedPlayers = players.map((player) => {
       if (player.id === currentTurn + 1) {
-        // currentTurnは0から始まるため+1します
         if (choice === "marry") {
-          return { ...player, isMarried: true, position: 14 }; // 結婚状態と位置を更新
+          return { ...player, isMarried: true, position: 14 };
         } else if (choice === "notMarry") {
-          return { ...player, position: 22 }; // 位置だけ更新
+          return { ...player, position: 22 };
         }
       }
-      setIsModalVisible(false);
-      setModalChoices([]);
       return player;
     });
 
-    setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
-    advanceTurn(); // 次のプレイヤーのターンへ
+    setPlayers(updatedPlayers);
+    setIsModalVisible(false); // 選択後にモーダルを閉じる
+    setModalChoices([]);
+    advanceTurn(); // 次のターンに進む
   };
 
+  // handleMarriageEventはモーダルをキューに入れ、次のターンを適切にセットアップするべきです
   const handleMarriageEvent = () => {
     modalManagerRef.current.queueChoiceModal(
-      "幼馴染が現れた！！！", // title
+      "幼馴染が現れた！！！",
       [
-        {
-          label: "結婚する?",
-          value: "marry",
-        },
-        { label: "結婚しない?", value: "notMarry" },
-      ], // choices
-      handleMarriageChoice // onChoice callback
+        { label: "結婚する？", value: "marry" },
+        { label: "結婚しない？", value: "notMarry" },
+      ],
+      (choice) => {
+        handleMarriageChoice(choice);
+        advanceTurn(); // 選択後に次のターンに進む
+      }
     );
   };
-  // 結婚イベントモーダルの表示と選択処理
-  // const [isMarriageModalOpen, setIsMarriageModalOpen] = useState(false);
-  // useEffect(() => {
-  //   console.log(
-  //     `結婚モーダルが ${isMarriageModalOpen ? "開いています" : "閉じています"}`
-  //   );
-  // }, [isMarriageModalOpen]);
-  // const handleMarriageChoice = (choice) => {
-  //   // 結婚イベント処理
-  //   const updatedPlayers = players.map((player, index) => {
-  //     if (choice === "marry") {
-  //       return { ...player, isMarried: true, position: 14 }; // 結婚状態と位置を更新
-  //     } else if (choice === "notMarry") {
-  //       return { ...player, position: 22 }; // 位置だけ更新
-  //     }
-  //     return player;
-  // });
-
-  //   setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
-  //   setIsMarriageModalOpen(false); // 選択後にモーダルを閉じる
-  // };
 
   useEffect(() => {
     // ModalManagerのインスタンス初期化用のEffect
@@ -219,18 +193,19 @@ const GameBoard2 = () => {
     const newPosition = currentPlayer.position + rouletteValue;
     // プレイヤーの新しい位置を更新
     const updatedPlayers = players.map((player, index) => {
-      if (index === currentTurn) {
+      if (index === currentPlayer.id) {
         return { ...player, position: newPosition };
       }
       return player;
     });
     setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
 
-    if (newPosition === 13) {
-      handleMarriageEvent();
-    }
+    // if (newPosition === 13) {
+    //   handleMarriageEvent();
+    // }
     // ゴール判定を追加
-    else if (newPosition >= boardSize) {
+    // else
+    if (newPosition >= boardSize) {
       // ゴールに到達したかチェック
       currentPlayer.isFinished = true; // ゴールフラグを立てる
       currentPlayer.position = boardSize; // ゴール位置に設定
@@ -242,7 +217,6 @@ const GameBoard2 = () => {
       `${rouletteValue} マス進みやがれ!`,
       2000
     );
-
     setTimeout(() => {
       const landedSquareColor = getSquareColor(newPosition);
       handleSquareEvent(
@@ -253,11 +227,23 @@ const GameBoard2 = () => {
         modalManagerRef,
         advanceTurn,
         allFinished,
-        setShowRankingModal
+        handleMarriageEvent
       );
     }, 2000);
   };
-  //----------結婚の実装----------
+  // handleSquareEventを呼び出す部分
+  const squareLanded = (player, color) => {
+    handleSquareEvent(
+      players,
+      player,
+      color,
+      setPlayers,
+      modalManagerRef,
+      advanceTurn,
+      allFinished,
+      handleMarriageEvent // handleMarriageEventを引数として渡す
+    );
+  };
 
   const goalDialog = () => {
     // const lastPlayerisFinished = initialPlayers.every(
@@ -313,18 +299,6 @@ const GameBoard2 = () => {
       <div className="roulette-container">
         <Roulette onStopSpinning={handleRouletteResult} />
       </div>
-      {/* 結婚イベントモーダル */}
-      {/* {isMarriageModalOpen && (
-        <div className="marriage-modal">
-          <h2>幼馴染が現れた！！！</h2>
-          <button onClick={() => handleMarriageChoice("marry")}>
-            結婚する！！
-          </button>
-          <button onClick={() => handleMarriageChoice("notMarry")}>
-            結婚しない！！
-          </button>
-        </div>
-      )} */}
 
       {/* OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
       <OshiTable players={players} onPlayerLanding={handleSquareLanding} />
@@ -335,16 +309,15 @@ const GameBoard2 = () => {
       {/* ランキング表示のコンポーネント */}
       {/* <RankingModal players={players} isOpen={showRankingModal} /> */}
       {/* ステータスを一時的に表示させるためのコンポーネント */}
-      {/* <div className="player-status-section">
-        {[...players] .sort((a, b) => b.money - a.money) .map((player, index) =>
-        (
-        <div key={player.id} className="player-status">
-          <Player {...player} />
-        </div>
-        )) }
-      </div>; */}
-
-
+      <div className="player-status-section">
+        {[...players]
+          .sort((a, b) => b.money - a.money)
+          .map((player, index) => (
+            <div key={player.id} className="player-status">
+              <Player {...player} />
+            </div>
+          ))}
+      </div>
     </>
   );
 };
