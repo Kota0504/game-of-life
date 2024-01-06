@@ -207,7 +207,6 @@
   font-size: 28px;
 }
 
-
 .marigge-modal {
   position: fixed;
   top: 0;
@@ -218,7 +217,8 @@
   display: flex;
   justify-content: center; /* 水平方向の中央揃え */
   z-index: 1000;
-=======
+}
+
 .player-status-section {
   background-color: #f7ebf6;
 }
