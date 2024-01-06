@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./tailwind.css";
-import GameUI from "./components/GameUI";
 import Roulette from "./components/Roulette";
 import StartScreen from "./components/StartScreen";
 // import ParticipantScreen from "./components/ParticipantScreen";
