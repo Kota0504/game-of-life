@@ -13,7 +13,7 @@ class ModalManager {
 
   // ユーザーに選択肢を提示するモーダルをキューに追加する新しいメソッド
   queueChoiceModal(title, choices, onChoice) {
-    this.queue.push({ title, choices, onChoice });
+    this.queue.push({ type: "choice", title, choices, onChoice });
     this.checkQueue();
   }
   // キューをチェックし、必要に応じてモーダルを表示する
