@@ -16,7 +16,7 @@ const GameBoard2 = () => {
     {
       id: 1,
       name: "Player 1",
-      position: 74,
+      position: 12,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -27,7 +27,7 @@ const GameBoard2 = () => {
     {
       id: 2,
       name: "Player 2",
-      position: 74,
+      position: 12,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -38,7 +38,7 @@ const GameBoard2 = () => {
     {
       id: 3,
       name: "Player 3",
-      position: 74,
+      position: 12,
       money: 100000,
       rank: 1,
       isMarried: false,
@@ -63,17 +63,85 @@ const GameBoard2 = () => {
   // }, [allFinished]);
   // const [showRankingModal, setShowRankingModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
-
+  const [modalChoices, setModalChoices] = useState([]);
+  // 選択肢のボタンがクリックされたときに呼び出される関数
+  const handleChoice = (choiceValue) => {
+    // handleMarriageChoice関数に選択された値を渡す
+    handleMarriageChoice(choiceValue);
+  };
   const modalManagerRef = useRef();
+  //----------結婚の実装----------
+  const handleMarriageChoice = (choice) => {
+    const updatedPlayers = players.map((player) => {
+      if (player.id === currentTurn + 1) {
+        // currentTurnは0から始まるため+1します
+        if (choice === "marry") {
+          return { ...player, isMarried: true, position: 14 }; // 結婚状態と位置を更新
+        } else if (choice === "notMarry") {
+          return { ...player, position: 22 }; // 位置だけ更新
+        }
+      }
+      setIsModalVisible(false);
+      setModalChoices([]);
+      return player;
+    });
+
+    setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
+    advanceTurn(); // 次のプレイヤーのターンへ
+  };
+
+  const handleMarriageEvent = () => {
+    modalManagerRef.current.queueChoiceModal(
+      "幼馴染が現れた！！！", // title
+      [
+        {
+          label: "結婚する?",
+          value: "marry",
+        },
+        { label: "結婚しない?", value: "notMarry" },
+      ], // choices
+      handleMarriageChoice // onChoice callback
+    );
+  };
+  // 結婚イベントモーダルの表示と選択処理
+  // const [isMarriageModalOpen, setIsMarriageModalOpen] = useState(false);
+  // useEffect(() => {
+  //   console.log(
+  //     `結婚モーダルが ${isMarriageModalOpen ? "開いています" : "閉じています"}`
+  //   );
+  // }, [isMarriageModalOpen]);
+  // const handleMarriageChoice = (choice) => {
+  //   // 結婚イベント処理
+  //   const updatedPlayers = players.map((player, index) => {
+  //     if (choice === "marry") {
+  //       return { ...player, isMarried: true, position: 14 }; // 結婚状態と位置を更新
+  //     } else if (choice === "notMarry") {
+  //       return { ...player, position: 22 }; // 位置だけ更新
+  //     }
+  //     return player;
+  // });
+
+  //   setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
+  //   setIsMarriageModalOpen(false); // 選択後にモーダルを閉じる
+  // };
 
   useEffect(() => {
+    // ModalManagerのインスタンス初期化用のEffect
     if (!modalManagerRef.current) {
-      modalManagerRef.current = new ModalManager((visible, message) => {
-        setIsModalVisible(visible);
-        setModalContent(message);
-      });
+      modalManagerRef.current = new ModalManager(
+        (visible, message, choices) => {
+          setIsModalVisible(visible);
+          if (choices) {
+            // 選択肢がある場合は、選択肢関連のステートも更新する
+            setModalContent(message);
+            setModalChoices(choices); // このステートは選択肢を表示するために使う
+          } else {
+            setModalContent(message);
+          }
+        }
+      );
     }
-  }, []); // ModalManagerのインスタンス初期化用のEffect
+  }, []);
 
   useEffect(() => {
     if (showStartModal) {
@@ -144,15 +212,25 @@ const GameBoard2 = () => {
   }, [currentTurn]);
 
   //---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 必要---------------------
-
   const handleRouletteResult = (result) => {
     // ...ルーレットの結果を処理...
     const rouletteValue = parseInt(result);
     const currentPlayer = players[currentTurn];
-
-    // ゴール判定を追加
     const newPosition = currentPlayer.position + rouletteValue;
-    if (newPosition >= boardSize) {
+    // プレイヤーの新しい位置を更新
+    const updatedPlayers = players.map((player, index) => {
+      if (index === currentTurn) {
+        return { ...player, position: newPosition };
+      }
+      return player;
+    });
+    setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
+
+    if (newPosition === 13) {
+      handleMarriageEvent();
+    }
+    // ゴール判定を追加
+    else if (newPosition >= boardSize) {
       // ゴールに到達したかチェック
       currentPlayer.isFinished = true; // ゴールフラグを立てる
       currentPlayer.position = boardSize; // ゴール位置に設定
@@ -166,17 +244,20 @@ const GameBoard2 = () => {
     );
 
     setTimeout(() => {
-      const landedSquareColor = getSquareColor(currentPlayer.position);
+      const landedSquareColor = getSquareColor(newPosition);
       handleSquareEvent(
         players,
         currentPlayer,
         landedSquareColor,
         setPlayers,
         modalManagerRef,
-        advanceTurn
+        advanceTurn,
+        allFinished,
+        setShowRankingModal
       );
     }, 2000);
   };
+  //----------結婚の実装----------
 
   const goalDialog = () => {
     // const lastPlayerisFinished = initialPlayers.every(
@@ -218,6 +299,13 @@ const GameBoard2 = () => {
       <div className="modal-container">
         <Modal isOpen={isModalVisible} style={customStyles}>
           <h2>{modalContent}</h2>
+          {/* ここに選択肢を表示するロジックを追加 */}
+          {modalChoices &&
+            modalChoices.map((choice) => (
+              <button onClick={() => handleChoice(choice.value)}>
+                {choice.label}
+              </button>
+            ))}
         </Modal>
       </div>
 
@@ -225,6 +313,18 @@ const GameBoard2 = () => {
       <div className="roulette-container">
         <Roulette onStopSpinning={handleRouletteResult} />
       </div>
+      {/* 結婚イベントモーダル */}
+      {/* {isMarriageModalOpen && (
+        <div className="marriage-modal">
+          <h2>幼馴染が現れた！！！</h2>
+          <button onClick={() => handleMarriageChoice("marry")}>
+            結婚する！！
+          </button>
+          <button onClick={() => handleMarriageChoice("notMarry")}>
+            結婚しない！！
+          </button>
+        </div>
+      )} */}
 
       {/* OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
       <OshiTable players={players} onPlayerLanding={handleSquareLanding} />
@@ -243,6 +343,7 @@ const GameBoard2 = () => {
         </div>
         )) }
       </div>; */}
+
 
     </>
   );
