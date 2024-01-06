@@ -56,12 +56,12 @@ const GameBoard2 = () => {
   const allFinished = players.every((player) => player.isFinished); // すべてのプレイヤーがゴールしたか
   const eachGoal = players.some((player) => player.isFinished);
 
-  useEffect(() => {
-    if (allFinished) {
-      setShowRankingModal(true); // すべてのプレイヤーがゴールしたら順位発表モーダルを表示
-    }
-  }, [allFinished]);
-  const [showRankingModal, setShowRankingModal] = useState(false);
+  // useEffect(() => {
+  //   if (allFinished) {
+  //     setShowRankingModal(true); // すべてのプレイヤーがゴールしたら順位発表モーダルを表示
+  //   }
+  // }, [allFinished]);
+  // const [showRankingModal, setShowRankingModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [modalChoices, setModalChoices] = useState([]);
   // 選択肢のボタンがクリックされたときに呼び出される関数
@@ -335,17 +335,16 @@ const GameBoard2 = () => {
       {/* ランキング表示のコンポーネント */}
       {/* <RankingModal players={players} isOpen={showRankingModal} /> */}
       {/* ステータスを一時的に表示させるためのコンポーネント */}
-      <div className="player-status-section">
-          // players配列をお金の量に基づいて降順にソートし、それを表示する
-          [...players] // players配列を複製する
-            .sort((a, b) => b.money - a.money) // お金の量で降順にソート
-            .map((player, index) => (
-              <div key={player.id} className="player-status">
-                <Player {...player} />
-              </div>
-            ))
-        }
-      </div>
+      {/* <div className="player-status-section">
+        {[...players] .sort((a, b) => b.money - a.money) .map((player, index) =>
+        (
+        <div key={player.id} className="player-status">
+          <Player {...player} />
+        </div>
+        )) }
+      </div>; */}
+
+
     </>
   );
 };
