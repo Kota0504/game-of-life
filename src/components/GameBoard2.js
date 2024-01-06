@@ -243,6 +243,7 @@ const GameBoard2 = () => {
         </div>
         )) }
       </div>; */}
+
     </>
   );
 };
