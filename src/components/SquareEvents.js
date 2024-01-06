@@ -54,26 +54,16 @@ export const handleSquareEvent = (
   setPlayers(rankedPlayers); // ステートを一回で更新
   if (allFinished) {
     console.log("全員ゴール!")
-    // return (
-    //   <div className="App">
-    //     <Dialog_AllGoal />
-    //   </div>
-    // );
-    // modalManagerRef.current.queueModal(
-    //   `${player.name}: ゴーーーーーーーール！！！！`,
-    //   3000
-    // );
-    // // ゴールモーダルが消えた後、結果発表モーダルを表示
-    // setTimeout(() => {
-    //   // ゴールモーダルが消えるのを待ってからランキングモーダルを表示
-    //   modalManagerRef.current.queueModal("ランキング発表", 3000);
-    //   setShowRankingModal(true); // ランキングモーダルを表示
-    // }, 3000); // 3秒後
+    // 全員がゴールした場合はDialog_AllGoalを表示
+    modalManagerRef.current.queueModal(<Dialog_AllGoal />, 3000);
   } else {
-    console.log("一人ゴール!")
+    console.log("一人ゴール/ゴール者0人!")
     modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
     // 全員がゴールしていない場合のみ次のターンに進む\
       setTimeout(() => advanceTurn(), 3000); // 次のターンに進む
+      if (players.isFinished === true){
+        modalManagerRef.current.queueModal(<Dialog_EachGoal />, 3000);
+      }
   }
 };
 
