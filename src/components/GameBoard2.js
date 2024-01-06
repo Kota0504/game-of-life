@@ -252,8 +252,7 @@ const GameBoard2 = () => {
         setPlayers,
         modalManagerRef,
         advanceTurn,
-        allFinished,
-        setShowRankingModal
+        allFinished
       );
     }, 2000);
   };
