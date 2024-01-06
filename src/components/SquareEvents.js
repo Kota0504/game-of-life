@@ -1,5 +1,5 @@
-import Dialog_AllGoal from "./Dialog_AllGoal"; 
-import Dialog_EachGoal from "./Dialog_EachGoal"; 
+import Dialog_AllGoal from "./Dialog_AllGoal";
+import Dialog_EachGoal from "./Dialog_EachGoal";
 
 export const handleSquareEvent = (
   players,
@@ -27,8 +27,8 @@ export const handleSquareEvent = (
           message = "5000円失いました";
           break;
         case "yellow":
-          // イエローマス: その他イベント発生
-          message = "イベント発生！";
+          handleMarriageEvent();
+          // message = "幼馴染が現れた！！！結婚する？";
           break;
         case "green":
           // グリーンマス: ゴール
@@ -52,17 +52,18 @@ export const handleSquareEvent = (
   const rankedPlayers = updatePlayerRanks(updatedPlayers); // ランク付けされたプレイヤーを取得
   setPlayers(rankedPlayers); // ステートを一回で更新
   if (allFinished) {
-    console.log("全員ゴール!")
+    console.log("全員ゴール!");
     // 全員がゴールした場合はDialog_AllGoalを表示
     modalManagerRef.current.queueModal(<Dialog_AllGoal />, 3000);
   } else {
-    console.log("一人ゴール/ゴール者0人!")
+    console.log("一人ゴール/ゴール者0人!");
     modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
     // 全員がゴールしていない場合のみ次のターンに進む\
       setTimeout(() => advanceTurn()); // 次のターンに進む
       if (player.isFinished === true){
         modalManagerRef.current.queueModal(<Dialog_EachGoal />, 3000);
       }
+
   }
 };
 
@@ -101,4 +102,3 @@ export const handleSquareLanding = (
   if (!colorClass) return; // 色のクラスが見つからなければ何もしない
   const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
   handleSquareEvent(players, player, color, setPlayers, modalManagerRef); // 親コンポーネントのイベントハンドラを呼び出し
-};
