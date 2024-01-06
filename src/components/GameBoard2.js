@@ -7,7 +7,8 @@ import Modal from "react-modal";
 import ModalManager from "./ModalManager";
 import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
 import RankingModal from "./RankingModal"; // RankingModalをインポート
-// import TriggerYellowSquareEvent from "./TriggerYellowSquareEvent";
+import Dialog_AllGoal from "./Dialog_AllGoal"; // Dialogコンポーネントのインポート
+import Dialog_EachGoal from "./Dialog_EachGoal"; // Dialogコンポーネントのインポート
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
@@ -53,6 +54,8 @@ const GameBoard2 = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rouletteNumber, setRouletteNumber] = useState(null);
   const allFinished = players.every((player) => player.isFinished); // すべてのプレイヤーがゴールしたか
+  const eachGoal = players.some((player) => player.isFinished);
+
   useEffect(() => {
     if (allFinished) {
       setShowRankingModal(true); // すべてのプレイヤーがゴールしたら順位発表モーダルを表示
@@ -234,6 +237,7 @@ const GameBoard2 = () => {
     } else {
       currentPlayer.position = newPosition; // 新しい位置を更新
     }
+
     modalManagerRef.current.queueModal(
       `${rouletteValue} マス進みやがれ!`,
       2000
@@ -254,6 +258,28 @@ const GameBoard2 = () => {
     }, 2000);
   };
   //----------結婚の実装----------
+
+  const goalDialog = () => {
+    // const lastPlayerisFinished = initialPlayers.every(
+    //   (player) => player.isFinished
+    // );
+
+    if (allFinished) {
+      return (
+        <div className="App">
+          <Dialog_AllGoal />
+        </div>
+      );
+    } else {
+      if (eachGoal) {
+        return (
+          <div className="App">
+            <Dialog_EachGoal />
+          </div>
+        );
+      }
+    }
+  };
 
   //----------各モーダルのスタイル設定 必要だがCSSでも可----------
   const customStyles = {
@@ -302,17 +328,23 @@ const GameBoard2 = () => {
 
       {/* OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
       <OshiTable players={players} onPlayerLanding={handleSquareLanding} />
+
+      {/* goalDialogの表示 */}
+      {goalDialog()}
+
       {/* ランキング表示のコンポーネント */}
       {/* <RankingModal players={players} isOpen={showRankingModal} /> */}
       {/* ステータスを一時的に表示させるためのコンポーネント */}
       <div className="player-status-section">
-        {[...players]
-          .sort((a, b) => b.money - a.money)
-          .map((player, index) => (
-            <div key={player.id} className="player-status">
-              <Player {...player} />
-            </div>
-          ))}
+          // players配列をお金の量に基づいて降順にソートし、それを表示する
+          [...players] // players配列を複製する
+            .sort((a, b) => b.money - a.money) // お金の量で降順にソート
+            .map((player, index) => (
+              <div key={player.id} className="player-status">
+                <Player {...player} />
+              </div>
+            ))
+        }
       </div>
     </>
   );

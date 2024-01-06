@@ -81,14 +81,14 @@
   margin: 2px;
   padding: 5px;
   background-color: white;
-  border-radius: 50%; /* 円形にする */
-  width: 20px; /* アイコンのサイズ */
-  height: 20px; /* アイコンのサイズ */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
   text-align: center;
-  line-height: 20px; /* テキストを垂直中央に */
-  color: black; /* テキストの色 */
-  font-size: 10px; /* テキストのサイズ */
-  box-shadow: 0 0 2px #000; /* アイコンに影をつける */
+  line-height: 20px;
+  color: black;
+  font-size: 10px;
+  box-shadow: 0 0 2px #000;
 }
 
 /* .roulette-container {
@@ -207,6 +207,7 @@
   font-size: 28px;
 }
 
+
 .marigge-modal {
   position: fixed;
   top: 0;
@@ -217,4 +218,24 @@
   display: flex;
   justify-content: center; /* 水平方向の中央揃え */
   z-index: 1000;
+=======
+.player-status-section {
+  background-color: #f7ebf6;
+}
+
+.player-status-section {
+  display: flex; /* Flexbox を使用 */
+  justify-content: center; /* 中央揃え */
+  flex-wrap: wrap; /* 要素が多い場合に折り返し */
+  gap: 20px;
+}
+
+.player-status {
+  text-align: center;
+  margin: 10px; /* 上下左右のマージンを設定 */
+  margin-top: 36px;
+}
+
+.player-info {
+  text-align: left; /* テキストを左揃えにする */
 }

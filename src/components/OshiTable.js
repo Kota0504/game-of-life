@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import groupImage from "./image/g13.png";
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 
 const OshiTable = ({ players, onPlayerLanding }) => {
@@ -21,10 +22,20 @@ const OshiTable = ({ players, onPlayerLanding }) => {
   };
 
   // 各プレイヤーのアイコンをレンダリングする関数
+  // const renderPlayersAtSquare = (squareId) => {
+  //   const playersAtSquare = players.filter(
+  //     (player) => player.position === squareId
+  //   );
+  //   playersAtSquare.forEach((player) => onPlayerLanding(player.id));
+  //   return playersAtSquare.map((player, index) => (
+  //     <div key={player.id} className={`player player-${index + 1}`}>
+  //       <span>{player.name}</span>
+  //     </div>
+  //   ));
+  // };
   const renderPlayersAtSquare = (squareId) => {
-    const playersAtSquare = players.filter(
-      (player) => player.position === squareId
-    );
+    const playersAtSquare = players ? players.filter(
+      (player) => player.position === squareId) : [];
     playersAtSquare.forEach((player) => onPlayerLanding(player.id));
     return playersAtSquare.map((player, index) => (
       <div key={player.id} className={`player player-${index + 1}`}>
@@ -33,15 +44,12 @@ const OshiTable = ({ players, onPlayerLanding }) => {
     ));
   };
 
+  
   return (
     <>
       <div className="header-class-8">
         <div className="App-logo-8">
-          <img
-            src="src/components/image/group.png"
-            alt="ロゴ"
-            className="App-logo-2"
-          />
+          <img src={groupImage} alt="ロゴ" className="App-logo-2" />
         </div>
         {/* <div className="ranking-list">
           <div
