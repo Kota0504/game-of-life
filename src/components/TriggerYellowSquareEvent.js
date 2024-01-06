@@ -1,46 +1,5 @@
 import React from "react";
 
-// // 結婚イベントを処理する関数
-// export const handleMarriageEvent = (
-//   players,
-//   playerId,
-//   willMarry,
-//   setPlayers
-// ) => {
-//   const marriagePosition = 14; // 結婚した場合の移動先
-//   const noMarriagePosition = 22; // 結婚しない場合の移動先
-
-//   setPlayers(
-//     players.map((player) => {
-//       if (player.id === playerId) {
-//         return {
-//           ...player,
-//           position: willMarry ? marriagePosition : noMarriagePosition,
-//           isMarried: willMarry,
-//         };
-//       }
-//       return player;
-//     })
-//   );
-// };
-// const events = {
-//   // マスのIDをキーとしたイベントのオブジェクト
-//   13: handleMarriageEvent,
-//   // 30: handleWeddingEvent,
-//   // 42: handleSecondMarriageEvent,
-//   // 55: handleBabyEvent,
-//   // 57: handleJobEvent,
-//   // 71: handlehouseEvent,
-// };
-
-// // イベントを発火させる関数
-// export function triggerEvent(squareId, player, players, setPlayers) {
-//   if (events[squareId]) {
-//     // イベントが定義されている場合は、それを実行します。
-//     events[squareId](players, player.id, player.willMarry, setPlayers);
-//   }
-// }
-
 // ｰｰｰｰｰｰｰｰｰｰ結婚のマスの処理ｰｰｰｰｰｰｰｰｰｰ
 export const TriggerYellowSquareEvent = ({
   currentPlayerIndex,
@@ -55,10 +14,8 @@ export const TriggerYellowSquareEvent = ({
   setIsMarriageModalOpen,
   isMarriageModalOpen,
 }) => {
-  setIsMarriageModalOpen(true); // 結婚選択モーダルを表示
-
   const handleMarriageChoice = (choice) => {
-    setIsMarriageModalOpen(false); // モーダルを閉じる
+    // setIsMarriageModalOpen(false); // モーダルを閉じる
     const updatedPlayers = players.map((player, index) => {
       if (index === currentPlayerIndex) {
         if (choice === "marry") {
@@ -90,15 +47,15 @@ export const TriggerYellowSquareEvent = ({
   };
 
   return (
-    <div className="marriage-modal">
+    <div>
       {isMarriageModalOpen && (
-        <div>
-          <p>幼馴染が飛び出してきた！結婚する？結婚しない？</p>
+        <div className="marigge-modal">
+          <p>幼馴染が飛び出してきた！</p>
           <button onClick={() => handleMarriageChoice("marry")}>
-            結婚する
+            結婚する?
           </button>
           <button onClick={() => handleMarriageChoice("notMarry")}>
-            結婚しない
+            結婚しない?
           </button>
         </div>
       )}
