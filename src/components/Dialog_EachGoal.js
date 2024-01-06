@@ -7,8 +7,6 @@ const Dialog_EachGoal = () => {
   const [isEachGoalDialogOpen, setEachGoalDialogOpen] = useState(true);
   const [isOshiTableOpen, setOshiTableOpen] = useState(false);
 
-  // const userName = "saaaya";
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setEachGoalDialogOpen(false);
@@ -20,9 +18,7 @@ const Dialog_EachGoal = () => {
 
   return (
     <div>
-      {/* <button onClick={openDialog}>Open Dialog</button>  */}
-
-      {isEachGoalDialogOpen && (
+       {isEachGoalDialogOpen && (
         <div className="dialog-overlay">
           <div key={player.id} className="dialog">
             <p className='playerName'>{player.name}</p>

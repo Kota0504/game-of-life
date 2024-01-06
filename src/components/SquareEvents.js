@@ -9,7 +9,6 @@ export const handleSquareEvent = (
   modalManagerRef,
   advanceTurn,
   allFinished,
-  handleMarriageEvent
 ) => {
   let message = "";
   let updatedPlayers = players.map((p) => {
@@ -60,10 +59,11 @@ export const handleSquareEvent = (
     console.log("一人ゴール/ゴール者0人!");
     modalManagerRef.current.queueModal(`${player.name}: ${message}`, 3000);
     // 全員がゴールしていない場合のみ次のターンに進む\
-    setTimeout(() => advanceTurn(), 3000); // 次のターンに進む
-    if (players.isFinished === true) {
-      modalManagerRef.current.queueModal(<Dialog_EachGoal />, 3000);
-    }
+      setTimeout(() => advanceTurn()); // 次のターンに進む
+      if (player.isFinished === true){
+        modalManagerRef.current.queueModal(<Dialog_EachGoal />, 3000);
+      }
+
   }
 };
 
@@ -102,4 +102,3 @@ export const handleSquareLanding = (
   if (!colorClass) return; // 色のクラスが見つからなければ何もしない
   const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
   handleSquareEvent(players, player, color, setPlayers, modalManagerRef); // 親コンポーネントのイベントハンドラを呼び出し
-};

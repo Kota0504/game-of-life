@@ -245,10 +245,6 @@ const GameBoard2 = () => {
   };
 
   const goalDialog = () => {
-    // const lastPlayerisFinished = initialPlayers.every(
-    //   (player) => player.isFinished
-    // );
-
     if (allFinished) {
       return (
         <div className="App">
