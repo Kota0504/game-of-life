@@ -1,5 +1,5 @@
-import Dialog_AllGoal from "./Dialog_AllGoal";
-import Dialog_EachGoal from "./Dialog_EachGoal";
+import Dialog_AllGoal from "../Modal/Dialog_AllGoal";
+import Dialog_EachGoal from "../Modal/Dialog_EachGoal";
 
 export const handleSquareEvent = (
   players,
