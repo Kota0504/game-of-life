@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import groupImage from "./image/g13.png";
+import groupImage from "../image/g13.png";
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 
 const OshiTable = ({ players, onPlayerLanding }) => {

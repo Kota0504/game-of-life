@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Dialog.css";
+import "/Users/toshin/Desktop/game-of-life/src/components/css/Dialog.css";
 import Dialog_Result from "./Dialog_Result.js";
 
 const Dialog_AllGoal = () => {
@@ -30,4 +30,3 @@ const Dialog_AllGoal = () => {
 };
 
 export default Dialog_AllGoal;
-

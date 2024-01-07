@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./GameBoard.css";
-import Player from "./Player";
+import "/Users/toshin/Desktop/game-of-life/src/components/css/GameBoard.css";
+import Player from "./Data/Player";
 import OshiTable from "./OshiTable";
-import Roulette from "./Roulette";
+import Roulette from "./Move/Roulette";
 import Modal from "react-modal";
-import ModalManager from "./ModalManager";
-import { handleSquareEvent, handleSquareLanding } from "./SquareEvents";
-import Dialog_AllGoal from "./Dialog_AllGoal"; // Dialogコンポーネントのインポート
-import Dialog_EachGoal from "./Dialog_EachGoal"; // Dialogコンポーネントのインポート
+import ModalManager from "./Modal/ModalManager";
+import { handleSquareEvent, handleSquareLanding } from "./Move/SquareEvents";
+import Dialog_AllGoal from "./Modal/Dialog_AllGoal"; // Dialogコンポーネントのインポート
+import Dialog_EachGoal from "./Modal/Dialog_EachGoal"; // Dialogコンポーネントのインポート
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
