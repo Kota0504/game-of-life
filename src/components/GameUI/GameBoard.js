@@ -64,7 +64,7 @@ const GameBoard2 = () => {
       return () => clearTimeout(timer);
     } else if (currentTurn === 0) {
       // showStartModalがfalseになった後、最初のターンを開始する
-      nextTurn();
+nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [showStartModal]);
 
@@ -72,7 +72,7 @@ const GameBoard2 = () => {
   useEffect(() => {
     if (!showStartModal) {
       // ゲーム開始モーダルが表示されていない場合のみ
-      nextTurn();
+nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [currentTurn]);
 
@@ -99,7 +99,7 @@ const GameBoard2 = () => {
   useEffect(() => {
     if (currentTurn > 0) {
       // currentTurnが0より大きい場合にのみnextTurnを呼び出す
-      nextTurn();
+nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [currentTurn]);
 
