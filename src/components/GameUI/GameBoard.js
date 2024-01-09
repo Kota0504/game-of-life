@@ -18,8 +18,9 @@ import {
   advanceTurn,
 } from "/Users/toshin/Desktop/game-of-life/src/components/GameUI/Move/Trun.js";
 import handleRouletteResult from "./Move/handleRouletteResult.js";
+import { getSquareColor } from "./Move/getSquareColor.js";
 
-const GameBoard2 = () => {
+const GameBoard = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
 
   //-----------useStateで渡す定義 必要----------
@@ -86,23 +87,6 @@ const GameBoard2 = () => {
     setSortedPlayers(newSortedPlayers);
   }, [players]);
   const boardSize = 75; // 仮にボードのマスが30だとする
-  // マスの位置から色を取得する関数
-  const getSquareColor = (position) => {
-    // プレイヤーの位置に対応するIDを持つマスの要素を探す
-    const squareElement = document.getElementById(position.toString());
-    if (!squareElement) return null; // 要素が見つからなければnullを返す
-
-    // マスのクラス名から色を抽出する
-    const color = extractColorFromClassname(squareElement.className);
-    return color;
-  };
-
-  // クラス名文字列から色を抽出するヘルパー関数
-  const extractColorFromClassname = (classname) => {
-    const colorPattern = /bg-([a-z]+)-200/; // この正規表現はクラス名で使われている色のフォーマットにマッチする
-    const match = classname.match(colorPattern);
-    return match ? match[1] : null; // 色に該当する部分を返す、またはマッチしない場合はnullを返す
-  };
 
   // currentTurnが更新されたらnextTurnを呼び出すが、最初のターン（currentTurn === 0）は除外する
   useEffect(() => {
@@ -215,4 +199,4 @@ const GameBoard2 = () => {
   );
 };
 
-export default GameBoard2;
+export default GameBoard;
