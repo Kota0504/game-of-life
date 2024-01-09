@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "/Users/toshin/Desktop/game-of-life/src/components/css/Dialog.css";
-import OshiTable from "../OshiTable.js";
+import OshiTable from "../Table/OshiTable.js";
 import player from "../GameBoard.js";
 
 const Dialog_EachGoal = () => {
