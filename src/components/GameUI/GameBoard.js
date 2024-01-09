@@ -64,7 +64,7 @@ const GameBoard2 = () => {
       return () => clearTimeout(timer);
     } else if (currentTurn === 0) {
       // showStartModalがfalseになった後、最初のターンを開始する
-nextTurn(modalManagerRef, players, currentTurn);
+      nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [showStartModal]);
 
@@ -72,7 +72,7 @@ nextTurn(modalManagerRef, players, currentTurn);
   useEffect(() => {
     if (!showStartModal) {
       // ゲーム開始モーダルが表示されていない場合のみ
-nextTurn(modalManagerRef, players, currentTurn);
+      nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [currentTurn]);
 
@@ -99,7 +99,7 @@ nextTurn(modalManagerRef, players, currentTurn);
   useEffect(() => {
     if (currentTurn > 0) {
       // currentTurnが0より大きい場合にのみnextTurnを呼び出す
-nextTurn(modalManagerRef, players, currentTurn);
+      nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [currentTurn]);
 
@@ -138,7 +138,8 @@ nextTurn(modalManagerRef, players, currentTurn);
         landedSquareColor,
         setPlayers,
         modalManagerRef,
-        advanceTurn,
+        () =>
+          advanceTurn(currentTurn, players, setRouletteNumber, setCurrentTurn),
         allFinished,
         handleMarriageEvent
       );
