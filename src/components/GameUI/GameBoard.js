@@ -17,12 +17,14 @@ import {
   nextTurn,
   advanceTurn,
 } from "/Users/toshin/Desktop/game-of-life/src/components/GameUI/Move/Trun.js";
+import handleRouletteResult from "./Move/handleRouletteResult.js";
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
 
   //-----------useStateで渡す定義 必要----------
   const [players, setPlayers] = useState(initialPlayers);
+  const [sortedPlayers, setSortedPlayers] = useState([...initialPlayers]);
   const [showStartModal, setShowStartModal] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rouletteNumber, setRouletteNumber] = useState(null);
@@ -56,10 +58,10 @@ const GameBoard2 = () => {
   }, []);
   useEffect(() => {
     if (showStartModal) {
-      modalManagerRef.current.queueModal("ゲームスタート!", 3000);
+      modalManagerRef.current.queueModal("ゲームスタート!", 1000);
       const timer = setTimeout(() => {
         setShowStartModal(false);
-      }, 3000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     } else if (currentTurn === 0) {
@@ -75,7 +77,14 @@ const GameBoard2 = () => {
       nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [currentTurn]);
-
+  // GameBoard2 コンポーネント内で currentTurn の値を確認
+  useEffect(() => {
+    console.log("Current Turn State:", currentTurn);
+  }, [currentTurn]);
+  useEffect(() => {
+    const newSortedPlayers = [...players].sort((a, b) => b.money - a.money);
+    setSortedPlayers(newSortedPlayers);
+  }, [players]);
   const boardSize = 75; // 仮にボードのマスが30だとする
   // マスの位置から色を取得する関数
   const getSquareColor = (position) => {
@@ -103,48 +112,6 @@ const GameBoard2 = () => {
     }
   }, [currentTurn]);
 
-  //---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 必要---------------------
-  const handleRouletteResult = (result) => {
-    // ...ルーレットの結果を処理...
-    const rouletteValue = parseInt(result);
-    const currentPlayer = players[currentTurn];
-    const newPosition = currentPlayer.position + rouletteValue;
-    // プレイヤーの新しい位置を更新
-    const updatedPlayers = players.map((player, index) => {
-      if (index === currentPlayer.id) {
-        return { ...player, position: newPosition };
-      }
-      return player;
-    });
-    setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
-
-    if (newPosition >= boardSize) {
-      // ゴールに到達したかチェック
-      currentPlayer.isFinished = true; // ゴールフラグを立てる
-      currentPlayer.position = boardSize; // ゴール位置に設定
-    } else {
-      currentPlayer.position = newPosition; // 新しい位置を更新
-    }
-
-    modalManagerRef.current.queueModal(
-      `${rouletteValue} マス進みやがれ!`,
-      2000
-    );
-    setTimeout(() => {
-      const landedSquareColor = getSquareColor(newPosition);
-      handleSquareEvent(
-        players,
-        currentPlayer,
-        landedSquareColor,
-        setPlayers,
-        modalManagerRef,
-        () =>
-          advanceTurn(currentTurn, players, setRouletteNumber, setCurrentTurn),
-        allFinished,
-        handleMarriageEvent
-      );
-    }, 2000);
-  };
   // handleSquareEventを呼び出す部分
   const squareLanded = (player, color) => {
     handleSquareEvent(
@@ -207,7 +174,25 @@ const GameBoard2 = () => {
 
       {/* 直接ルーレットコンポーネントを埋め込む */}
       <div className="roulette-container">
-        <Roulette onStopSpinning={handleRouletteResult} />
+        <Roulette
+          onStopSpinning={(result) =>
+            handleRouletteResult(
+              players,
+              result,
+              currentTurn,
+              setPlayers,
+              boardSize,
+              modalManagerRef,
+              getSquareColor,
+              handleSquareEvent,
+              advanceTurn,
+              setRouletteNumber,
+              setCurrentTurn,
+              allFinished,
+              handleMarriageEvent
+            )
+          }
+        />
       </div>
 
       {/* OshiTable コンポーネントでスタート位置にプレイヤーアイコンを表示する */}
@@ -220,13 +205,11 @@ const GameBoard2 = () => {
       {/* <RankingModal players={players} isOpen={showRankingModal} /> */}
       {/* ステータスを一時的に表示させるためのコンポーネント */}
       <div className="player-status-section">
-        {[...players]
-          .sort((a, b) => b.money - a.money)
-          .map((player, index) => (
-            <div key={player.id} className="player-status">
-              <Player {...player} />
-            </div>
-          ))}
+        {sortedPlayers.map((player, index) => (
+          <div key={player.id} className="player-status">
+            <Player {...player} />
+          </div>
+        ))}
       </div>
     </>
   );

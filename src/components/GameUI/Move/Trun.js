@@ -3,15 +3,20 @@ import { useState } from "react";
 //----------プレイヤーのターンを処理する関数 必要----------
 
 export const nextTurn = (modalManagerRef, players, currentTurn) => {
+  if (!players || currentTurn < 0 || currentTurn >= players.length) {
+    console.error("Invalid currentTurn");
+    return; // 無効な currentTurn の場合は処理を中断
+  }
+
   if (modalManagerRef && modalManagerRef.current) {
     modalManagerRef.current.queueModal(
       `${players[currentTurn].name}のターン！`,
-      2000
+      1000
     );
   }
 };
 
-// advanceTurnはただcurrentTurnを更新する
+// advanceTurn 関数内で setCurrentTurn の呼び出しを確認
 export const advanceTurn = (
   currentTurn,
   players,
@@ -19,10 +24,15 @@ export const advanceTurn = (
   setCurrentTurn
 ) => {
   setRouletteNumber(null);
+
+  // 次のプレイヤーを計算する
   let nextPlayerIndex = (currentTurn + 1) % players.length;
-  // ゴールに到達しているプレイヤーをスキップする
-  while (players[nextPlayerIndex].isFinished) {
+  while (
+    players[nextPlayerIndex].isFinished &&
+    !players.every((player) => player.isFinished)
+  ) {
     nextPlayerIndex = (nextPlayerIndex + 1) % players.length;
   }
-  setCurrentTurn(nextPlayerIndex);
+
+  setCurrentTurn(nextPlayerIndex); // 新しいターンをセット
 };
