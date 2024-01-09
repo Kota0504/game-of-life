@@ -1,5 +1,4 @@
-import React from "react";
-
+//----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
 const initialPlayers = [
   {
     id: 1,

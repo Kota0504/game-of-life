@@ -1,3 +1,5 @@
+//----------マスに応じた金額の増減などをおこなう機能----------
+
 import Dialog_AllGoal from "../Modal/Dialog_AllGoal";
 import Dialog_EachGoal from "../Modal/Dialog_EachGoal";
 

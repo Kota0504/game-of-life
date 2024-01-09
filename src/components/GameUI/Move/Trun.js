@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-//----------プレイヤーのターンを処理する関数 必要----------
+//----------プレイヤーのターンを処理する機能 ----------
 
 export const nextTurn = (modalManagerRef, players, currentTurn) => {
   if (!players || currentTurn < 0 || currentTurn >= players.length) {

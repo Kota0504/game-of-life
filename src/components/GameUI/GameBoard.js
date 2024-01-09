@@ -21,8 +21,6 @@ import handleRouletteResult from "./Move/handleRouletteResult.js";
 import { getSquareColor } from "./Move/getSquareColor.js";
 
 const GameBoard = () => {
-  //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
-
   //-----------useStateで渡す定義 必要----------
   const [players, setPlayers] = useState(initialPlayers);
   const [sortedPlayers, setSortedPlayers] = useState([...initialPlayers]);
@@ -35,6 +33,7 @@ const GameBoard = () => {
   const [modalContent, setModalContent] = useState("");
   const [modalChoices, setModalChoices] = useState([]);
   const modalManagerRef = useRef(null);
+  const boardSize = 75; // 仮にボードのマスが75だとする
   // 選択肢のボタンがクリックされたときに呼び出される関数
   const handleChoice = (choiceValue) => {
     // handleMarriageChoice関数に選択された値を渡す
@@ -86,7 +85,6 @@ const GameBoard = () => {
     const newSortedPlayers = [...players].sort((a, b) => b.money - a.money);
     setSortedPlayers(newSortedPlayers);
   }, [players]);
-  const boardSize = 75; // 仮にボードのマスが30だとする
 
   // currentTurnが更新されたらnextTurnを呼び出すが、最初のターン（currentTurn === 0）は除外する
   useEffect(() => {
@@ -95,20 +93,6 @@ const GameBoard = () => {
       nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [currentTurn]);
-
-  // handleSquareEventを呼び出す部分
-  const squareLanded = (player, color) => {
-    handleSquareEvent(
-      players,
-      player,
-      color,
-      setPlayers,
-      modalManagerRef,
-      advanceTurn,
-      allFinished,
-      handleMarriageEvent // handleMarriageEventを引数として渡す
-    );
-  };
 
   const goalDialog = () => {
     if (allFinished) {
@@ -128,7 +112,7 @@ const GameBoard = () => {
     }
   };
 
-  //----------各モーダルのスタイル設定 必要だがCSSでも可----------
+  //----------各モーダルのスタイル設定 CSSでも可だがバグで実装できていない----------
   const customStyles = {
     content: {
       top: "50%",
@@ -185,8 +169,6 @@ const GameBoard = () => {
       {/* goalDialogの表示 */}
       {goalDialog()}
 
-      {/* ランキング表示のコンポーネント */}
-      {/* <RankingModal players={players} isOpen={showRankingModal} /> */}
       {/* ステータスを一時的に表示させるためのコンポーネント */}
       <div className="player-status-section">
         {sortedPlayers.map((player, index) => (

@@ -1,9 +1,4 @@
-import { useEffect } from "react";
-
 //----------結婚の実装----------
-
-
-
 export const handleMarriageChoice = (
   players,
   advanceTurn,
@@ -11,8 +6,7 @@ export const handleMarriageChoice = (
   setIsModalVisible,
   setPlayers,
   choice,
-  setModalChoices,
-
+  setModalChoices
 ) => {
   const updatedPlayers = players.map((player) => {
     if (player.id === currentTurn + 1) {

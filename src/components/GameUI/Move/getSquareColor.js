@@ -1,3 +1,5 @@
+// ----------マスの位置から色を取得する機能----------
+
 // クラス名文字列から色を抽出するヘルパー関数
 const extractColorFromClassname = (classname) => {
   const colorPattern = /bg-([a-z]+)-200/; // この正規表現はクラス名で使われている色のフォーマットにマッチする

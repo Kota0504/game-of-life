@@ -1,4 +1,4 @@
-//---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 必要---------------------
+//---------- ルーレットの結果を処理し、結果を表示し、次のターンへ進む関数 ---------------------
 const handleRouletteResult = (
   players,
   result,
@@ -16,13 +16,9 @@ const handleRouletteResult = (
 ) => {
   // プレイヤー配列と現在のターンが有効な範囲内にあるかをチェック
   if (!players || currentTurn < 0 || currentTurn >= players.length) {
-    console.error("Invalid currentTurn or players array");
     return; // エラーがある場合は処理を中断
   }
   const currentPlayer = players[currentTurn]; // 現在のプレイヤー
-  console.log("Current Turn:", currentTurn);
-  console.log("Players:", players);
-  console.log("Current Player:", currentPlayer);
   // ...ルーレットの結果を処理...
   const rouletteValue = parseInt(result);
   const newPosition = currentPlayer.position + rouletteValue;
