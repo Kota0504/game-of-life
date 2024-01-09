@@ -1,103 +1,42 @@
 import React, { useState, useEffect, useRef } from "react";
 import "/Users/toshin/Desktop/game-of-life/src/components/css/GameBoard.css";
 import Player from "./Data/Player";
-import OshiTable from "./OshiTable";
+import initialPlayers from "./Data/InitalPlayers";
+import OshiTable from "./Table/OshiTable";
 import Roulette from "./Move/Roulette";
 import Modal from "react-modal";
 import ModalManager from "./Modal/ModalManager";
 import { handleSquareEvent, handleSquareLanding } from "./Move/SquareEvents";
 import Dialog_AllGoal from "./Modal/Dialog_AllGoal"; // Dialogコンポーネントのインポート
 import Dialog_EachGoal from "./Modal/Dialog_EachGoal"; // Dialogコンポーネントのインポート
+import {
+  handleMarriageChoice,
+  handleMarriageEvent,
+} from "/Users/toshin/Desktop/game-of-life/src/components/GameUI/Move/Event/MarriageChoice.js";
+import {
+  nextTurn,
+  advanceTurn,
+} from "/Users/toshin/Desktop/game-of-life/src/components/GameUI/Move/Trun.js";
 
 const GameBoard2 = () => {
   //----------暫定的に実装しているプレイヤーのステータス あとで参加プレイヤーのステータスになるように実装する----------
-  const initialPlayers = [
-    {
-      id: 1,
-      name: "Player 1",
-      position: 74,
-      money: 100000,
-      rank: 1,
-      isMarried: false,
-      children: 0,
-      hasHouse: false,
-      isFinished: false,
-    },
-    {
-      id: 2,
-      name: "Player 2",
-      position: 74,
-      money: 100000,
-      rank: 1,
-      isMarried: false,
-      children: 0,
-      hasHouse: false,
-      isFinished: false,
-    },
-    {
-      id: 3,
-      name: "Player 3",
-      position: 74,
-      money: 100000,
-      rank: 1,
-      isMarried: false,
-      children: 0,
-      hasHouse: false,
-      isFinished: false,
-    },
-  ];
+
   //-----------useStateで渡す定義 必要----------
   const [players, setPlayers] = useState(initialPlayers);
   const [showStartModal, setShowStartModal] = useState(true);
-  const [currentTurn, setCurrentTurn] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rouletteNumber, setRouletteNumber] = useState(null);
   const allFinished = players.every((player) => player.isFinished); // すべてのプレイヤーがゴールしたか
   const eachGoal = players.some((player) => player.isFinished);
-
+  const [currentTurn, setCurrentTurn] = useState(0);
   const [modalContent, setModalContent] = useState("");
   const [modalChoices, setModalChoices] = useState([]);
-  const modalManagerRef = useRef();
+  const modalManagerRef = useRef(null);
   // 選択肢のボタンがクリックされたときに呼び出される関数
   const handleChoice = (choiceValue) => {
     // handleMarriageChoice関数に選択された値を渡す
     handleMarriageChoice(choiceValue);
   };
-
-  //----------結婚の実装----------
-  const handleMarriageChoice = (choice) => {
-    const updatedPlayers = players.map((player) => {
-      if (player.id === currentTurn + 1) {
-        if (choice === "marry") {
-          return { ...player, isMarried: true, position: 14 };
-        } else if (choice === "notMarry") {
-          return { ...player, position: 22 };
-        }
-      }
-      return player;
-    });
-
-    setPlayers(updatedPlayers);
-    setIsModalVisible(false); // 選択後にモーダルを閉じる
-    setModalChoices([]);
-    advanceTurn(); // 次のターンに進む
-  };
-
-  // handleMarriageEventはモーダルをキューに入れ、次のターンを適切にセットアップするべきです
-  const handleMarriageEvent = () => {
-    modalManagerRef.current.queueChoiceModal(
-      "幼馴染が現れた！！！",
-      [
-        { label: "結婚する？", value: "marry" },
-        { label: "結婚しない？", value: "notMarry" },
-      ],
-      (choice) => {
-        handleMarriageChoice(choice);
-        // advanceTurn(); // 選択後に次のターンに進む
-      }
-    );
-  };
-
   useEffect(() => {
     // ModalManagerのインスタンス初期化用のEffect
     if (!modalManagerRef.current) {
@@ -115,7 +54,6 @@ const GameBoard2 = () => {
       );
     }
   }, []);
-
   useEffect(() => {
     if (showStartModal) {
       modalManagerRef.current.queueModal("ゲームスタート!", 3000);
@@ -157,25 +95,6 @@ const GameBoard2 = () => {
     return match ? match[1] : null; // 色に該当する部分を返す、またはマッチしない場合はnullを返す
   };
 
-  //----------プレイヤーのターンを処理する関数 必要----------
-  const nextTurn = () => {
-    modalManagerRef.current.queueModal(
-      `${players[currentTurn].name}のターン！`,
-      2000
-    );
-  };
-
-  // advanceTurnはただcurrentTurnを更新する
-  const advanceTurn = () => {
-    setRouletteNumber(null);
-    let nextPlayerIndex = (currentTurn + 1) % players.length;
-    // ゴールに到達しているプレイヤーをスキップする
-    while (players[nextPlayerIndex].isFinished) {
-      nextPlayerIndex = (nextPlayerIndex + 1) % players.length;
-    }
-    setCurrentTurn(nextPlayerIndex);
-  };
-
   // currentTurnが更新されたらnextTurnを呼び出すが、最初のターン（currentTurn === 0）は除外する
   useEffect(() => {
     if (currentTurn > 0) {
@@ -199,11 +118,6 @@ const GameBoard2 = () => {
     });
     setPlayers(updatedPlayers); // 新しいプレイヤーリストを設定
 
-    // if (newPosition === 13) {
-    //   handleMarriageEvent();
-    // }
-    // ゴール判定を追加
-    // else
     if (newPosition >= boardSize) {
       // ゴールに到達したかチェック
       currentPlayer.isFinished = true; // ゴールフラグを立てる

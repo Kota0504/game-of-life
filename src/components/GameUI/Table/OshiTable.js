@@ -1,41 +1,19 @@
-import { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import groupImage from "../image/g13.png";
+import groupImage from "/Users/toshin/Desktop/game-of-life/src/components/image/g13.png";
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 
 const OshiTable = ({ players, onPlayerLanding }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // // モーダルを表示する関数
-  // const showModal = () => {
-  //   setIsModalVisible(true);
-  // };
-
-  // // モーダルを非表示にする関数
-  // const hideModal = () => {
-  //   setIsModalVisible(false);
-  // };
   const navigate = useNavigate();
 
   const handleCloseModal = () => {
     navigate("/"); // start-screen に遷移
   };
 
-  // 各プレイヤーのアイコンをレンダリングする関数
-  // const renderPlayersAtSquare = (squareId) => {
-  //   const playersAtSquare = players.filter(
-  //     (player) => player.position === squareId
-  //   );
-  //   playersAtSquare.forEach((player) => onPlayerLanding(player.id));
-  //   return playersAtSquare.map((player, index) => (
-  //     <div key={player.id} className={`player player-${index + 1}`}>
-  //       <span>{player.name}</span>
-  //     </div>
-  //   ));
-  // };
   const renderPlayersAtSquare = (squareId) => {
-    const playersAtSquare = players ? players.filter(
-      (player) => player.position === squareId) : [];
+    const playersAtSquare = players
+      ? players.filter((player) => player.position === squareId)
+      : [];
     playersAtSquare.forEach((player) => onPlayerLanding(player.id));
     return playersAtSquare.map((player, index) => (
       <div key={player.id} className={`player player-${index + 1}`}>
@@ -44,40 +22,12 @@ const OshiTable = ({ players, onPlayerLanding }) => {
     ));
   };
 
-  
   return (
     <>
       <div className="header-class-8">
         <div className="App-logo-8">
           <img src={groupImage} alt="ロゴ" className="App-logo-2" />
         </div>
-        {/* <div className="ranking-list">
-          <div
-            className="ranking title-9"
-            onMouseEnter={showModal}
-            onMouseLeave={hideModal}
-          >
-            ランキング
-          </div>
-          <div
-            className={`ranking-modal ${
-              isModalVisible ? "show-ranking-modal" : ""
-            }`}
-          >
-            ステータスモーダルの内容
-            {players.map((player) => (
-              <div key={player.id}>
-                プレイヤー情報の表示
-                <p>
-                  {player.name}: ¥{player.money} :{player.isMarried}
-                </p>
-              </div>
-            ))}
-          </div>
-          <span className="title-9">●</span>
-          <span className="title-9">●</span>
-          <span className="title-9">●</span>
-        </div> */}
         <button onClick={handleCloseModal} className="close-button-9">
           終了
         </button>
