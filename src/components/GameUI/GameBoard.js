@@ -129,6 +129,8 @@ const GameBoard = () => {
       {/* モーダル表示 */}
       <div className="modal-container">
         <Modal isOpen={isModalVisible} style={customStyles}>
+          {/*ここのStyleがCSSでやりたいができていないところ
+           */}
           <h2>{modalContent}</h2>
           {/* ここに選択肢を表示するロジックを追加 */}
           {modalChoices &&
