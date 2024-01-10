@@ -1,4 +1,4 @@
-// 必要に応じて他のインポートを追加
+//----------プレイヤーがいるマスの色を抽出する機能----------
 import { handleSquareEvent } from "./handleSquareEvents";
 
 export const handleSquareLanding = (
