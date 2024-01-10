@@ -1,3 +1,4 @@
+//----------プレイヤーをランク別に入れ替える機能----------
 export const updatePlayerRanks = (players) => {
   if (!Array.isArray(players)) {
     console.error("Error: players should be an array", players);
