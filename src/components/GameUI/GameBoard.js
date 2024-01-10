@@ -6,7 +6,7 @@ import OshiTable from "./Table/OshiTable";
 import Roulette from "./Move/Roulette";
 import Modal from "react-modal";
 import ModalManager from "./Modal/ModalManager";
-import { handleSquareEvent, handleSquareLanding } from "./Move/SquareEvents";
+import { handleSquareEvent, handleSquareLanding } from "./Move/handleSquareEvents.js";
 import Dialog_AllGoal from "./Modal/Dialog_AllGoal"; // Dialogコンポーネントのインポート
 import Dialog_EachGoal from "./Modal/Dialog_EachGoal"; // Dialogコンポーネントのインポート
 import {
@@ -56,6 +56,8 @@ const GameBoard = () => {
       );
     }
   }, []);
+
+  //----------ターン管理のuseEffect----------
   useEffect(() => {
     if (showStartModal) {
       modalManagerRef.current.queueModal("ゲームスタート!", 1000);
@@ -70,22 +72,6 @@ const GameBoard = () => {
     }
   }, [showStartModal]);
 
-  // currentTurnが更新されたときにのみnextTurnを実行
-  useEffect(() => {
-    if (!showStartModal) {
-      // ゲーム開始モーダルが表示されていない場合のみ
-      nextTurn(modalManagerRef, players, currentTurn);
-    }
-  }, [currentTurn]);
-  // GameBoard2 コンポーネント内で currentTurn の値を確認
-  useEffect(() => {
-    console.log("Current Turn State:", currentTurn);
-  }, [currentTurn]);
-  useEffect(() => {
-    const newSortedPlayers = [...players].sort((a, b) => b.money - a.money);
-    setSortedPlayers(newSortedPlayers);
-  }, [players]);
-
   // currentTurnが更新されたらnextTurnを呼び出すが、最初のターン（currentTurn === 0）は除外する
   useEffect(() => {
     if (currentTurn > 0) {
@@ -93,6 +79,12 @@ const GameBoard = () => {
       nextTurn(modalManagerRef, players, currentTurn);
     }
   }, [currentTurn]);
+
+  //-----------順位によってソートするuseEffect----------
+  useEffect(() => {
+    const newSortedPlayers = [...players].sort((a, b) => b.money - a.money);
+    setSortedPlayers(newSortedPlayers);
+  }, [players]);
 
   const goalDialog = () => {
     if (allFinished) {
