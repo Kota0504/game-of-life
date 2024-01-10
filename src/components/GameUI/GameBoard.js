@@ -6,7 +6,8 @@ import OshiTable from "./Table/OshiTable";
 import Roulette from "./Move/Roulette";
 import Modal from "react-modal";
 import ModalManager from "./Modal/ModalManager";
-import { handleSquareEvent, handleSquareLanding } from "./Move/handleSquareEvents.js";
+import { handleSquareEvent } from "./Move/handleSquareEvents.js";
+import { handleSquareLanding } from "./Move/handleSquareLanding.js";
 import Dialog_AllGoal from "./Modal/Dialog_AllGoal"; // Dialogコンポーネントのインポート
 import Dialog_EachGoal from "./Modal/Dialog_EachGoal"; // Dialogコンポーネントのインポート
 import {
