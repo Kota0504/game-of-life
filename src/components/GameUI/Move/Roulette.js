@@ -1,4 +1,4 @@
-//----------ルーレットを回すだけの機能----------D
+//----------ルーレットを回すだけの機能----------
 import React, { useState } from "react";
 import { Wheel } from "react-custom-roulette";
 

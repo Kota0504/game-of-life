@@ -81,7 +81,7 @@ const GameBoard = () => {
     }
   }, [currentTurn]);
 
-  //-----------順位によってソートするuseEffect----------
+  //-----------プレイヤーの金額を更新し、金額によってソートするuseEffect----------
   useEffect(() => {
     const newSortedPlayers = [...players].sort((a, b) => b.money - a.money);
     setSortedPlayers(newSortedPlayers);
