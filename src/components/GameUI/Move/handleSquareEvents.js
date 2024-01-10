@@ -1,5 +1,8 @@
+//----------マスに応じた金額の増減などをおこなう機能----------
+
 import Dialog_AllGoal from "../Modal/Dialog_AllGoal";
 import Dialog_EachGoal from "../Modal/Dialog_EachGoal";
+import { updatePlayerRanks } from "./PlayerRanking";
 
 export const handleSquareEvent = (
   players,
@@ -9,7 +12,7 @@ export const handleSquareEvent = (
   modalManagerRef,
   advanceTurn,
   allFinished,
-  handleMarriageEvent
+  handleMarriageEvent,
 ) => {
   let message = "";
   let updatedPlayers = players.map((p) => {
@@ -65,41 +68,4 @@ export const handleSquareEvent = (
       modalManagerRef.current.queueModal(<Dialog_EachGoal />, 3000);
     }
   }
-};
-
-const updatePlayerRanks = (updatedPlayers) => {
-  if (!Array.isArray(updatedPlayers)) {
-    console.error("updatedPlayers is not an array:", updatedPlayers);
-    return []; // エラーの場合は空の配列を返す
-  }
-
-  const sortedPlayers = [...updatedPlayers].sort((a, b) => b.money - a.money);
-  return sortedPlayers.map((player, index) => ({
-    ...player,
-    rank: index + 1,
-  }));
-};
-
-export const handleSquareLanding = (
-  players,
-  playerId,
-  setPlayers,
-  modalManagerRef
-) => {
-  // playersが配列であることを確認する。
-  if (!Array.isArray(players)) {
-    console.error("Error: players should be an array", players);
-    return; // playersが配列でなければ、エラーメッセージを出力して早期に関数から抜ける。
-  }
-  const player = players.find((p) => p.id === playerId);
-  if (!player) return; // プレイヤーが見つからなければ何もしない
-
-  const squareElement = document.getElementById(player.position.toString());
-  if (!squareElement) return; // マス目が存在しなければ何もしない
-
-  // classNameから色を抽出する
-  const colorClass = squareElement.className.match(/bg-[a-z]+-200/);
-  if (!colorClass) return; // 色のクラスが見つからなければ何もしない
-  const color = colorClass[0].split("-")[1]; // "bg-blue-200" -> "blue"
-  handleSquareEvent(players, player, color, setPlayers, modalManagerRef);
 };

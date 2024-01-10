@@ -91,17 +91,6 @@
   box-shadow: 0 0 2px #000;
 }
 
-/* .roulette-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-} */
-
 /* ゲームボードのコンテナ */
 #game-board {
   position: relative;
@@ -145,10 +134,6 @@
   justify-content: center;
 }
 
-/* .App-logo-2 {
-  margin-right: auto;
-} */
-
 .title-ranking {
   font-size: 20px;
 }
@@ -169,18 +154,6 @@
   margin-left: 700px; /* 左側のマージンを増やして右に移動 */
   flex-direction: row; /* 要素を横並びにする */
 }
-
-/* .ranking-modal {
-  position: fixed; 
-  width: 360px;
-  height: 400px;
-  margin-left: 850px;
-  margin-top: 50px;
-  border-radius: 40px;
-  background-color: #fbaecd;
-  border: #fff;
-  z-index: 10;
-} */
 
 .modal-close-button {
   position: absolute;
