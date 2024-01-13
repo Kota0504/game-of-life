@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./StartScreen.css";
+import "../start/css/StartScreen.css";
 import { v4 as uuidv4 } from "uuid";
-import groupImage from "/Users/toshin/Desktop/game-of-life/src/components/image/g13.png";
+import groupImage from "../../assets/g13.png";
 
 const StartScreen = () => {
   const [nickname, setNickname] = useState("");

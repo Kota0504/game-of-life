@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
-import "/Users/toshin/Desktop/game-of-life/src/components/css/GameBoard.css";
-import Player from "./Data/Player";
-import initialPlayers from "./Data/InitalPlayers";
-import OshiTable from "./Table/OshiTable";
-import Roulette from "./Move/Roulette";
+import "../../pages/game/css/GameBoard.css";
+import Player from "../game/components/Player";
+import initialPlayers from "../game/components/InitalPlayers";
+import OshiTable from "../game/components/OshiTable";
+import Roulette from "../game/components/functions/Roulette";
 import Modal from "react-modal";
-import ModalManager from "./Modal/ModalManager";
-import { handleSquareEvent } from "./Move/handleSquareEvents.js";
-import { handleSquareLanding } from "./Move/handleSquareLanding.js";
-import Dialog_AllGoal from "./Modal/Dialog_AllGoal"; // Dialogコンポーネントのインポート
-import Dialog_EachGoal from "./Modal/Dialog_EachGoal"; // Dialogコンポーネントのインポート
+import ModalManager from "../game/components/modals/ModalManager";
+import { handleSquareEvent } from "../game/components/functions/handleSquareEvents";
+import { handleSquareLanding } from "../game/components/functions/handleSquareLanding";
+import Dialog_AllGoal from "../game/components/modals/Dialog_AllGoal"; // Dialogコンポーネントのインポート
+import Dialog_EachGoal from "../game/components/modals/Dialog_EachGoal"; // Dialogコンポーネントのインポート
 import {
   handleMarriageChoice,
   handleMarriageEvent,
-} from "/Users/toshin/Desktop/game-of-life/src/components/GameUI/Move/Event/MarriageChoice.js";
+} from "../game/components/functions/MarriageChoice";
 import {
   nextTurn,
   advanceTurn,
-} from "/Users/toshin/Desktop/game-of-life/src/components/GameUI/Move/Trun.js";
-import handleRouletteResult from "./Move/handleRouletteResult.js";
-import { getSquareColor } from "./Move/getSquareColor.js";
+} from "../game/components/functions/Trun";
+import handleRouletteResult from "../game/components/functions/handleRouletteResult";
+import { getSquareColor } from "../game/components/functions/getSquareColor";
 
 const GameBoard = () => {
   //-----------useStateで渡す定義 必要----------

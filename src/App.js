@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "/Users/toshin/Desktop/game-of-life/src/tailwind.css";
-import StartScreen from "./components/StartPage/ManegerPage/StartScreen";
-import OshiTable from "./components/GameUI/Table/OshiTable";
-import GameBoard from "./components/GameUI/GameBoard";
+import StartScreen from "./pages/start/StartScreen";
+import OshiTable from "./pages/game/components/OshiTable";
+import GameBoard from "./pages/game/GameBoard";
 import "./App.css";
 import Modal from "react-modal";
 

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // UUIDを生成するためにimportします
-import "./ParticipantScreen.css";
-import groupImage from "./image/g13.png";
+import "@/pages/start/css/ParticipantScreen.css";
+import groupImage from "@/assets/g13.png";
 
 const ParticipantScreen = () => {
   const { token } = useParams();

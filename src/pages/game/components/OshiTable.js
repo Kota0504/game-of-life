@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import groupImage from "/Users/toshin/Desktop/game-of-life/src/components/image/g13.png";
+import groupImage from "../../../assets/g13.png";
 // import renderPlayersAtSquare from "./renderPlayersAtSquare";この機能を分けたいが、できないのでそのまま
 //親のapp.jsにimport tailwindCSSが記述しているので、二重記述になるのでここでは記述不要。
 

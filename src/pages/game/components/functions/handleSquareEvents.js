@@ -1,8 +1,8 @@
 //----------マスに応じた金額の増減などをおこなう機能----------
 
-import Dialog_AllGoal from "../Modal/Dialog_AllGoal";
-import Dialog_EachGoal from "../Modal/Dialog_EachGoal";
-import { updatePlayerRanks } from "./PlayerRanking";
+import Dialog_AllGoal from "../modals/Dialog_AllGoal";
+import Dialog_EachGoal from "../modals/Dialog_EachGoal";
+import { updatePlayerRanks } from "../functions/PlayerRanking";
 
 export const handleSquareEvent = (
   players,
@@ -12,7 +12,7 @@ export const handleSquareEvent = (
   modalManagerRef,
   advanceTurn,
   allFinished,
-  handleMarriageEvent,
+  handleMarriageEvent
 ) => {
   let message = "";
   let updatedPlayers = players.map((p) => {
