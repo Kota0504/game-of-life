@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "/Users/toshin/Desktop/game-of-life/src/components/css/Dialog.css";
-import OshiTable from "../Table/OshiTable.js";
-import player from "../GameBoard.js";
+import "../../css/Dialog.css";
+import OshiTable from "../OshiTable";
+import player from "../Player";
 
 const Dialog_EachGoal = () => {
   const [isEachGoalDialogOpen, setEachGoalDialogOpen] = useState(true);

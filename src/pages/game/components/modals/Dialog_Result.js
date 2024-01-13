@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import "/Users/toshin/Desktop/game-of-life/src/components/css/Dialog.css";
-import player from "../GameBoard";
-import "/Users/toshin/Desktop/game-of-life/src/App.css";
-
+import "../../css/Dialog.css";
+import player from "../../GameBoard";
+import "../../../../App.css";
 const Dialog_Result = () => {
   const isDialogOpen = useState(true);
 

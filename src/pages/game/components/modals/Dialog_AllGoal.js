@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "/Users/toshin/Desktop/game-of-life/src/components/css/Dialog.css";
-import Dialog_Result from "./Dialog_Result.js";
+import "../../css/Dialog.css";
+import Dialog_Result from "../modals/Dialog_Result";
 
 const Dialog_AllGoal = () => {
   const [isAllGoalDialogOpen, setAllGoalDialogOpen] = useState(true);
