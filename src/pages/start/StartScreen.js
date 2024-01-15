@@ -4,25 +4,92 @@ import "../start/css/StartScreen.css";
 import { v4 as uuidv4 } from "uuid";
 import groupImage from "../../assets/g13.png";
 
-const StartScreen = () => {
+const StartScreen = ({ newSocket }) => {
+  // const [socket, setSocket] = useState(null);
+  // 一般的なパターンで、userNameInputがリアルタイムでの入力値を管理し、userNameが最終的な確定された値を保持するための変数として使われる
+  const [adminNameInput, setAdminNameInput] = useState(""); // ユーザー名の入力値をリアルタイムで管理
+  const [adminName, setAdminName] = useState(""); // 確定したユーザー名を保持
+  const [roomName, setRoomName] = useState(""); // 確定したユーザー名を保持
+
+  const [admin, setAdmin] = useState(null); // 管理者情報を単一のオブジェクトとして管理
+  const [participantLists, setParticipantLists] = useState([]); // 参加者リスト
+
   const [nickname, setNickname] = useState("");
   const [page, setPage] = useState(1);
   const [participantModal, setParticipantModal] = useState(false); // これもモーダル表示のためのフラグです
   const [participantUrl, setParticipantUrl] = useState(""); // 参加者用 URL
-  const [participantCount, setParticipantCount] = useState(0); // URLにアクセスしている人数
-  const [participants, setParticipants] = useState(["A", "B", "C"]); // 仮のデータ
-  const [adminNickname, setAdminNickname] = useState("");
-  const [error, setError] = useState("");
-  const [adminId, setAdminId] = useState(""); // 管理者のIDを追加
 
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // 管理者用URLと参加者用URLの生成
+  const [participantCount, setParticipantCount] = useState(0);
+
+  // ------------------------------↓↓↓Participant.Screenより参加者情報受け取り↓↓↓------------------------------
+
+  useEffect(() => {
+    newSocket.on("participantCountUpdate", ({ count }) => {
+      setParticipantCount(count);
+    });
+  }, [newSocket]);
+
+  useEffect(() => {
+    if (adminName !== "") {
+      joinRoom(roomName, adminName);
+    }
+  }, [roomName]);
+
+  const joinRoom = () => {
+    newSocket.emit("joinRoom", { roomName, adminName });
+  };
+
+  // ニックネームの送信ハンドラ
+  const joinAndSetAdminName = (e) => {
+    e.preventDefault();
+    if (!adminNameInput) {
+      setError("※ニックネームが入力されていません");
+      return;
+    }
+    setAdminName(adminNameInput);
+    if (adminNameInput) {
+      setParticipantUrl(generateRandomUrl());
+
+      setPage(3); // 3ページ目に遷移
+    }
+  };
+
+  useEffect(() => {
+    newSocket.on("ParticipantInfo", (data) => {
+      console.log(data);
+
+      setParticipantLists((prevParticipants) => [...prevParticipants, data]);
+    });
+  }, [newSocket]);
+
+  useEffect(() => {
+    // 現在の接続先(localhost:5000)をsetSocketで登録
+    // setSocket(newSocket);
+  }, []); // 初回マウント時のみ実行
+  useEffect(() => {
+    const roomId = participantUrl ? participantUrl.split("?room=")[1] : "";
+    if (participantUrl) {
+      setRoomName(roomId);
+    }
+  }, [participantUrl]);
+
+  useEffect(() => {
+    newSocket.on("newUser", (users) => {
+      console.log(users);
+    });
+  }, []);
+
+  // 参加者用URLの生成
   const generateRandomUrl = () => {
     // ランダムなトークンを生成します。これは参加者に一意のIDを割り当てるために使用されます。
-    const token = Math.random().toString(36).substring(2, 8);
+    const token = "?room=room" + uuidv4();
+
     // アプリケーションの URL 構造に従って参加者画面への完全な URL を返します。
-    return `https://example.com/participant/${token}`;
+    // return `https://example.com/participant/${token}`;
+    return `localhost:3000/participant/${token}`;
   };
 
   // 「今すぐ開始！」ボタンのハンドラ
@@ -30,70 +97,32 @@ const StartScreen = () => {
     setPage(2); // 2ページ目に遷移
   };
 
-  // URL生成と参加者数の仮想的な更新
+  // 初回マウント時にURL生成
   useEffect(() => {
-    if (page === 3) {
-      setParticipantUrl(generateRandomUrl());
-      // 参加者数の更新をシミュレート
-      setParticipantCount(4); // 仮の人数です
-    }
-  }, [page]);
+    generateRandomUrl();
+  }, []);
 
-  // 参加者用URLにアクセスしている人数を取得するための関数
-  const fetchParticipantCount = async () => {
-    try {
-      const response = await fetch("/api/participant-count");
-      const data = await response.json();
-      setParticipantCount(data.count);
-    } catch (error) {
-      console.error("参加者数の取得に失敗しました:", error);
-    }
-  };
   // ニックネームの送信ハンドラ
-
-  const handleNicknameSubmit = (e) => {
+  const handleAdminnameSubmit = (e) => {
     e.preventDefault();
-    if (!nickname) {
+    if (!adminName) {
       setError("※ニックネームが入力されていません");
       return;
     }
-    setError("");
     if (nickname) {
-      // URLを生成して状態に保存
-      setParticipantUrl(generateRandomUrl());
       setPage(3); // 3ページ目に遷移
 
-      // 一意のIDを生成して設定
-      const adminUniqueId = uuidv4();
-      setAdminId(adminUniqueId);
-      setAdminNickname(nickname); // 管理者のニックネームを設定
-
-      // ここで、既存のparticipants配列を変更せずに管理者のみを追加します。
-      // また、IDが不要であれば、adminIdの設定も省略できます。
-      const newParticipant = { id: adminUniqueId, name: nickname };
-      if (
-        !participants.some((participant) => participant.id === adminUniqueId)
-      ) {
-        setParticipants([newParticipant, ...participants]);
-      }
+      setAdmin({
+        id: uuidv4(),
+        name: nickname,
+      });
     }
   };
-
-  // 参加者一覧を取得するための関数
-  const fetchParticipants = async () => {
-    try {
-      const response = await fetch("/api/participants");
-      const data = await response.json();
-      setParticipants(data.participants);
-    } catch (error) {
-      console.error("参加者一覧の取得に失敗しました:", error);
-    }
-  };
-
   const handleShowParticipants = () => {
     // 参加者モーダルの状態をtrueに設定
     setParticipantModal(true);
   };
+
   // モーダルを閉じる関数
   const handleCloseModal = () => {
     setParticipantModal(false);
@@ -118,19 +147,24 @@ const StartScreen = () => {
 
   // 参加制限を確認するための関数
   const checkParticipantLimit = async () => {
-    try {
-      const response = await fetch("/api/check-limit");
-      const data = await response.json();
-      return data.isLimitExceeded;
-    } catch (error) {
-      console.error("参加制限の確認に失敗しました:", error);
-      return true; // エラーが発生した場合は参加を制限する
-    }
+    //   try {
+    //     const response = await fetch("/api/check-limit");
+    //     const data = await response.json();
+    //     return data.isLimitExceeded;
+    //   } catch (error) {
+    //     console.error("参加制限の確認に失敗しました:", error);
+    //     return true; // エラーが発生した場合は参加を制限する
+    //   }
   };
+
+  // ----------------------------------↓↓↓socket.io↓↓↓----------------------------------
+  // ----------------------------------↓↓↓socket.io↓↓↓----------------------------------
 
   // ゲーム開始ボタンの処理
   const handleGameStart = async () => {
     const isLimitExceeded = await checkParticipantLimit();
+    newSocket.emit("adminStart", roomName); // 開始ボタンが押されたことをサーバーにemit
+
     if (isLimitExceeded) {
       alert("参加人数が上限に達しています。");
       return;
@@ -139,12 +173,16 @@ const StartScreen = () => {
     // ゲームページに遷移する
     navigate("/game-board");
   };
-  // コンポーネントがマウントされた時に参加者数と参加者一覧を取得
-  useEffect(() => {
-    fetchParticipantCount();
-    fetchParticipants();
-  }, []);
 
+  useEffect(() => {
+    newSocket.on("adminAllow", () => {
+      // サーバーからの指示を受けてゲームページに遷移
+      navigate("/game-board");
+    });
+  }, [newSocket]);
+
+  // ----------------------------------↑↑↑socket.io↑↑↑----------------------------------
+  // ----------------------------------↑↑↑socket.io↑↑↑----------------------------------
   return (
     <div className="start-screen">
       {page === 1 && (
@@ -185,12 +223,12 @@ const StartScreen = () => {
             <div className="container">
               <p className="surprise">ニックネームを入力してください</p>
               <div className="nickname-form">
-                <form onSubmit={handleNicknameSubmit}>
+                <form onSubmit={joinAndSetAdminName}>
                   <input
                     type="text"
                     placeholder="ニックネーム"
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
+                    value={adminNameInput}
+                    onChange={(e) => setAdminNameInput(e.target.value)}
                     className="nickname"
                   />
                   <div className={`error-container ${error ? "active" : ""}`}>
@@ -270,9 +308,16 @@ const StartScreen = () => {
                     </button>
                     <span className="title-4">参加者一覧</span>
                     <ul className="list">
-                      {participants.map((participant) => (
-                        <li key={participant.id}>{participant.name}</li>
-                      ))}
+                      {/* 管理者 */}
+                      {adminName && <li>{adminName}</li>}
+                      {/* 参加者リストをmapして表示 */}
+                      {participantLists.map(
+                        (participant) =>
+                          participant.userName &&
+                          participant.userName.trim() !== "" && (
+                            <li key={participant.id}>{participant.userName}</li>
+                          )
+                      )}
                     </ul>
                   </div>
                 </div>
